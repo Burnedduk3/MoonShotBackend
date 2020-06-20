@@ -15,8 +15,7 @@ export const CONFIG_DATABASE_PORT = (process.env.DATABASE_PORT && parseInt(proce
 export const CONFIG_DATABASE_USER = process.env.DATABASE_USER || 'Admin';
 export const CONFIG_DATABASE_PASSWORD = process.env.DATABASE_PASSWORD || 'Admin1234!';
 export const CONFIG_DATABASE_NAME = process.env.DATABASE_NAME || 'moon_shot';
-export const CONFIG_DATABASE_URL =
-  process.env.DATABASE_URL || 'mysql://Admin:Admin1234!@127.0.0.1:3306:3306/moon_shot';
+export const CONFIG_DATABASE_URL = process.env.DATABASE_URL || 'mysql://Admin:Admin1234!@127.0.0.1:3306:3306/moon_shot';
 
 // JWT Tokens
 export const CONFIG_JWT_SECRET_ACCESS = process.env.JWT_SECRET_ACCESS || 'asdasasdqwe13';

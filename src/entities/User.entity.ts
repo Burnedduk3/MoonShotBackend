@@ -1,13 +1,15 @@
+import { UserRole } from '@entities/UserRole.entity';
 import { Field, ID, ObjectType } from 'type-graphql';
 import {
   BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne, OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-
+import {Restaurant} from "@entities/Restaurant.entity";
 
 @ObjectType()
 @Entity()
@@ -21,6 +23,10 @@ export class User extends BaseEntity {
   @Field()
   @Column({ nullable: false, unique: true })
   phone: string;
+
+  @Field()
+  @Column({ nullable: false, unique: true })
+  userID: string;
 
   @Field()
   @Column({ default: '' })
@@ -58,14 +64,14 @@ export class User extends BaseEntity {
 
   // Relations
 
-  // // ManyToOne
-  // @Field(() => UserRole, { nullable: false })
-  // @ManyToOne(() => UserRole, (userRole) => userRole.users)
-  // role: UserRole;
-  //
-  // // ManyToMany
-  // @Field(() => [LawyerCategory], { nullable: true })
-  // @ManyToMany(() => LawyerCategory, (lawyerCategory) => lawyerCategory.users)
-  // @JoinTable()
-  // categories: LawyerCategory[];
+  // ManyToOne
+  @Field(() => UserRole, { nullable: false })
+  @ManyToOne(() => UserRole, (userRole) => userRole.users)
+  role: UserRole;
+
+  // OneToMany
+  @Field(() => [Restaurant], { nullable: true })
+  @OneToMany(() => Restaurant, (restaurant) => restaurant.owner)
+  restaurants: Restaurant[];
+
 }
