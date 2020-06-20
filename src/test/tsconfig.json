@@ -1,0 +1,7 @@
+{
+  "extends": "../../tsconfig",
+  "compilerOptions": {
+    "types": ["reflect-metadata", "node", "jest"],
+    "allowSyntheticDefaultImports": true
+  }
+}

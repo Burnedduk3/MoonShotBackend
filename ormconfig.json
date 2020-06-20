@@ -1,0 +1,12 @@
+{
+  "name": "default",
+  "type": "mysql",
+  "host": "186.155.211.216",
+  "port": 33,
+  "username": "micoleDevUser",
+  "password": "micoleDevPassword27893",
+  "database": "micoleDev",
+  "synchronize": true,
+  "logging": true,
+  "entities": ["src/entities/*.*"]
+}

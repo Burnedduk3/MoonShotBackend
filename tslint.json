@@ -1,0 +1,47 @@
+{
+  "defaultSeverity": "warning",
+  "extends": ["tslint:recommended", "tslint-config-prettier"],
+  "rulesDirectory": ["tslint-plugin-prettier"],
+  "rules": {
+    "no-implicit-dependencies": false,
+    "jsx-boolean-value": ["always", { "never": ["exact"] }],
+    "jsx-no-lambda": ["always", { "never": ["onClick"] }],
+    "object-literal-sort-keys": false,
+    "prettier": [true, "./.prettierrc"],
+    "no-shadowed-variable": false,
+    "interface-name": false,
+    "member-access": [false],
+    "semicolon": [true, "always", "ignore-interfaces"],
+    "no-duplicate-imports": true,
+    "no-duplicate-variable": true,
+    "no-unused-expression": true,
+    "trailing-comma": false,
+    "only-arrow-functions": true,
+    "max-classes-per-file": false,
+    "whitespace": [true, "check-branch", "check-operator", "check-typecast"],
+    "ordered-imports": [
+      true,
+      {
+        "module-source-path": "full",
+        "grouped-imports": true,
+        "groups": [
+          {
+            "name": "internal modules",
+            "match": "^@*.*",
+            "order": 2
+          },
+          {
+            "name": "relative dir",
+            "match": "^[.].*",
+            "order": 3
+          },
+          {
+            "name": "node_modules",
+            "match": ".*",
+            "order": 1
+          }
+        ]
+      }
+    ]
+  }
+}
