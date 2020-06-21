@@ -33,7 +33,7 @@ export const updateRestaurantHandler = async (
     /* istanbul ignore next */
     return {
       error: true,
-      message: 'Error updateRestaurantHandler',
+      message: 'Error updateRecipesHandler',
     };
   }
 };

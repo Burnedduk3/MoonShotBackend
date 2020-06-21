@@ -57,7 +57,7 @@ export const updateRestaurantRelationsHandler = async (
     /* istanbul ignore next */
     return {
       error: true,
-      message: 'Error updateRestaurantRelationsHandler',
+      message: 'Error updateRecipesRelationsHandler',
     };
   }
 };

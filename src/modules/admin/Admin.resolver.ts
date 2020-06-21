@@ -1,5 +1,6 @@
 // import { isAdmin } from '@middlewares/isAdmin';
 // import { isAuth } from '@middlewares/isAuth';
+import { AdminRecipesTypes } from '@modules/admin/recipes/AdminRecipes.types';
 import { AdminRestaurantTypes } from '@modules/admin/restaurants/AdminRestaurant.types';
 import { AdminUserTypes } from '@modules/admin/user/AdminUser.types';
 import { AdminUserRoleTypes } from '@modules/admin/userRole/AdminUserRole.types';
@@ -25,8 +26,8 @@ export class AdminResolver {
   }
 
   @FieldResolver()
-  Recipes(): AdminUserTypes {
-    return new AdminUserTypes();
+  Recipes(): AdminRecipesTypes {
+    return new AdminRecipesTypes();
   }
 
   @FieldResolver()
