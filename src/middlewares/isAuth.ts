@@ -36,7 +36,7 @@ export const isAuth: MiddlewareFn<Context> = async ({ context }, next) => {
   //     });
   //     if (typeof decodedRefreshToken === 'string') throw new Error('no valid refresh token');
 
-  //     const user = await User.findOne(
+  //     const user = await user.findOne(
   //       {
   //         phone: decodedRefreshToken.phone,
   //       },
@@ -46,7 +46,7 @@ export const isAuth: MiddlewareFn<Context> = async ({ context }, next) => {
 
   //     if (user.tokenVersion !== decodedRefreshToken.version) throw new Error('no authenticated');
 
-  //     await User.update({ phone: user.phone }, { tokenVersion: user.tokenVersion + 1 });
+  //     await user.update({ phone: user.phone }, { tokenVersion: user.tokenVersion + 1 });
   //     const newAccessToken = await jwtSign({
   //       phone: user.phone,
   //       type: 'access',

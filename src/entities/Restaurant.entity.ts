@@ -26,6 +26,14 @@ export class Restaurant extends BaseEntity {
   name: string;
 
   @Field()
+  @Column({ nullable: false,  })
+  address: string;
+
+  @Field()
+  @Column({ nullable: false })
+  phoneNumber: string;
+
+  @Field()
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
 

@@ -20,3 +20,6 @@ export const CONFIG_DATABASE_URL = process.env.DATABASE_URL || 'mysql://Admin:Ad
 // JWT Tokens
 export const CONFIG_JWT_SECRET_ACCESS = process.env.JWT_SECRET_ACCESS || 'asdasasdqwe13';
 export const CONFIG_JWT_SECRET_REFRESH = process.env.CONFIG_JWT_SECRET_REFRESH || 'refresh';
+
+// encription secretWord
+export const CONFIG_BCRYPT_SALT_ROUNDS = process.env.CONFIG_BCRYPT_SALT_ROUNDS || 10;

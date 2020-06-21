@@ -1,15 +1,20 @@
+import { CONFIG_BCRYPT_SALT_ROUNDS } from '@config/variables';
+import { Restaurant } from '@entities/Restaurant.entity';
 import { UserRole } from '@entities/UserRole.entity';
+import * as bcrypt from 'bcrypt';
+import { IsEmail, Length } from 'class-validator';
 import { Field, ID, ObjectType } from 'type-graphql';
 import {
   BaseEntity,
+  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
-  ManyToOne, OneToMany,
+  ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import {Restaurant} from "@entities/Restaurant.entity";
 
 @ObjectType()
 @Entity()
@@ -29,7 +34,21 @@ export class User extends BaseEntity {
   userID: string;
 
   @Field()
-  @Column({ default: '' })
+  @Column({ nullable: false, unique: true })
+  username: string;
+
+  @Field()
+  @Column({ nullable: false })
+  @Length(10, 20)
+  password: string;
+
+  @Field()
+  @Column({ nullable: false, unique: true })
+  @IsEmail()
+  email: string;
+
+  @Field()
+  @Column({ nullable: false })
   firstName: string;
 
   @Field()
@@ -37,7 +56,7 @@ export class User extends BaseEntity {
   secondName: string;
 
   @Field()
-  @Column({ default: '' })
+  @Column({ nullable: false })
   firstLastname: string;
 
   @Field()
@@ -74,4 +93,8 @@ export class User extends BaseEntity {
   @OneToMany(() => Restaurant, (restaurant) => restaurant.owner)
   restaurants: Restaurant[];
 
+  @BeforeInsert()
+  async encryptPassword() {
+    this.password = await bcrypt.hash(this.password, CONFIG_BCRYPT_SALT_ROUNDS);
+  }
 }
