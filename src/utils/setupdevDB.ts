@@ -24,7 +24,7 @@ export const boilerplateData = async () => {
     adminRole = await UserRole.create({ name: 'admin' }).save();
   }
 
-  // Recipes
+  // recipes
   let recipe1 = await Recipes.findOne({ name: 'Helado' });
   if (!recipe1) {
     recipe1 = await Recipes.create({
@@ -103,12 +103,14 @@ export const boilerplateData = async () => {
     }).save();
   }
 
-  // Restaurants
+  // restaurants
 
   let restaurantOne = await Restaurant.findOne({ name: 'Andres' });
   if (!restaurantOne) {
     restaurantOne = await Restaurant.create({
       name: 'Andres',
+      address: 'cra 4 # 123 - 54',
+      phoneNumber: '5434632',
     }).save();
     await getConnection().createQueryBuilder().relation(Restaurant, 'recipes').of(restaurantOne).add(recipe2);
     await getConnection().createQueryBuilder().relation(Restaurant, 'recipes').of(restaurantOne).add(recipe5);
@@ -118,6 +120,8 @@ export const boilerplateData = async () => {
   if (!restaurantTwo) {
     restaurantTwo = await Restaurant.create({
       name: 'Crepes & Waffles',
+      address: 'cra 4 # 123 - 54',
+      phoneNumber: '5434632',
     }).save();
     await getConnection().createQueryBuilder().relation(Restaurant, 'recipes').of(restaurantTwo).add(recipe1);
     await getConnection().createQueryBuilder().relation(Restaurant, 'recipes').of(restaurantTwo).add(recipe3);
@@ -127,6 +131,8 @@ export const boilerplateData = async () => {
   if (!restaurantThree) {
     restaurantThree = await Restaurant.create({
       name: 'Kokoriko',
+      address: 'cra 4 # 123 - 54',
+      phoneNumber: '5434632',
     }).save();
     await getConnection().createQueryBuilder().relation(Restaurant, 'recipes').of(restaurantThree).add(recipe4);
     await getConnection().createQueryBuilder().relation(Restaurant, 'recipes').of(restaurantThree).add(recipe6);
@@ -140,6 +146,9 @@ export const boilerplateData = async () => {
       firstLastname: 'Pereira',
       userID: '29358093458',
       firstName: 'Juan',
+      username: 'JuanPer',
+      password: 'Restaurant1',
+      email: 'juanPerreira@guerrilamail.com',
     }).save();
     await getConnection().createQueryBuilder().relation(User, 'role').of(userOne).set(restaurantOwnerRole);
     await getConnection().createQueryBuilder().relation(User, 'restaurants').of(userOne).add(restaurantOne);
@@ -153,6 +162,9 @@ export const boilerplateData = async () => {
       firstLastname: 'Ramirez',
       userID: '123089530323',
       firstName: 'Sebastian',
+      username: 'SebastianRam',
+      password: 'normalUser',
+      email: 'SebastianRam@guerrilamail.com',
     }).save();
     await getConnection().createQueryBuilder().relation(User, 'role').of(userTwo).set(userRole);
   }
@@ -164,6 +176,9 @@ export const boilerplateData = async () => {
       firstLastname: 'Santiago',
       userID: '598456544',
       firstName: 'Petrovich',
+      username: 'SantiagoPetro',
+      password: 'normalUser',
+      email: 'SantiagoPetro@guerrilamail.com',
     }).save();
     await getConnection().createQueryBuilder().relation(User, 'role').of(userThree).set(restaurantOwnerRole);
     await getConnection().createQueryBuilder().relation(User, 'restaurants').of(userThree).add(restaurantTwo);
@@ -173,9 +188,14 @@ export const boilerplateData = async () => {
   if (!userFour) {
     userFour = await User.create({
       phone: '+573167404216',
-      firstLastname: 'Cabrera Duran',
+      firstLastname: 'Cabrera',
+      secondLastname: 'Duran',
       userID: '1072585245',
-      firstName: 'Juan David',
+      firstName: 'Juan',
+      secondName: 'David',
+      username: 'JuanCabDu',
+      password: 'AdminPassword',
+      email: 'juandavid.juandis@gmail.com',
     }).save();
     await getConnection().createQueryBuilder().relation(User, 'role').of(userFour).set(adminRole);
   }

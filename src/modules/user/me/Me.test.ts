@@ -30,7 +30,7 @@ const fakeUser = {
   secondLastname: faker.name.lastName(),
   confirmed: true,
 };
-describe('User/UserResolver', () => {
+describe('user/UserResolver', () => {
   it('should get userInformation', async () => {
     let user = await User.findOne({ phone: fakeUser.phone });
     if (!user) {
