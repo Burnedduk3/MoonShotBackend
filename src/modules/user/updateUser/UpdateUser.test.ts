@@ -53,7 +53,7 @@ const fakeUser = {
   confirmed: true,
 };
 
-describe('User/UpdateUser', () => {
+describe('user/UpdateUser', () => {
   it('should return same user', async () => {
     let user = await User.findOne(
       {
