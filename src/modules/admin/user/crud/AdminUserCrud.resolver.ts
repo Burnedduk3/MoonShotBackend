@@ -1,7 +1,9 @@
 import { User } from '@entities/User.entity';
+import { UserRole } from '@entities/UserRole.entity';
 import { updateUserHandler } from '@modules/admin/user/crud/UpdateUserHandler';
 import { updateUserRelationsHandler } from '@modules/admin/user/crud/UpdateUserRelationsHandler';
 import { Arg, FieldResolver, Resolver } from 'type-graphql';
+import { getConnection } from 'typeorm';
 import { AdminUserArrayCrudResponse, AdminUserCrudResponse, AdminUserCrudTypes } from './AdminUserCrud.types';
 import { CrudCreateUserInputs, CrudUserUpdateInput, CrudUserUpdateRelationsInputs } from './CrudUser.inputs';
 
@@ -29,6 +31,10 @@ export class AdminUserCrudResolver {
       }).save();
 
       if (!user) throw new Error('Could not create user Role');
+
+      const userRole = UserRole.findOne({ where: { name: 'user' } });
+
+      await getConnection().createQueryBuilder().relation(User, 'role').of(user).set(userRole);
 
       return {
         error: false,
