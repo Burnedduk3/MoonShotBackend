@@ -2,7 +2,7 @@ import { CONFIG_BCRYPT_SALT_ROUNDS } from '@config/variables';
 import { Restaurant } from '@entities/Restaurant.entity';
 import { UserRole } from '@entities/UserRole.entity';
 import * as bcrypt from 'bcrypt';
-import { IsEmail, Length } from 'class-validator';
+import { IsEmail, MinLength } from 'class-validator';
 import { Field, ID, ObjectType } from 'type-graphql';
 import {
   BaseEntity,
@@ -27,11 +27,11 @@ export class User extends BaseEntity {
 
   @Field()
   @Column({ nullable: false, unique: true })
-  phone: string;
+  userID: string;
 
   @Field()
   @Column({ nullable: false, unique: true })
-  userID: string;
+  phone: string;
 
   @Field()
   @Column({ nullable: false, unique: true })
@@ -39,7 +39,7 @@ export class User extends BaseEntity {
 
   @Field()
   @Column({ nullable: false })
-  @Length(10, 20)
+  @MinLength(8, { message: 'Less than 8' })
   password: string;
 
   @Field()

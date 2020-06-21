@@ -23,3 +23,10 @@ export const CONFIG_JWT_SECRET_REFRESH = process.env.CONFIG_JWT_SECRET_REFRESH |
 
 // encription secretWord
 export const CONFIG_BCRYPT_SALT_ROUNDS = process.env.CONFIG_BCRYPT_SALT_ROUNDS || 10;
+
+// Redis
+export const CONFIG_REDIS_HOST = process.env.REDIS_HOST || 'redis-13073.c10.us-east-1-4.ec2.cloud.redislabs.com';
+export const CONFIG_REDIS_REFRESH_TOKEN_PREFIX =
+  process.env.CONFIG_REDIS_REFRESH_TOKEN_PREFIX || 'DevelopRefreshPrefix';
+export const CONFIG_REDIS_PASSWORD = process.env.REDIS_PASSWORD || 'aWEkwtTXb3TNCfLsnqrvp49yw1n7iG78';
+export const CONFIG_REDIS_PORT = (process.env.REDIS_PORT && parseInt(process.env.REDIS_PORT, 10)) || 13073;
