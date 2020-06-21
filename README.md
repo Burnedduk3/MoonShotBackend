@@ -7,14 +7,14 @@ Moonshot restaurant Backend end made with Apollo server, Next js, typescript and
 <h3>&nbsp; &nbsp; &nbsp; Fields</h3>
 <ul>
     <li>id</li>
-    <li style="color: red">userID</li>
-    <li style="color: red">phone</li>
-    <li style="color: red">username</li>
-    <li style="color: red">password</li>
-    <li style="color: red">email</li>
-    <li style="color: red">firstName</li>
+    <li style="color: red">userID *</li>
+    <li style="color: red">phone *</li>
+    <li style="color: red">username *</li>
+    <li style="color: red">password *</li>
+    <li style="color: red">email *</li>
+    <li style="color: red">firstName *</li>
     <li>secondName</li>
-    <li style="color: red">firstLastname</li>
+    <li style="color: red">firstLastname *</li>
     <li>secondLastname</li>
     <li>confirmationCode</li>
     <li>confirmed</li>
@@ -22,7 +22,7 @@ Moonshot restaurant Backend end made with Apollo server, Next js, typescript and
     <li>updatedAt</li>
     <li>createAt</li>
 </ul>
-red Marked fields are necessary at any query to create a user
+* Marked fields are necessary at any query to create a user
 <h3>&nbsp; &nbsp; &nbsp; Relations</h3>
 <ul>
     <li>role: A many to one relation, it gives the role to the corresponding user, 3 kinds: admin, business, user</li>
@@ -34,11 +34,11 @@ red Marked fields are necessary at any query to create a user
 <h3>&nbsp; &nbsp; &nbsp; Fields</h3>
 <ul>
     <li>id</li>
-    <li style="color: red">name</li>
+    <li style="color: red">name *</li>
     <li>updatedAt</li>
     <li>createAt</li>
 </ul>
-red Marked fields are necessary at any query to create a user
+* Marked fields are necessary at any query to create a user
 <h3>&nbsp; &nbsp; &nbsp; Relations</h3>
 <ul>
     <li>users: A one to many relation with the user entity</li>
@@ -49,13 +49,13 @@ red Marked fields are necessary at any query to create a user
 <h3>&nbsp; &nbsp; &nbsp; Fields</h3>
 <ul>
     <li>id</li>
-    <li style="color: red">name</li>
-    <li style="color: red">address</li>
-    <li style="color: red">phoneNumber</li>
+    <li style="color: red">name *</li>
+    <li style="color: red">address *</li>
+    <li style="color: red">phoneNumber *</li>
     <li>updatedAt</li>
     <li>createAt</li>
 </ul>
-red Marked fields are necessary at any query to create a user
+* Marked fields are necessary at any query to create a user
 <h3>&nbsp; &nbsp; &nbsp; Relations</h3>
 <ul>
     <li>owner: A Many to One relation, this entity is connected with a user, the user may have business role and have to own that restaurant</li>
@@ -67,14 +67,14 @@ red Marked fields are necessary at any query to create a user
 <h3>&nbsp; &nbsp; &nbsp; Fields</h3>
 <ul>
     <li>id</li>
-    <li style="color: red">name</li>
-    <li style="color: red">price</li>
-    <li style="color: red">description</li>
-    <li style="color: red">recipeCategory</li>
+    <li style="color: red">name *</li>
+    <li style="color: red">price *</li>
+    <li style="color: red">description *</li>
+    <li style="color: red">recipeCategory *</li>
     <li>updatedAt</li>
     <li>createAt</li>
 </ul>
-red Marked fields are necessary at any query to create a user
+* Marked fields are necessary at any query to create a user
 <h3>&nbsp; &nbsp; &nbsp; Relations</h3>
 <ul>
     <li>restaurantMenu: A Many to one relation with the restaurant entity</li>
