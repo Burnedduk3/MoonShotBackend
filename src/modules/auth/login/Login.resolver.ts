@@ -21,18 +21,18 @@ export class LoginResolver {
 
       const passwordCandidate = await bcyrpt.hash(data.password, CONFIG_BCRYPT_SALT_ROUNDS);
 
-      if (!bcyrpt.compare(passwordCandidate, user.password)) throw new Error("Password not match");
+      if (!bcyrpt.compare(passwordCandidate, user.password)) throw new Error('Password not match');
 
       const tokenVersion = makeRandomString();
       const refreshToken = await jwtSign({
         type: 'refresh',
-        phone: user.phone,
+        username: user.username,
         version: tokenVersion,
         role: user.role.name as Role,
       });
       const accessToken = await jwtSign({
         type: 'access',
-        phone: user.phone,
+        username: user.username,
         role: user.role.name as Role,
       });
       if (refreshToken === false && accessToken === false) throw new Error('Error generating tokens');
@@ -41,14 +41,14 @@ export class LoginResolver {
         refreshToken,
       };
       const setTokenResponse = await redisSetRefreshTokenInDB(
-        { phone: user.phone, role: user.role.name as Role, version: tokenVersion },
+        { username: user.username, role: user.role.name as Role, version: tokenVersion },
         refreshToken as string,
       );
       if (setTokenResponse === false) throw new Error('error Setting token');
       return {
         error: false,
         data: tokens as JwtTokens,
-        user: user
+        user,
       };
 
       return {
@@ -81,13 +81,13 @@ export class LoginResolver {
       const tokenVersion = makeRandomString();
       const refreshToken = await jwtSign({
         type: 'refresh',
-        phone: user.phone,
+        username: user.username,
         version: tokenVersion,
         role: user.role.name as Role,
       });
       const accessToken = await jwtSign({
         type: 'access',
-        phone: user.phone,
+        username: user.username,
         role: user.role.name as Role,
       });
       if (refreshToken === false && accessToken === false) throw new Error('Error generating tokens');
@@ -96,7 +96,7 @@ export class LoginResolver {
         refreshToken,
       };
       const setTokenResponse = await redisSetRefreshTokenInDB(
-        { phone: user.phone, role: user.role.name as Role, version: tokenVersion },
+        { username: user.username, role: user.role.name as Role, version: tokenVersion },
         refreshToken as string,
       );
       if (setTokenResponse === false) throw new Error('error Setting token');
