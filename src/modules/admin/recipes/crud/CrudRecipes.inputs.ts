@@ -2,14 +2,19 @@ import { Field, InputType } from 'type-graphql';
 
 @InputType()
 export class CrudRecipesUpdateInput {
-  @Field({ nullable: false })
+  @Field({nullable: false})
   name?: string;
 
-  @Field({ nullable: false })
-  address?: string;
+  @Field({nullable: false})
+  price?: number;
 
-  @Field({ nullable: false })
-  phoneNumber?: string;
+  @Field({nullable: false})
+  description?: string;
+
+
+  @Field({nullable: false})
+  recipeCategory?: string;
+
 }
 
 @InputType()
@@ -20,12 +25,16 @@ export class CrudRecipesUpdateRelationsInputs {
 
 @InputType()
 export class CrudCreateRecipesInputs {
-  @Field({ nullable: false })
+  @Field({nullable: false})
   name: string;
 
-  @Field({ nullable: false })
-  address: string;
+  @Field({nullable: false})
+  price: number;
 
-  @Field({ nullable: false })
-  phoneNumber: string;
+  @Field({nullable: false})
+  description: string;
+
+
+  @Field({nullable: false})
+  recipeCategory: string;
 }
