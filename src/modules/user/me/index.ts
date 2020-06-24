@@ -4,9 +4,9 @@ import { Context } from '@interfaces/Context.types';
 export const meHandler = async (ctx: Context): Promise<User | null> => {
   try {
     if (!ctx.payload) throw new Error('No token provided');
-    const phone = ctx.payload.phone;
-    if (!phone) throw new Error('No token provided');
-    const user = await User.findOne({ phone }, { relations: ['role', 'categories'] });
+    const username = ctx.payload.username;
+    if (!username) throw new Error('No token provided');
+    const user = await User.findOne({ username }, { relations: ['role', 'categories'] });
     if (!user) throw new Error('No user');
     return user;
   } catch (error) {

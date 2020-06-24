@@ -6,7 +6,7 @@ import { UpdateUserResponse } from '../User.types';
 
 export const updateUserHandler = async (ctx: Context, data: IUpdateUserInputs): Promise<UpdateUserResponse> => {
   try {
-    const phone = ctx.payload?.phone;
+    const phone = ctx.payload?.username;
     let user = await User.findOne({ phone });
     if (!user) throw new Error('no user');
 
