@@ -6,7 +6,7 @@ import 'reflect-metadata';
 import { Field, ObjectType } from 'type-graphql';
 
 export interface JwtToken {
-  phone: string;
+  username: string;
   version?: string;
   role: Role;
 }
@@ -30,17 +30,17 @@ export class JwtTokens {
   refreshToken: string;
 }
 
-export const jwtSign = async ({ phone, type, version, role }: JwtTokenFunc): Promise<string | false> => {
+export const jwtSign = async ({ username, type, version, role }: JwtTokenFunc): Promise<string | false> => {
   if (type === 'refresh')
-    return await jwt.sign({ phone, version }, CONFIG_JWT_SECRET_REFRESH, {
+    return await jwt.sign({ username, version, role }, CONFIG_JWT_SECRET_REFRESH, {
       expiresIn: '1y',
     });
   if (type === 'access')
-    return await jwt.sign({ phone, role }, CONFIG_JWT_SECRET_ACCESS, {
+    return await jwt.sign({ username, role }, CONFIG_JWT_SECRET_ACCESS, {
       expiresIn: '10m',
     });
   if (type === 'test') {
-    return await jwt.sign({ phone, role }, CONFIG_JWT_SECRET_ACCESS, {
+    return await jwt.sign({ username, role }, CONFIG_JWT_SECRET_ACCESS, {
       expiresIn: '1y',
     });
   } else return false;

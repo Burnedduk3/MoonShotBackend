@@ -1,3 +1,4 @@
+import { Bill } from '@entities/Bill.entity';
 import { Recipes } from '@entities/Recipes.entity';
 import { Restaurant } from '@entities/Restaurant.entity';
 import { User } from '@entities/User.entity';
@@ -24,6 +25,13 @@ export const updateRestaurantRelationsHandler = async (
         await getConnection().createQueryBuilder().relation(Restaurant, 'recipes').of(restaurant).add(recipe);
         restaurant.recipes.push(recipe);
       }
+
+      if (data.billId) {
+        const bill = await Bill.findOne(data.billId);
+        if (!bill) throw new Error('bill not Found');
+        await getConnection().createQueryBuilder().relation(Restaurant, 'bills').of(restaurant).add(bill);
+        restaurant.bills.push(bill);
+      }
     }
 
     if (action === 'delete') {
@@ -33,6 +41,14 @@ export const updateRestaurantRelationsHandler = async (
         await getConnection().createQueryBuilder().relation(Restaurant, 'restaurants').of(restaurant).remove(recipe);
         const indexToDelete = restaurant.recipes.indexOf(recipe);
         restaurant.recipes.splice(indexToDelete, 1);
+      }
+
+      if (data.billId) {
+        const bill = await Bill.findOne(data.billId);
+        if (!bill) throw new Error('bill not Found');
+        await getConnection().createQueryBuilder().relation(Restaurant, 'bills').of(restaurant).remove(bill);
+        const indexToDelete = restaurant.bills.indexOf(bill);
+        restaurant.bills.splice(indexToDelete, 1);
       }
     }
 
@@ -57,7 +73,7 @@ export const updateRestaurantRelationsHandler = async (
     /* istanbul ignore next */
     return {
       error: true,
-      message: 'Error updateRecipesRelationsHandler',
+      message: 'Error updateBillRelationsHandler',
     };
   }
 };

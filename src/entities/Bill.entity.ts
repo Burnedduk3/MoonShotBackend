@@ -1,4 +1,5 @@
 import { Restaurant } from '@entities/Restaurant.entity';
+import { User } from '@entities/User.entity';
 import { Field, ID, ObjectType } from 'type-graphql';
 import {
   BaseEntity,
@@ -12,7 +13,7 @@ import {
 
 @ObjectType()
 @Entity()
-export class Recipes extends BaseEntity {
+export class Bill extends BaseEntity {
   // Fields & Columns
 
   @Field(() => ID)
@@ -25,15 +26,11 @@ export class Recipes extends BaseEntity {
 
   @Field()
   @Column({ nullable: false, default: 0 })
-  price: number;
+  totalPrice: number;
 
   @Field()
   @Column({ nullable: false })
   description: string;
-
-  @Field()
-  @Column({ default: false })
-  recipeCategory: string;
 
   @Field()
   @UpdateDateColumn({ type: 'timestamp' })
@@ -44,16 +41,17 @@ export class Recipes extends BaseEntity {
   createAt: Date;
 
   // Relations
+  @Field(() => User, { nullable: false })
+  @ManyToOne(() => User, (bill) => bill.bills)
+  userOwner: User;
 
-  // ManyToOne
   @Field(() => Restaurant, { nullable: false })
-  @ManyToOne(() => Restaurant, (restaurant) => restaurant.recipes)
-  restaurantMenu: Restaurant;
+  @ManyToOne(() => Restaurant, (restaurant) => restaurant.bills)
+  restaurant: Restaurant;
 
-  // // Many to Many
-  // @ManyToMany((_type) => Bill, (bill) => bill.billRecipes, {
-  //   cascade: true,
-  // })
+  // // Many to many
+  // @Field(() => [Recipes], { nullable: false })
+  // @ManyToMany((_type) => Recipes, (recipe) => recipe.bills)
   // @JoinTable()
-  // bills: Bill[];
+  // billRecipes: Recipes[];
 }

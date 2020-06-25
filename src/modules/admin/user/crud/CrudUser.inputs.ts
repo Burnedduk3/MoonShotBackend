@@ -28,6 +28,9 @@ export class CrudUserUpdateRelationsInputs {
 
   @Field({ nullable: true })
   restaurantId?: number;
+
+  @Field({ nullable: true })
+  billId?: number;
 }
 
 @InputType()

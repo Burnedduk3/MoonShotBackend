@@ -15,7 +15,7 @@ export const refreshTokenHandler = async ({ refreshToken }: IRefreshTokenInputs)
 
     const newAccessToken = await jwtSign({
       type: 'access',
-      phone: decodedToken.phone,
+      username: decodedToken.username,
       role: decodedToken.role as Role,
     });
     if (typeof newAccessToken !== 'string') throw new Error('Error creating access token');
@@ -23,7 +23,7 @@ export const refreshTokenHandler = async ({ refreshToken }: IRefreshTokenInputs)
     const newTokenVersion = makeRandomString();
     const newRefreshToken = await jwtSign({
       type: 'refresh',
-      phone: decodedToken.phone,
+      username: decodedToken.username,
       version: newTokenVersion,
       role: decodedToken.role as Role,
     });
@@ -34,7 +34,7 @@ export const refreshTokenHandler = async ({ refreshToken }: IRefreshTokenInputs)
     };
     await redisSetRefreshTokenInDB(
       {
-        phone: decodedToken.phone,
+        username: decodedToken.username,
         version: newTokenVersion,
         role: decodedToken.role as Role,
       },
