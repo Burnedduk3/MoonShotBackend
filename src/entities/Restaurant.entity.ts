@@ -11,6 +11,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Recipes } from './Recipes.entity';
+import {Bill} from "@entities/Bill.entity";
 
 @ObjectType()
 @Entity()
@@ -26,7 +27,7 @@ export class Restaurant extends BaseEntity {
   name: string;
 
   @Field()
-  @Column({ nullable: false,  })
+  @Column({ nullable: false })
   address: string;
 
   @Field()
@@ -52,4 +53,9 @@ export class Restaurant extends BaseEntity {
   @Field(() => [Recipes], { nullable: true })
   @OneToMany(() => Recipes, (recipe) => recipe.restaurantMenu)
   recipes: Recipes[];
+
+  // OneToMany
+  @Field(() => [Bill], { nullable: true })
+  @OneToMany(() => Bill, (bill) => bill.restaurant)
+  bills: Bill[];
 }

@@ -1,27 +1,27 @@
-import { User } from '@entities/User.entity';
-import { AdminUserCrudResponse } from '@modules/admin/user/crud/AdminUserCrud.types';
-import { CrudUserUpdateInput } from '@modules/admin/user/crud/CrudUser.inputs';
+import { Bill } from '@entities/Bill.entity';
+import { AdminBillCrudResponse } from '@modules/admin/bill/crud/AdminBillCrud.types';
+import { CrudBillUpdateInput } from '@modules/admin/bill/crud/CrudBill.inputs';
 import { getConnection } from 'typeorm';
 
-export const updateUserHandler = async (
+export const updateBillHandler = async (
   id: number,
-  data: CrudUserUpdateInput,
-): Promise<AdminUserCrudResponse> => {
+  data: CrudBillUpdateInput,
+): Promise<AdminBillCrudResponse> => {
   try {
     await getConnection()
       .createQueryBuilder()
-      .update(User)
+      .update(Bill)
       .set({ ...data })
       .where('id = :id', { id })
       .execute();
 
-    const user = await User.findOne(id);
+    const restaurant = await Bill.findOne(id);
 
-    if (!user) throw new Error('User not found');
+    if (!restaurant) throw new Error('Bill not found');
 
     return {
       error: false,
-      data: user,
+      data: restaurant,
     };
   } catch (e) {
     if (e instanceof Error) {
