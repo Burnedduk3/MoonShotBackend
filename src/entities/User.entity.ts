@@ -15,6 +15,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import {Bill} from "@entities/Bill.entity";
 
 @ObjectType()
 @Entity()
@@ -93,6 +94,11 @@ export class User extends BaseEntity {
   @OneToMany(() => Restaurant, (restaurant) => restaurant.owner)
   restaurants: Restaurant[];
 
+  @Field(() => [Bill], { nullable: true })
+  @OneToMany(() => Bill, (bill) => bill.userOwner)
+  bills: Bill[];
+
+  // Before insertion
   @BeforeInsert()
   async encryptPassword() {
     this.password = await bcrypt.hash(this.password, CONFIG_BCRYPT_SALT_ROUNDS);

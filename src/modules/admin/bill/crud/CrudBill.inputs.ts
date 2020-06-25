@@ -1,40 +1,38 @@
 import { Field, InputType } from 'type-graphql';
 
 @InputType()
-export class CrudRecipesUpdateInput {
+export class CrudBillUpdateInput {
   @Field({ nullable: false })
   name?: string;
 
   @Field({ nullable: false })
-  price?: number;
+  totalPrice?: number;
 
   @Field({ nullable: false })
   description?: string;
-
-  @Field({ nullable: false })
-  recipeCategory?: string;
 }
 
 @InputType()
-export class CrudRecipesUpdateRelationsInputs {
+export class CrudBillUpdateRelationsInputs {
   @Field({ nullable: true })
   restaurantId?: number;
 
   @Field({ nullable: true })
-  billId?: number;
+  userId?: number;
+  //
+  // @Field({ nullable: true })
+  // recipeId?: number;
 }
 
 @InputType()
-export class CrudCreateRecipesInputs {
+export class CrudCreateBillInputs {
   @Field({ nullable: false })
   name: string;
 
   @Field({ nullable: false })
-  price: number;
+  totalPrice: number;
 
   @Field({ nullable: false })
   description: string;
 
-  @Field({ nullable: false })
-  recipeCategory: string;
 }
