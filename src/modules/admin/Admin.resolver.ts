@@ -1,12 +1,12 @@
 import { isAdmin } from '@middlewares/isAdmin';
 import { isAuth } from '@middlewares/isAuth';
-import { AdminBillTypes } from '@modules/admin/bill/AdminBill.types';
 import { AdminRecipesTypes } from '@modules/admin/recipes/AdminRecipes.types';
 import { AdminRestaurantTypes } from '@modules/admin/restaurants/AdminRestaurant.types';
 import { AdminUserTypes } from '@modules/admin/user/AdminUser.types';
 import { AdminUserRoleTypes } from '@modules/admin/userRole/AdminUserRole.types';
 import { FieldResolver, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { AdminTypes } from './Admin.types';
+import {AdminReservationTypes} from "@modules/admin/reservation/AdminReservation.types";
 
 @Resolver(() => AdminTypes)
 export class AdminResolver {
@@ -37,7 +37,7 @@ export class AdminResolver {
   }
 
   @FieldResolver()
-  Bill(): AdminBillTypes {
-    return new AdminBillTypes();
+  Reservation(): AdminReservationTypes {
+    return new AdminReservationTypes();
   }
 }

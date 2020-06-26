@@ -2,8 +2,8 @@
 Moonshot restaurant Backend end made with Apollo server, Next js, typescript and typeorm for the purpose of doing a prototype.
 
 <h2>Entities</h2>
-<h3> &nbsp; User</h3>
-<p>The User entity is the one that contains all the necessary information about any user in the application.</p>
+<h3> &nbsp; UserTypes</h3>
+<p>The UserTypes entity is the one that contains all the necessary information about any user in the application.</p>
 <h3>&nbsp; &nbsp; &nbsp; Fields</h3>
 <ul>
     <li>id</li>

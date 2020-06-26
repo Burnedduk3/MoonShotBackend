@@ -22,7 +22,7 @@ export class RegisterResolver {
       findUser = await User.findOne({ where: { userID: data.userID } });
 
       if (findUser) {
-        throw new Error('User ID already in use');
+        throw new Error('UserTypes ID already in use');
       }
 
       findUser = await User.findOne({ where: { phone: data.email } });
@@ -54,7 +54,7 @@ export class RegisterResolver {
 
       return {
         error: false,
-        message: 'User Created',
+        message: 'UserTypes Created',
       };
     } catch (e) {
       return {

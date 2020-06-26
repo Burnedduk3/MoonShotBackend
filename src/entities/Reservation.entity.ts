@@ -7,13 +7,14 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 @ObjectType()
 @Entity()
-export class Bill extends BaseEntity {
+export class Reservation extends BaseEntity {
   // Fields & Columns
 
   @Field(() => ID)
@@ -22,15 +23,7 @@ export class Bill extends BaseEntity {
 
   @Field()
   @Column({ nullable: false })
-  name: string;
-
-  @Field()
-  @Column({ nullable: false, default: 0 })
-  totalPrice: number;
-
-  @Field()
-  @Column({ nullable: false })
-  description: string;
+  peopleQuantities: number;
 
   @Field()
   @UpdateDateColumn({ type: 'timestamp' })
@@ -41,17 +34,14 @@ export class Bill extends BaseEntity {
   createAt: Date;
 
   // Relations
-  @Field(() => User, { nullable: false })
-  @ManyToOne(() => User, (bill) => bill.bills)
-  userOwner: User;
 
-  @Field(() => Restaurant, { nullable: false })
-  @ManyToOne(() => Restaurant, (restaurant) => restaurant.bills)
+  // OneToMany
+  @Field(() => Restaurant, { nullable: true })
+  @OneToMany(() => Restaurant, (restaurant) => restaurant.owner)
   restaurant: Restaurant;
 
-  // // Many to many
-  // @Field(() => [Recipes], { nullable: false })
-  // @ManyToMany((_type) => Recipes, (recipe) => recipe.bills)
-  // @JoinTable()
-  // billRecipes: Recipes[];
+  // ManyToOne
+  @Field(() => User, { nullable: false })
+  @ManyToOne(() => User, (user) => user.restaurants)
+  owner: User;
 }

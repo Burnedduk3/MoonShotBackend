@@ -49,11 +49,4 @@ export class Recipes extends BaseEntity {
   @Field(() => Restaurant, { nullable: false })
   @ManyToOne(() => Restaurant, (restaurant) => restaurant.recipes)
   restaurantMenu: Restaurant;
-
-  // // Many to Many
-  // @ManyToMany((_type) => Bill, (bill) => bill.billRecipes, {
-  //   cascade: true,
-  // })
-  // @JoinTable()
-  // bills: Bill[];
 }

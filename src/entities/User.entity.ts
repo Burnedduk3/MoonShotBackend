@@ -15,7 +15,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import {Bill} from "@entities/Bill.entity";
 
 @ObjectType()
 @Entity()
@@ -93,10 +92,6 @@ export class User extends BaseEntity {
   @Field(() => [Restaurant], { nullable: true })
   @OneToMany(() => Restaurant, (restaurant) => restaurant.owner)
   restaurants: Restaurant[];
-
-  @Field(() => [Bill], { nullable: true })
-  @OneToMany(() => Bill, (bill) => bill.userOwner)
-  bills: Bill[];
 
   // Before insertion
   @BeforeInsert()
