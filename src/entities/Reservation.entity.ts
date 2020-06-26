@@ -5,9 +5,7 @@ import {
   BaseEntity,
   Column,
   CreateDateColumn,
-  Entity,
-  ManyToOne,
-  OneToMany,
+  Entity, ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -37,11 +35,11 @@ export class Reservation extends BaseEntity {
 
   // OneToMany
   @Field(() => Restaurant, { nullable: true })
-  @OneToMany(() => Restaurant, (restaurant) => restaurant.owner)
+  @ManyToOne(() => Restaurant, (restaurant) => restaurant.owner)
   restaurant: Restaurant;
 
   // ManyToOne
   @Field(() => User, { nullable: false })
-  @ManyToOne(() => User, (user) => user.restaurants)
+  @ManyToOne(() => User, (user) => user.reservations)
   owner: User;
 }

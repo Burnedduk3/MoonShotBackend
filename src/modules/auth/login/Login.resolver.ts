@@ -16,7 +16,7 @@ export class LoginResolver {
     try {
       const user = await User.findOne({ where: { username: data.username }, relations: ['role'] });
       if (!user) {
-        throw new Error('UserTypes not exist');
+        throw new Error('BusinessTypes not exist');
       }
 
       const passwordCandidate = await bcyrpt.hash(data.password, CONFIG_BCRYPT_SALT_ROUNDS);
@@ -74,7 +74,7 @@ export class LoginResolver {
   async checkCode(@Arg('data') { phone, code }: CheckCodeResoleverInputs): Promise<NewTokensResponse> {
     try {
       const user = await User.findOne({ phone }, { relations: ['role'] });
-      if (!user) throw new Error('UserTypes not exist');
+      if (!user) throw new Error('BusinessTypes not exist');
 
       if (user.confirmationCode !== code) throw new Error('Wrong verification code');
 

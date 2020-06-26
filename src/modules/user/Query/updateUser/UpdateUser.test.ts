@@ -1,4 +1,4 @@
-// import { UserTypes } from '@entities/UserTypes.entity';
+// import { BusinessTypes } from '@entities/BusinessTypes.entity';
 // import { gCall } from '@test/gCall';
 // import { testConn } from '@test/testCon';
 // import { jwtSign } from '@utils/jwt';
@@ -55,14 +55,14 @@
 //
 // describe('user/UpdateUser', () => {
 //   it('should return same user', async () => {
-//     let user = await UserTypes.findOne(
+//     let user = await BusinessTypes.findOne(
 //       {
 //         phone: fakeUser.phone,
 //       },
 //       { relations: ['role'] },
 //     );
 //     if (!user) {
-//       user = await UserTypes.create({
+//       user = await BusinessTypes.create({
 //         ...fakeUser,
 //       }).save();
 //     }
@@ -87,14 +87,14 @@
 //       role: 'lawyer',
 //     });
 //     if (accessToken === false) throw new Error('error creating token');
-//     let user = await UserTypes.findOne(
+//     let user = await BusinessTypes.findOne(
 //       {
 //         phone: fakeUser.phone,
 //       },
 //       { relations: ['role'] },
 //     );
 //     if (!user) {
-//       user = await UserTypes.create({
+//       user = await BusinessTypes.create({
 //         ...fakeUser,
 //       }).save();
 //     }
@@ -118,7 +118,7 @@
 //     expect(response.data.user.updateUser.user.secondLastname).toBe(updateFields.secondLastname);
 //   });
 //
-//   it('should failed Update user by wrong phone', async () => {
+//   it('should failed UpdateMenu user by wrong phone', async () => {
 //     const accessToken = await jwtSign({
 //       phone: 'wrongPhone',
 //       type: 'test',

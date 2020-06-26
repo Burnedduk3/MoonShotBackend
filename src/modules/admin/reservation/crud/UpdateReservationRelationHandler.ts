@@ -1,4 +1,4 @@
-import { Reservation } from "@entities/Reservation.entity"
+import { Reservation } from '@entities/Reservation.entity';
 import { Restaurant } from '@entities/Restaurant.entity';
 import { User } from '@entities/User.entity';
 import { AdminReservationCrudResponse } from '@modules/admin/reservation/crud/AdminReservationCrud.types';
@@ -32,7 +32,7 @@ export const UpdateReservationRelationsHandler = async (
 
     return {
       error: false,
-      data: reservation
+      data: reservation,
     };
   } catch (e) {
     if (e instanceof Error) {

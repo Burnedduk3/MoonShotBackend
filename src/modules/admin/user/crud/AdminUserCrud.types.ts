@@ -1,7 +1,7 @@
 import { User } from '@entities/User.entity';
 import { Field, ObjectType } from 'type-graphql';
 
-@ObjectType({ description: 'Admin UserTypes CRUD types response' })
+@ObjectType({ description: 'Admin BusinessTypes CRUD types response' })
 export class AdminUserCrudResponse {
   @Field()
   error: boolean;
@@ -11,7 +11,7 @@ export class AdminUserCrudResponse {
   data?: User;
 }
 
-@ObjectType({ description: 'admin UserTypes CRUD types response' })
+@ObjectType({ description: 'admin BusinessTypes CRUD types response' })
 export class AdminUserArrayCrudResponse {
   @Field()
   error: boolean;
@@ -21,7 +21,7 @@ export class AdminUserArrayCrudResponse {
   data?: User[];
 }
 
-@ObjectType({ description: 'admin UserTypes CRUD types' })
+@ObjectType({ description: 'admin BusinessTypes CRUD types' })
 export class AdminUserCrudTypes {
   @Field(() => AdminUserCrudResponse, { nullable: true })
   updateUser: AdminUserCrudResponse;

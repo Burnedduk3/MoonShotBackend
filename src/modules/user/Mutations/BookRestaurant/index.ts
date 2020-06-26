@@ -13,11 +13,19 @@ export const bookUpdate = async (
     if (!rest) throw new Error('Restaurant not Found');
 
     if (action === 'add') {
-      rest.capacity += data.bookSize;
+      if ((rest.capacity + data.bookSize) <= rest.maxCapacity) {
+        rest.capacity += data.bookSize;
+      } else {
+        throw new Error('Max capacity reached');
+      }
     }
 
     if (action === 'substraction') {
-      rest.capacity -= data.bookSize;
+      if ((rest.capacity - 1) >= 0) {
+        rest.capacity -= data.bookSize;
+      } else {
+        throw new Error('Capacity can not be below 0');
+      }
     }
 
     await getConnection()

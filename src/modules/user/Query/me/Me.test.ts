@@ -1,4 +1,4 @@
-// import { UserTypes } from '@entities/UserTypes.entity';
+// import { BusinessTypes } from '@entities/BusinessTypes.entity';
 // import { gCall } from '@test/gCall';
 // import { testConn } from '@test/testCon';
 // import { jwtSign } from '@utils/jwt';
@@ -30,11 +30,11 @@
 //   secondLastname: faker.name.lastName(),
 //   confirmed: true,
 // };
-// describe('user/UserResolver', () => {
+// describe('user/BusinessResolver', () => {
 //   it('should get userInformation', async () => {
-//     let user = await UserTypes.findOne({ phone: fakeUser.phone });
+//     let user = await BusinessTypes.findOne({ phone: fakeUser.phone });
 //     if (!user) {
-//       user = await UserTypes.create({ ...fakeUser }).save();
+//       user = await BusinessTypes.create({ ...fakeUser }).save();
 //     }
 //     const token = await jwtSign({
 //       phone: fakeUser.phone,

@@ -15,6 +15,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import {Reservation} from "@entities/Reservation.entity";
 
 @ObjectType()
 @Entity()
@@ -92,6 +93,11 @@ export class User extends BaseEntity {
   @Field(() => [Restaurant], { nullable: true })
   @OneToMany(() => Restaurant, (restaurant) => restaurant.owner)
   restaurants: Restaurant[];
+
+  // OneToMany
+  @Field(() => [Reservation], { nullable: true })
+  @OneToMany(() => Reservation, (reservation) => reservation.owner)
+  reservations: Reservation[];
 
   // Before insertion
   @BeforeInsert()

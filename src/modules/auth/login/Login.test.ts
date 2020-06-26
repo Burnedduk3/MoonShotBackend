@@ -129,7 +129,7 @@ describe('Auth/LoginResolver', () => {
       },
     });
     expect(response.data?.auth.login.loginWithPhone.error).toBe(true);
-    expect(response.data?.auth.login.loginWithPhone.message).toBe('UserTypes not exist');
+    expect(response.data?.auth.login.loginWithPhone.message).toBe('BusinessTypes not exist');
   });
 
   // Check code
@@ -172,7 +172,7 @@ describe('Auth/LoginResolver/checkCode', () => {
       },
     });
     expect(response.data?.auth.login.checkCode.error).toBe(true);
-    expect(response.data?.auth.login.checkCode.message).toBe('UserTypes not exist');
+    expect(response.data?.auth.login.checkCode.message).toBe('BusinessTypes not exist');
   });
   it('should not fail verification code', async () => {
     let adminRole = await UserRole.findOne({ name: 'lawyer' });

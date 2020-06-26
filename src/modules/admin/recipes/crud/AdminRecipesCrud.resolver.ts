@@ -2,13 +2,24 @@ import { Recipes } from '@entities/Recipes.entity';
 import { updateRecipesHandler } from '@modules/admin/recipes/crud/UpdateRecipesHandler';
 import { updateRecipesRelationsHandler } from '@modules/admin/recipes/crud/UpdateRecipesRelationsHandler';
 import { Arg, FieldResolver, Resolver } from 'type-graphql';
-import { AdminRecipesArrayCrudResponse, AdminRecipesCrudResponse, AdminRecipesCrudTypes } from './AdminRecipesCrud.types';
-import { CrudCreateRecipesInputs, CrudRecipesUpdateInput, CrudRecipesUpdateRelationsInputs } from './CrudRecipes.inputs';
+import {
+  AdminRecipesArrayCrudResponse,
+  AdminRecipesCrudResponse,
+  AdminRecipesCrudTypes,
+} from './AdminRecipesCrud.types';
+import {
+  CrudCreateRecipesInputs,
+  CrudRecipesUpdateInput,
+  CrudRecipesUpdateRelationsInputs,
+} from './CrudRecipes.inputs';
 
 @Resolver(() => AdminRecipesCrudTypes)
 export class AdminRecipesCrudResolver {
   @FieldResolver(/* istanbul ignore next */ () => AdminRecipesCrudTypes) // without args
-  async updateRecipes(@Arg('id') id: number, @Arg('data') data: CrudRecipesUpdateInput): Promise<AdminRecipesCrudResponse> {
+  async updateRecipes(
+    @Arg('id') id: number,
+    @Arg('data') data: CrudRecipesUpdateInput,
+  ): Promise<AdminRecipesCrudResponse> {
     return await updateRecipesHandler(id, data);
   }
 

@@ -111,6 +111,7 @@ export const boilerplateData = async () => {
       name: 'Andres',
       address: 'cra 4 # 123 - 54',
       phoneNumber: '5434632',
+      maxCapacity: 30,
     }).save();
     await getConnection().createQueryBuilder().relation(Restaurant, 'recipes').of(restaurantOne).add(recipe2);
     await getConnection().createQueryBuilder().relation(Restaurant, 'recipes').of(restaurantOne).add(recipe5);
@@ -122,6 +123,7 @@ export const boilerplateData = async () => {
       name: 'Crepes & Waffles',
       address: 'cra 4 # 123 - 54',
       phoneNumber: '5434632',
+      maxCapacity: 15,
     }).save();
     await getConnection().createQueryBuilder().relation(Restaurant, 'recipes').of(restaurantTwo).add(recipe1);
     await getConnection().createQueryBuilder().relation(Restaurant, 'recipes').of(restaurantTwo).add(recipe3);
@@ -133,6 +135,7 @@ export const boilerplateData = async () => {
       name: 'Kokoriko',
       address: 'cra 4 # 123 - 54',
       phoneNumber: '5434632',
+      maxCapacity: 10,
     }).save();
     await getConnection().createQueryBuilder().relation(Restaurant, 'recipes').of(restaurantThree).add(recipe4);
     await getConnection().createQueryBuilder().relation(Restaurant, 'recipes').of(restaurantThree).add(recipe6);
