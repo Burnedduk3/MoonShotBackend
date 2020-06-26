@@ -1,4 +1,5 @@
 import { Recipes } from '@entities/Recipes.entity';
+import { Reservation } from '@entities/Reservation.entity';
 import { Restaurant } from '@entities/Restaurant.entity';
 import { User } from '@entities/User.entity';
 import { AdminRestaurantCrudResponse } from '@modules/admin/restaurants/crud/AdminRestaurantCrud.types';
@@ -12,7 +13,7 @@ export const updateRestaurantRelationsHandler = async (
 ): Promise<AdminRestaurantCrudResponse> => {
   try {
     const restaurant = await Restaurant.findOne(id, {
-      relations: ['owner', 'recipes'],
+      relations: ['owner', 'recipes', 'reservations'],
     });
 
     if (!restaurant) throw new Error('Restaurant not found');
@@ -24,6 +25,13 @@ export const updateRestaurantRelationsHandler = async (
         await getConnection().createQueryBuilder().relation(Restaurant, 'recipes').of(restaurant).add(recipe);
         restaurant.recipes.push(recipe);
       }
+
+      if (data.reservationId) {
+        const reservation = await Reservation.findOne(data.reservationId);
+        if (!reservation) throw new Error('recipe not Found');
+        await getConnection().createQueryBuilder().relation(Restaurant, 'reservations').of(restaurant).add(reservation);
+        restaurant.reservations.push(reservation);
+      }
     }
 
     if (action === 'delete') {
@@ -33,6 +41,18 @@ export const updateRestaurantRelationsHandler = async (
         await getConnection().createQueryBuilder().relation(Restaurant, 'restaurants').of(restaurant).remove(recipe);
         const indexToDelete = restaurant.recipes.indexOf(recipe);
         restaurant.recipes.splice(indexToDelete, 1);
+      }
+
+      if (data.reservationId) {
+        const reservation = await Reservation.findOne(data.reservationId);
+        if (!reservation) throw new Error('recipe not Found');
+        await getConnection()
+          .createQueryBuilder()
+          .relation(Restaurant, 'reservations')
+          .of(restaurant)
+          .remove(reservation);
+        const indexToDelete = restaurant.reservations.indexOf(reservation);
+        restaurant.reservations.splice(indexToDelete, 1);
       }
     }
 

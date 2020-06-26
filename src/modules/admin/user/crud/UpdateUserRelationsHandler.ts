@@ -1,3 +1,4 @@
+import { Reservation } from '@entities/Reservation.entity';
 import { Restaurant } from '@entities/Restaurant.entity';
 import { User } from '@entities/User.entity';
 import { UserRole } from '@entities/UserRole.entity';
@@ -12,7 +13,7 @@ export const updateUserRelationsHandler = async (
 ): Promise<AdminUserCrudResponse> => {
   try {
     const user = await User.findOne(id, {
-      relations: ['role', 'restaurants'],
+      relations: ['role', 'restaurants', 'reservations'],
     });
 
     if (!user) throw new Error('Restaurant not found');
@@ -24,6 +25,13 @@ export const updateUserRelationsHandler = async (
         await getConnection().createQueryBuilder().relation(User, 'restaurants').of(user).add(restaurant);
         user.restaurants.push(restaurant);
       }
+
+      if (data.reservationId) {
+        const reservation = await Reservation.findOne(data.reservationId);
+        if (!reservation) throw new Error('recipe not Found');
+        await getConnection().createQueryBuilder().relation(User, 'reservations').of(user).add(reservation);
+        user.reservations.push(reservation);
+      }
     }
 
     if (action === 'delete') {
@@ -33,6 +41,14 @@ export const updateUserRelationsHandler = async (
         await getConnection().createQueryBuilder().relation(User, 'restaurants').of(user).remove(restaurant);
         const indexToDelete = user.restaurants.indexOf(restaurant);
         user.restaurants.splice(indexToDelete, 1);
+      }
+
+      if (data.reservationId) {
+        const reservation = await Reservation.findOne(data.reservationId);
+        if (!reservation) throw new Error('recipe not Found');
+        await getConnection().createQueryBuilder().relation(User, 'reservations').of(user).remove(user);
+        const indexToDelete = user.reservations.indexOf(reservation);
+        user.reservations.splice(indexToDelete, 1);
       }
     }
 
