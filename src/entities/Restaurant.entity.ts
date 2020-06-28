@@ -1,7 +1,9 @@
+import { Reservation } from '@entities/Reservation.entity';
 import { User } from '@entities/User.entity';
 import { Field, ID, ObjectType } from 'type-graphql';
 import {
   BaseEntity,
+  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
@@ -10,8 +12,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import * as uniqid from 'uniqid';
 import { Recipes } from './Recipes.entity';
-import {Bill} from "@entities/Bill.entity";
 
 @ObjectType()
 @Entity()
@@ -23,6 +25,10 @@ export class Restaurant extends BaseEntity {
   id: number;
 
   @Field()
+  @Column({ nullable: false, unique: true })
+  restaurantIdentifier: string;
+
+  @Field()
   @Column({ nullable: false })
   name: string;
 
@@ -31,8 +37,16 @@ export class Restaurant extends BaseEntity {
   address: string;
 
   @Field()
-  @Column({ nullable: false })
+  @Column({ nullable: false, default: '' })
   phoneNumber: string;
+
+  @Field()
+  @Column({ nullable: false, default: 0 })
+  capacity: number;
+
+  @Field()
+  @Column({ nullable: false, default: 0 })
+  maxCapacity: number;
 
   @Field()
   @UpdateDateColumn({ type: 'timestamp' })
@@ -55,7 +69,14 @@ export class Restaurant extends BaseEntity {
   recipes: Recipes[];
 
   // OneToMany
-  @Field(() => [Bill], { nullable: true })
-  @OneToMany(() => Bill, (bill) => bill.restaurant)
-  bills: Bill[];
+  @Field(() => [Reservation], { nullable: true })
+  @OneToMany(() => Reservation, (reservations) => reservations.restaurant)
+  reservations: Reservation[];
+
+  // Before insertion
+  @BeforeInsert()
+  async assignId() {
+    const randomNum = Math.floor(Math.random() * 1000);
+    this.restaurantIdentifier = uniqid.process('rest', randomNum.toString());
+  }
 }

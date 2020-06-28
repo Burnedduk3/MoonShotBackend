@@ -1,5 +1,5 @@
-import { Bill } from '@entities/Bill.entity';
 import { Recipes } from '@entities/Recipes.entity';
+import { Reservation } from '@entities/Reservation.entity';
 import { Restaurant } from '@entities/Restaurant.entity';
 import { User } from '@entities/User.entity';
 import { AdminRestaurantCrudResponse } from '@modules/admin/restaurants/crud/AdminRestaurantCrud.types';
@@ -13,7 +13,7 @@ export const updateRestaurantRelationsHandler = async (
 ): Promise<AdminRestaurantCrudResponse> => {
   try {
     const restaurant = await Restaurant.findOne(id, {
-      relations: ['owner', 'recipes'],
+      relations: ['owner', 'recipes', 'reservations'],
     });
 
     if (!restaurant) throw new Error('Restaurant not found');
@@ -26,11 +26,11 @@ export const updateRestaurantRelationsHandler = async (
         restaurant.recipes.push(recipe);
       }
 
-      if (data.billId) {
-        const bill = await Bill.findOne(data.billId);
-        if (!bill) throw new Error('bill not Found');
-        await getConnection().createQueryBuilder().relation(Restaurant, 'bills').of(restaurant).add(bill);
-        restaurant.bills.push(bill);
+      if (data.reservationId) {
+        const reservation = await Reservation.findOne(data.reservationId);
+        if (!reservation) throw new Error('recipe not Found');
+        await getConnection().createQueryBuilder().relation(Restaurant, 'reservations').of(restaurant).add(reservation);
+        restaurant.reservations.push(reservation);
       }
     }
 
@@ -39,16 +39,34 @@ export const updateRestaurantRelationsHandler = async (
         const recipe = await Recipes.findOne(data.recipeId);
         if (!recipe) throw new Error('recipe not Found');
         await getConnection().createQueryBuilder().relation(Restaurant, 'restaurants').of(restaurant).remove(recipe);
-        const indexToDelete = restaurant.recipes.indexOf(recipe);
-        restaurant.recipes.splice(indexToDelete, 1);
+        const indexToDelete = restaurant.recipes.findIndex((element: Recipes) => {
+          if (element.recipeIdentifier === recipe.recipeIdentifier){
+            return true;
+          }
+          return false;
+        });
+        if(indexToDelete !== -1){
+          restaurant.recipes.splice(indexToDelete, 1);
+        }
       }
 
-      if (data.billId) {
-        const bill = await Bill.findOne(data.billId);
-        if (!bill) throw new Error('bill not Found');
-        await getConnection().createQueryBuilder().relation(Restaurant, 'bills').of(restaurant).remove(bill);
-        const indexToDelete = restaurant.bills.indexOf(bill);
-        restaurant.bills.splice(indexToDelete, 1);
+      if (data.reservationId) {
+        const reservation = await Reservation.findOne(data.reservationId);
+        if (!reservation) throw new Error('recipe not Found');
+        await getConnection()
+          .createQueryBuilder()
+          .relation(Restaurant, 'reservations')
+          .of(restaurant)
+          .remove(reservation);
+        const indexToDelete = restaurant.reservations.findIndex((element: Reservation) => {
+          if (element.reservationIdentifier === reservation.reservationIdentifier){
+            return true;
+          }
+          return false;
+        });
+        if(indexToDelete !== -1) {
+          restaurant.reservations.splice(indexToDelete, 1);
+        }
       }
     }
 
@@ -73,7 +91,7 @@ export const updateRestaurantRelationsHandler = async (
     /* istanbul ignore next */
     return {
       error: true,
-      message: 'Error updateBillRelationsHandler',
+      message: 'Error updateReservationRelationHandler',
     };
   }
 };

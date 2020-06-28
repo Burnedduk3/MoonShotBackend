@@ -1,12 +1,12 @@
 import { Context } from '@interfaces/Context.types';
 import { MiddlewareFn } from 'type-graphql';
 
-export const isUser: MiddlewareFn<Context> = async ({ context }, next) => {
+export const isBusiness: MiddlewareFn<Context> = async ({ context }, next) => {
   if (!context.payload) {
-    throw new Error('not user');
+    throw new Error('not business');
   }
   if (context.payload.role !== 'business') {
-    throw new Error('not user');
+    throw new Error('not business');
   }
   return next();
 };

@@ -78,6 +78,6 @@ describe('Auth/RegisterResolver', () => {
       },
     });
     expect(response.data?.auth.register.registerWithPhone.error).toBe(true);
-    expect(response.data?.auth.register.registerWithPhone.message).toBe('User already exist');
+    expect(response.data?.auth.register.registerWithPhone.message).toBe('BusinessTypes already exist');
   });
 });
