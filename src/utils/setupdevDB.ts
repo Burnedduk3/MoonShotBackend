@@ -1,5 +1,6 @@
 import { getDBConfig } from '@config/database';
 import { Recipes } from '@entities/Recipes.entity';
+import { Reservation } from '@entities/Reservation.entity';
 import { Restaurant } from '@entities/Restaurant.entity';
 import { User } from '@entities/User.entity';
 import { UserRole } from '@entities/UserRole.entity';
@@ -111,6 +112,7 @@ export const boilerplateData = async () => {
       name: 'Andres',
       address: 'cra 4 # 123 - 54',
       phoneNumber: '5434632',
+      maxCapacity: 30,
     }).save();
     await getConnection().createQueryBuilder().relation(Restaurant, 'recipes').of(restaurantOne).add(recipe2);
     await getConnection().createQueryBuilder().relation(Restaurant, 'recipes').of(restaurantOne).add(recipe5);
@@ -122,6 +124,7 @@ export const boilerplateData = async () => {
       name: 'Crepes & Waffles',
       address: 'cra 4 # 123 - 54',
       phoneNumber: '5434632',
+      maxCapacity: 15,
     }).save();
     await getConnection().createQueryBuilder().relation(Restaurant, 'recipes').of(restaurantTwo).add(recipe1);
     await getConnection().createQueryBuilder().relation(Restaurant, 'recipes').of(restaurantTwo).add(recipe3);
@@ -133,6 +136,7 @@ export const boilerplateData = async () => {
       name: 'Kokoriko',
       address: 'cra 4 # 123 - 54',
       phoneNumber: '5434632',
+      maxCapacity: 10,
     }).save();
     await getConnection().createQueryBuilder().relation(Restaurant, 'recipes').of(restaurantThree).add(recipe4);
     await getConnection().createQueryBuilder().relation(Restaurant, 'recipes').of(restaurantThree).add(recipe6);
@@ -199,4 +203,39 @@ export const boilerplateData = async () => {
     }).save();
     await getConnection().createQueryBuilder().relation(User, 'role').of(userFour).set(adminRole);
   }
+
+  // Reservations
+
+  const reservations = await Reservation.find();
+  if (reservations !== []) {
+    let date = new Date();
+    let reservation1 = await Reservation.create({
+      peopleQuantities: 2,
+      reservationTime: date.toISOString().slice(0, 19).replace('T', ' '),
+    }).save();
+    await getConnection().createQueryBuilder().relation(User, 'reservations').of(userTwo).add(reservation1);
+    await getConnection().createQueryBuilder().relation(Restaurant, 'reservations').of(restaurantOne).add(reservation1);
+    await sleep(500);
+    date = new Date();
+    let reservation2 = await Reservation.create({
+      peopleQuantities: 12,
+      reservationTime:  date.toISOString().slice(0, 19).replace('T', ' '),
+    }).save();
+    await getConnection().createQueryBuilder().relation(User, 'reservations').of(userTwo).add(reservation2);
+    await getConnection().createQueryBuilder().relation(Restaurant, 'reservations').of(restaurantThree).add(reservation2);
+    await sleep(500);
+    date = new Date();
+    let reservation3 = await Reservation.create({
+      peopleQuantities: 23,
+      reservationTime: date.toISOString().slice(0, 19).replace('T', ' '),
+    }).save();
+    await getConnection().createQueryBuilder().relation(User, 'reservations').of(userTwo).add(reservation3);
+    await getConnection().createQueryBuilder().relation(Restaurant, 'reservations').of(restaurantTwo).add(reservation3);
+  }
 };
+
+function sleep(ms:number) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}

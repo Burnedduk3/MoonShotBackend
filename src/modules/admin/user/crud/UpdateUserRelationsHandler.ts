@@ -1,4 +1,4 @@
-import { Bill } from '@entities/Bill.entity';
+import { Reservation } from '@entities/Reservation.entity';
 import { Restaurant } from '@entities/Restaurant.entity';
 import { User } from '@entities/User.entity';
 import { UserRole } from '@entities/UserRole.entity';
@@ -13,7 +13,7 @@ export const updateUserRelationsHandler = async (
 ): Promise<AdminUserCrudResponse> => {
   try {
     const user = await User.findOne(id, {
-      relations: ['role', 'restaurants'],
+      relations: ['role', 'restaurants', 'reservations'],
     });
 
     if (!user) throw new Error('Restaurant not found');
@@ -26,11 +26,11 @@ export const updateUserRelationsHandler = async (
         user.restaurants.push(restaurant);
       }
 
-      if (data.billId) {
-        const bill = await Bill.findOne(data.billId);
-        if (!bill) throw new Error('recipe not Found');
-        await getConnection().createQueryBuilder().relation(User, 'bills').of(user).add(bill);
-        user.bills.push(bill);
+      if (data.reservationId) {
+        const reservation = await Reservation.findOne(data.reservationId);
+        if (!reservation) throw new Error('recipe not Found');
+        await getConnection().createQueryBuilder().relation(User, 'reservations').of(user).add(reservation);
+        user.reservations.push(reservation);
       }
     }
 
@@ -39,16 +39,30 @@ export const updateUserRelationsHandler = async (
         const restaurant = await Restaurant.findOne(data.restaurantId);
         if (!restaurant) throw new Error('recipe not Found');
         await getConnection().createQueryBuilder().relation(User, 'restaurants').of(user).remove(restaurant);
-        const indexToDelete = user.restaurants.indexOf(restaurant);
-        user.restaurants.splice(indexToDelete, 1);
+        const indexToDelete = user.restaurants.findIndex((element: Restaurant) => {
+          if (element.restaurantIdentifier === restaurant.restaurantIdentifier) {
+            return true;
+          }
+          return false;
+        });
+        if (indexToDelete !== -1) {
+          user.restaurants.splice(indexToDelete, 1);
+        }
       }
 
-      if (data.billId) {
-        const bill = await Bill.findOne(data.billId);
-        if (!bill) throw new Error('recipe not Found');
-        await getConnection().createQueryBuilder().relation(User, 'bills').of(user).add(bill);
-        const indexToDelete = user.bills.indexOf(bill);
-        user.bills.splice(indexToDelete, 1);
+      if (data.reservationId) {
+        const reservation = await Reservation.findOne(data.reservationId);
+        if (!reservation) throw new Error('recipe not Found');
+        await getConnection().createQueryBuilder().relation(User, 'reservations').of(user).remove(user);
+        const indexToDelete = user.reservations.findIndex((element: Reservation) => {
+          if (element.reservationIdentifier === reservation.reservationIdentifier) {
+            return true;
+          }
+          return false;
+        });
+        if (indexToDelete !== -1) {
+          user.reservations.splice(indexToDelete, 1);
+        }
       }
     }
 

@@ -1,4 +1,4 @@
-// import { User } from '@entities/User.entity';
+// import { BusinessTypes } from '@entities/BusinessTypes.entity';
 // import { UserRole } from '@entities/UserRole.entity';
 // import { gCall } from '@test/gCall';
 // import { testConn } from '@test/testCon';
@@ -81,10 +81,10 @@
 //   confirmationCode: 123123,
 // };
 //
-// describe('Update user Role Relations', () => {
+// describe('UpdateMenu user Role Relations', () => {
 //   it('Should update user Role Relations', async () => {
 //     let userRole: UserRole | undefined = await UserRole.create({ name: faker.name.firstName() }).save();
-//     const user = await User.create({ ...fakeUser }).save();
+//     const user = await BusinessTypes.create({ ...fakeUser }).save();
 //     const response = await gCall({
 //       source: query,
 //       variableValues: {
@@ -104,7 +104,7 @@
 //   });
 //
 //   it('Should NOT update user role', async () => {
-//     const user = await User.create({ ...fakeUser2 }).save();
+//     const user = await BusinessTypes.create({ ...fakeUser2 }).save();
 //     const response = await gCall({
 //       source: query,
 //       variableValues: {
@@ -119,7 +119,7 @@
 //
 //   it('Should Delete user Role Relations', async () => {
 //     const userRole: UserRole = await UserRole.create({ name: faker.name.firstName() }).save();
-//     const user = await User.create({ ...fakeUser3 }).save();
+//     const user = await BusinessTypes.create({ ...fakeUser3 }).save();
 //     await getConnection().createQueryBuilder().relation(UserRole, 'users').of(userRole).add(user);
 //     const response = await gCall({
 //       source: query,
@@ -136,7 +136,7 @@
 //
 //   it('Should Not Delete user Role Relations', async () => {
 //     const userRole: UserRole = await UserRole.create({ name: faker.name.firstName() }).save();
-//     const user = await User.create({ ...fakeUser4 }).save();
+//     const user = await BusinessTypes.create({ ...fakeUser4 }).save();
 //     await getConnection().createQueryBuilder().relation(UserRole, 'users').of(userRole).add(user);
 //     const response = await gCall({
 //       source: query,

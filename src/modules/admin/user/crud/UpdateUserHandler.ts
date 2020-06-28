@@ -17,7 +17,7 @@ export const updateUserHandler = async (
 
     const user = await User.findOne(id);
 
-    if (!user) throw new Error('User not found');
+    if (!user) throw new Error('BusinessTypes not found');
 
     return {
       error: false,

@@ -30,7 +30,7 @@ export class CrudUserUpdateRelationsInputs {
   restaurantId?: number;
 
   @Field({ nullable: true })
-  billId?: number;
+  reservationId?: number;
 }
 
 @InputType()

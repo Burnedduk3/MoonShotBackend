@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
 import logger from './utils/logger';
+import {createServer} from "http";
 
 export const server = express();
 export const runServer = async () => {
@@ -24,11 +25,15 @@ export const runServer = async () => {
       return error;
     },
   });
+
+  const httpServer = createServer(server);
+
+  apolloServer.installSubscriptionHandlers(httpServer)
   server.use(cookieParser());
   server.use(cors());
   server.get('/', (_req, res) => res.send('Hello From MoonShot Server'));
   apolloServer.applyMiddleware({ app: server });
-  server.listen(CONFIG_SERVER_PORT, () => {
+  httpServer.listen(CONFIG_SERVER_PORT, () => {
     logger.info(`Server Started at ${CONFIG_SERVER_PORT}`);
   });
 };
