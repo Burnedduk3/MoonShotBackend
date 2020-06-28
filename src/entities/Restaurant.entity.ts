@@ -70,7 +70,7 @@ export class Restaurant extends BaseEntity {
 
   // OneToMany
   @Field(() => [Reservation], { nullable: true })
-  @ManyToOne(() => Reservation, (reservations) => reservations.restaurant)
+  @OneToMany(() => Reservation, (reservations) => reservations.restaurant)
   reservations: Reservation[];
 
   // Before insertion

@@ -30,8 +30,15 @@ export const updateUserRoleRelationsHandler = async (
         const user = await User.findOne(data.user);
         if (!user) throw new Error('user not Found');
         await getConnection().createQueryBuilder().relation(UserRole, 'users').of(userRole).remove(user);
-        const indexToDelete = userRole.users.indexOf(user);
-        userRole.users.splice(indexToDelete, 1);
+        const indexToDelete = userRole.users.findIndex((element: User) => {
+          if (element.username === user.username) {
+            return true;
+          }
+          return false;
+        });
+        if (indexToDelete !== -1) {
+          userRole.users.splice(indexToDelete, 1);
+        }
       }
     }
 

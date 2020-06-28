@@ -69,6 +69,6 @@ export class IUpdateMenu {
   @Field({ nullable: false })
   recipeCategory: string;
 
-  @Field()
+  @Field({ nullable: true })
   recipeIdentifier?: string;
 }

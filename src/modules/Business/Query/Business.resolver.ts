@@ -5,8 +5,9 @@ import {
 import { IGetMyRestaurantInput, IGetRestaurantRecipesInput } from '@modules/Business/Query/Business.inputs';
 import { getMyRestaurants } from '@modules/Business/Query/GetMyRestaurants';
 import { Arg, FieldResolver, Query, Resolver } from 'type-graphql';
-import { BusinessQueryTypes } from './Business.types';
+import { BusinessQueryTypes, ReservationsRestaurantBusinessResponse } from './Business.types';
 import { getRestaurantRecipes } from './GetRestaurantRecipes';
+import { getRestaurantReservations } from './GetRestaurantReservations/index';
 
 @Resolver(() => BusinessQueryTypes)
 export class BusinessResolver {
@@ -25,5 +26,12 @@ export class BusinessResolver {
     @Arg('data') data: IGetRestaurantRecipesInput,
   ): Promise<RestaurantRecipesArrayBusinessResponse> {
     return await getRestaurantRecipes(data);
+  }
+
+  @FieldResolver(() => ReservationsRestaurantBusinessResponse)
+  async getRestaurantReservations(
+    @Arg('data') data: IGetRestaurantRecipesInput,
+  ): Promise<ReservationsRestaurantBusinessResponse> {
+    return await getRestaurantReservations(data);
   }
 }

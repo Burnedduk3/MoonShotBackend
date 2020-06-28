@@ -34,6 +34,7 @@ export const UpdateMenu = async (
       if (!deleteRecipe) throw new Error('Not recipe found');
 
       await getConnection().createQueryBuilder().relation(Restaurant, 'recipes').of(rest).remove(deleteRecipe);
+      await Recipes.remove(deleteRecipe);
       const indexToDelete = rest.recipes.findIndex((element: Recipes) => {
         if (element.recipeIdentifier === deleteRecipe.recipeIdentifier){
           return true;

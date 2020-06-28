@@ -39,16 +39,30 @@ export const updateUserRelationsHandler = async (
         const restaurant = await Restaurant.findOne(data.restaurantId);
         if (!restaurant) throw new Error('recipe not Found');
         await getConnection().createQueryBuilder().relation(User, 'restaurants').of(user).remove(restaurant);
-        const indexToDelete = user.restaurants.indexOf(restaurant);
-        user.restaurants.splice(indexToDelete, 1);
+        const indexToDelete = user.restaurants.findIndex((element: Restaurant) => {
+          if (element.restaurantIdentifier === restaurant.restaurantIdentifier) {
+            return true;
+          }
+          return false;
+        });
+        if (indexToDelete !== -1) {
+          user.restaurants.splice(indexToDelete, 1);
+        }
       }
 
       if (data.reservationId) {
         const reservation = await Reservation.findOne(data.reservationId);
         if (!reservation) throw new Error('recipe not Found');
         await getConnection().createQueryBuilder().relation(User, 'reservations').of(user).remove(user);
-        const indexToDelete = user.reservations.indexOf(reservation);
-        user.reservations.splice(indexToDelete, 1);
+        const indexToDelete = user.reservations.findIndex((element: Reservation) => {
+          if (element.reservationIdentifier === reservation.reservationIdentifier) {
+            return true;
+          }
+          return false;
+        });
+        if (indexToDelete !== -1) {
+          user.reservations.splice(indexToDelete, 1);
+        }
       }
     }
 
