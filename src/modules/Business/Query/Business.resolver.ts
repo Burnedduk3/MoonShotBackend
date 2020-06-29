@@ -1,10 +1,12 @@
+import { isAuth } from '@middlewares/isAuth';
+import { isBusiness } from '@middlewares/isBusiness';
 import {
   GeneralRestaurantArrayBusinessResponse,
   RestaurantRecipesArrayBusinessResponse,
 } from '@modules/Business/Mutations/Business.types';
 import { IGetMyRestaurantInput, IGetRestaurantRecipesInput } from '@modules/Business/Query/Business.inputs';
 import { getMyRestaurants } from '@modules/Business/Query/GetMyRestaurants';
-import { Arg, FieldResolver, Query, Resolver } from 'type-graphql';
+import { Arg, FieldResolver, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { BusinessQueryTypes, ReservationsRestaurantBusinessResponse } from './Business.types';
 import { getRestaurantRecipes } from './GetRestaurantRecipes';
 import { getRestaurantReservations } from './GetRestaurantReservations/index';
@@ -12,6 +14,7 @@ import { getRestaurantReservations } from './GetRestaurantReservations/index';
 @Resolver(() => BusinessQueryTypes)
 export class BusinessResolver {
   @Query(() => BusinessQueryTypes)
+  @UseMiddleware([isAuth, isBusiness])
   Business(): BusinessQueryTypes {
     return new BusinessQueryTypes();
   }

@@ -1,6 +1,5 @@
 import { getDBConfig } from '@config/database';
 import { Recipes } from '@entities/Recipes.entity';
-import { Reservation } from '@entities/Reservation.entity';
 import { Restaurant } from '@entities/Restaurant.entity';
 import { User } from '@entities/User.entity';
 import { UserRole } from '@entities/UserRole.entity';
@@ -204,38 +203,38 @@ export const boilerplateData = async () => {
     await getConnection().createQueryBuilder().relation(User, 'role').of(userFour).set(adminRole);
   }
 
-  // Reservations
-
-  const reservations = await Reservation.find();
-  if (reservations !== []) {
-    let date = new Date();
-    let reservation1 = await Reservation.create({
-      peopleQuantities: 2,
-      reservationTime: date.toISOString().slice(0, 19).replace('T', ' '),
-    }).save();
-    await getConnection().createQueryBuilder().relation(User, 'reservations').of(userTwo).add(reservation1);
-    await getConnection().createQueryBuilder().relation(Restaurant, 'reservations').of(restaurantOne).add(reservation1);
-    await sleep(500);
-    date = new Date();
-    let reservation2 = await Reservation.create({
-      peopleQuantities: 12,
-      reservationTime:  date.toISOString().slice(0, 19).replace('T', ' '),
-    }).save();
-    await getConnection().createQueryBuilder().relation(User, 'reservations').of(userTwo).add(reservation2);
-    await getConnection().createQueryBuilder().relation(Restaurant, 'reservations').of(restaurantThree).add(reservation2);
-    await sleep(500);
-    date = new Date();
-    let reservation3 = await Reservation.create({
-      peopleQuantities: 23,
-      reservationTime: date.toISOString().slice(0, 19).replace('T', ' '),
-    }).save();
-    await getConnection().createQueryBuilder().relation(User, 'reservations').of(userTwo).add(reservation3);
-    await getConnection().createQueryBuilder().relation(Restaurant, 'reservations').of(restaurantTwo).add(reservation3);
-  }
+  //   // Reservations
+  //
+  //   const reservations = await Reservation.find();
+  //   if (reservations !== []) {
+  //     let date = new Date();
+  //     let reservation1 = await Reservation.create({
+  //       peopleQuantities: 2,
+  //       reservationTime: date.toISOString().slice(0, 19).replace('T', ' '),
+  //     }).save();
+  //     await getConnection().createQueryBuilder().relation(User, 'reservations').of(userTwo).add(reservation1);
+  //     await getConnection().createQueryBuilder().relation(Restaurant, 'reservations').of(restaurantOne).add(reservation1);
+  //     await sleep(500);
+  //     date = new Date();
+  //     let reservation2 = await Reservation.create({
+  //       peopleQuantities: 12,
+  //       reservationTime:  date.toISOString().slice(0, 19).replace('T', ' '),
+  //     }).save();
+  //     await getConnection().createQueryBuilder().relation(User, 'reservations').of(userTwo).add(reservation2);
+  //     await getConnection().createQueryBuilder().relation(Restaurant, 'reservations').of(restaurantThree).add(reservation2);
+  //     await sleep(500);
+  //     date = new Date();
+  //     let reservation3 = await Reservation.create({
+  //       peopleQuantities: 23,
+  //       reservationTime: date.toISOString().slice(0, 19).replace('T', ' '),
+  //     }).save();
+  //     await getConnection().createQueryBuilder().relation(User, 'reservations').of(userTwo).add(reservation3);
+  //     await getConnection().createQueryBuilder().relation(Restaurant, 'reservations').of(restaurantTwo).add(reservation3);
+  //   }
+  // };
+  //
+  // function sleep(ms:number) {
+  //   return new Promise((resolve) => {
+  //     setTimeout(resolve, ms);
+  //   });
 };
-
-function sleep(ms:number) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-}
