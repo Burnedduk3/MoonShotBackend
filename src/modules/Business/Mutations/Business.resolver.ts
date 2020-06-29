@@ -1,4 +1,6 @@
 import { Restaurant } from '@entities/Restaurant.entity';
+import { isAuth } from '@middlewares/isAuth';
+import { isBusiness } from '@middlewares/isBusiness';
 import {
   ICreateRestaurant,
   IUpdateMenu,
@@ -16,12 +18,22 @@ import { updateCapacity } from '@modules/Business/Mutations/UpdateCapacity';
 import { UpdateMenu } from '@modules/Business/Mutations/UpdateMenu';
 import { UpdateRecipe } from '@modules/Business/Mutations/UpdateRecipe';
 import { UpdateRestaurantInfo } from '@modules/Business/Mutations/UpdateRestaurant';
-import { Arg, FieldResolver, Mutation, Publisher, PubSub, Resolver, Root, Subscription } from 'type-graphql';
+import {
+  Arg,
+  FieldResolver,
+  Mutation,
+  Publisher,
+  PubSub,
+  Resolver,
+  Root,
+  Subscription,
+  UseMiddleware,
+} from 'type-graphql';
 
 @Resolver(() => BusinessTypes)
 export class BusinessResolver {
   @Mutation(() => BusinessTypes)
-  // @UseMiddleware([isAuth, isBusiness])
+  @UseMiddleware([isAuth, isBusiness])
   business(): BusinessTypes {
     return new BusinessTypes();
   }

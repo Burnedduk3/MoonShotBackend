@@ -1,3 +1,4 @@
+import { Reservation } from '@entities/Reservation.entity';
 import { User } from '@entities/User.entity';
 import { Field, ObjectType } from 'type-graphql';
 
@@ -13,6 +14,30 @@ export class UpdateUserResponse {
   message?: string;
 }
 
+@ObjectType({ description: 'user reservation response' })
+export class IUserReservationResponse {
+  @Field()
+  error: boolean;
+
+  @Field({ nullable: true })
+  data?: Reservation;
+
+  @Field({ nullable: true })
+  message?: string;
+}
+
+@ObjectType({ description: 'user reservations response' })
+export class IUserReservationArrayResponse {
+  @Field()
+  error: boolean;
+
+  @Field(() => [Reservation],{ nullable: true })
+  data?: Reservation[];
+
+  @Field({ nullable: true })
+  message?: string;
+}
+
 @ObjectType({ description: 'UserResovers' })
 export class UserTypes {
   @Field({ nullable: true })
@@ -20,4 +45,10 @@ export class UserTypes {
 
   @Field()
   updateUser: UpdateUserResponse;
+
+  @Field()
+  getAllReservation: IUserReservationArrayResponse;
+
+  @Field()
+  getReservationById: IUserReservationResponse;
 }
