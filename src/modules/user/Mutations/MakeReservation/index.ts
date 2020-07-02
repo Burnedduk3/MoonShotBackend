@@ -7,17 +7,46 @@ import { getConnection } from 'typeorm';
 
 export const bookUpdate = async (data: IUpdateRestaurantUserCapacity): Promise<UserReservationResponse> => {
   try {
+    const connection = getConnection();
     const rest = await Restaurant.findOne({ where: { restaurantIdentifier: data.restauranId } });
     const user = await User.findOne({ where: { username: data.username } });
 
     if (!rest) throw new Error('Restaurant not Found');
     if (!user) throw new Error('User not Found');
 
-    // if (rest.capacity + data.bookSize <= rest.maxCapacity) {
-    //   rest.capacity += data.bookSize;
-    // } else {
-    //   throw new Error('Max capacity reached');
-    // }
+    const minimumHour = new Date(data.date);
+    minimumHour.setHours(minimumHour.getHours() - 5);
+    minimumHour.setSeconds(0);
+    minimumHour.setMinutes(0);
+    minimumHour.setMilliseconds(0);
+
+    const maximumHour = new Date(data.date);
+    maximumHour.setHours(maximumHour.getHours() + 1 - 5);
+    maximumHour.setSeconds(0);
+    maximumHour.setMinutes(0);
+    maximumHour.setMilliseconds(0);
+
+    const reservations = await connection
+      .getRepository(Reservation)
+      .createQueryBuilder('reservations')
+      .leftJoinAndSelect('reservations.restaurant', 'restaurant')
+      .where('reservations.reservationTime between :minimum AND :maximum', {
+        minimum: minimumHour.toISOString().slice(0, 19).replace('T', ' '),
+        maximum: maximumHour.toISOString().slice(0, 19).replace('T', ' '),
+      })
+      .andWhere('restaurant.restaurantIdentifier = :restaurantId', { restaurantId: data.restauranId })
+      .getMany();
+
+    let hourOcupacy = 0;
+    reservations.map((item) => {
+      hourOcupacy += item.peopleQuantities;
+    });
+
+    if (hourOcupacy + data.bookSize <= rest.maxCapacity) {
+      rest.capacity += data.bookSize;
+    } else {
+      throw new Error('Max capacity reached');
+    }
 
     const reservation = await Reservation.create({
       peopleQuantities: data.bookSize,
@@ -26,17 +55,12 @@ export const bookUpdate = async (data: IUpdateRestaurantUserCapacity): Promise<U
 
     if (!reservation) throw new Error('Could not create reservation');
 
-    await getConnection().createQueryBuilder().relation(Reservation, 'restaurant').of(reservation).set(rest);
-    await getConnection().createQueryBuilder().relation(Reservation, 'owner').of(reservation).set(user);
+    await connection.createQueryBuilder().relation(Reservation, 'restaurant').of(reservation).set(rest);
+    await connection.createQueryBuilder().relation(Reservation, 'owner').of(reservation).set(user);
     reservation.restaurant = rest;
     reservation.owner = user;
 
-    await getConnection()
-      .createQueryBuilder()
-      .update(Restaurant)
-      .set(rest)
-      .where('id = :id', { id: rest.id })
-      .execute();
+    await connection.createQueryBuilder().update(Restaurant).set(rest).where('id = :id', { id: rest.id }).execute();
 
     return {
       error: false,
