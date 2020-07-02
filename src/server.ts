@@ -1,12 +1,13 @@
 import { CONFIG_SERVER_PORT } from '@config/variables';
 import { createSchema } from '@utils/createSchema';
+import { scheduledDataBaseUpdate } from '@utils/scheduler';
 import { boilerplateData, connectSqlDB } from '@utils/setupdevDB';
 import { ApolloServer } from 'apollo-server-express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
+import { createServer } from 'http';
 import logger from './utils/logger';
-import {createServer} from "http";
 
 export const server = express();
 export const runServer = async () => {
@@ -28,7 +29,7 @@ export const runServer = async () => {
 
   const httpServer = createServer(server);
 
-  apolloServer.installSubscriptionHandlers(httpServer)
+  apolloServer.installSubscriptionHandlers(httpServer);
   server.use(cookieParser());
   server.use(cors());
   server.get('/', (_req, res) => res.send('Hello From MoonShot Server'));
@@ -36,4 +37,5 @@ export const runServer = async () => {
   httpServer.listen(CONFIG_SERVER_PORT, () => {
     logger.info(`Server Started at ${CONFIG_SERVER_PORT}`);
   });
+  scheduledDataBaseUpdate();
 };

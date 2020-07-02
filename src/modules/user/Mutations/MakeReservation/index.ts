@@ -13,11 +13,11 @@ export const bookUpdate = async (data: IUpdateRestaurantUserCapacity): Promise<U
     if (!rest) throw new Error('Restaurant not Found');
     if (!user) throw new Error('User not Found');
 
-    if (rest.capacity + data.bookSize <= rest.maxCapacity) {
-      rest.capacity += data.bookSize;
-    } else {
-      throw new Error('Max capacity reached');
-    }
+    // if (rest.capacity + data.bookSize <= rest.maxCapacity) {
+    //   rest.capacity += data.bookSize;
+    // } else {
+    //   throw new Error('Max capacity reached');
+    // }
 
     const reservation = await Reservation.create({
       peopleQuantities: data.bookSize,
