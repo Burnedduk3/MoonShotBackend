@@ -7,6 +7,7 @@ import { getConnection } from 'typeorm';
 
 export const deleteReservation = async (data: IDeleteReservation): Promise<UpdateRestaurantUserResponse> => {
   try {
+    const connection = await getConnection();
     const reservationToDelete = await Reservation.findOne({
       where: { reservationIdentifier: data.reservationId },
       relations: ['restaurant'],
@@ -19,27 +20,24 @@ export const deleteReservation = async (data: IDeleteReservation): Promise<Updat
     if (!rest) throw new Error('Restaurant not Found');
     if (!user) throw new Error('User not Found');
 
-    if (rest.capacity - 1 >= 0) {
+    if (rest.capacity - reservationToDelete.peopleQuantities >= 0) {
       rest.capacity -= reservationToDelete.peopleQuantities;
     } else {
       throw new Error('Capacity can not be below 0');
     }
 
-    await getConnection().createQueryBuilder().relation(User, 'reservations').of(user).remove(reservationToDelete);
-    await getConnection()
-      .createQueryBuilder()
-      .relation(Restaurant, 'reservations')
-      .of(rest)
-      .remove(reservationToDelete);
+    await connection.createQueryBuilder().update(Restaurant).set(rest).where('id = :id', { id: rest.id }).execute();
 
-    await getConnection()
+    rest.reservationCapacity -= reservationToDelete.peopleQuantities;
+
+    rest.capacity -= reservationToDelete.peopleQuantities;
+
+    connection
       .createQueryBuilder()
-      .update(Restaurant)
-      .set(rest)
-      .where('id = :id', { id: rest.id })
+      .update(Reservation)
+      .set({ active: false })
+      .where('id = :id', { id: reservationToDelete.id })
       .execute();
-
-    await Reservation.remove(reservationToDelete);
 
     return {
       error: false,

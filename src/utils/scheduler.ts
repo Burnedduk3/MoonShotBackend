@@ -3,9 +3,45 @@ import { Restaurant } from '@entities/Restaurant.entity';
 import * as cron from 'node-cron';
 import { getConnection } from 'typeorm';
 
+export const updateActiveReserves = () => {
+  try {
+    cron.schedule('* * 1 * * *', async () => {
+      const connection = getConnection();
+      const maximum = new Date();
+      maximum.setHours(new Date().getHours() - 6);
+      maximum.setSeconds(0);
+      maximum.setMinutes(0);
+      maximum.setMilliseconds(0);
+
+      const minimum = new Date(0);
+      minimum.setFullYear(2019);
+
+      const reservations = await connection
+        .getRepository(Reservation)
+        .createQueryBuilder('reservations')
+        .where('reservations.reservationTime between :minimum AND :maximum', {
+          maximum: maximum.toISOString().slice(0, 19).replace('T', ' '),
+          minimum: minimum.toISOString().slice(0, 19).replace('T', ' '),
+        })
+        .andWhere('reservations.active = 1')
+        .getMany();
+
+      reservations.map(async (reservation) => {
+        reservation.active = false;
+        await connection
+          .createQueryBuilder()
+          .update(Reservation)
+          .set(reservation)
+          .where('id = :id', { id: reservation.id })
+          .execute();
+      });
+    });
+  } catch (e) {}
+};
+
 export const scheduledDataBaseUpdate = () => {
   try {
-    cron.schedule('*/10 * * * * *', async () => {
+    cron.schedule('*/1 * * * * *', async () => {
       const connection = getConnection();
       const minimumHour = new Date();
       minimumHour.setHours(new Date().getHours() - 5);
@@ -33,11 +69,11 @@ export const scheduledDataBaseUpdate = () => {
         try {
           let peopleTotal = 0;
           reservations.map((reservation) => {
-            if (restaurant.restaurantIdentifier === reservation.restaurant.restaurantIdentifier) {
+            if (restaurant.restaurantIdentifier === reservation.restaurant.restaurantIdentifier && reservation.active) {
               peopleTotal += reservation.peopleQuantities;
             }
           });
-          restaurant.capacity = peopleTotal;
+          restaurant.reservationCapacity = peopleTotal;
           await connection
             .createQueryBuilder()
             .update(Restaurant)

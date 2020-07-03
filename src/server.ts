@@ -1,6 +1,6 @@
 import { CONFIG_SERVER_PORT } from '@config/variables';
 import { createSchema } from '@utils/createSchema';
-import { scheduledDataBaseUpdate } from '@utils/scheduler';
+import { scheduledDataBaseUpdate, updateActiveReserves } from '@utils/scheduler';
 import { boilerplateData, connectSqlDB } from '@utils/setupdevDB';
 import { ApolloServer } from 'apollo-server-express';
 import cookieParser from 'cookie-parser';
@@ -38,4 +38,5 @@ export const runServer = async () => {
     logger.info(`Server Started at ${CONFIG_SERVER_PORT}`);
   });
   scheduledDataBaseUpdate();
+  updateActiveReserves();
 };

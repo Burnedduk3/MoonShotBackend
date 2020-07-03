@@ -39,10 +39,12 @@ export const bookUpdate = async (data: IUpdateRestaurantUserCapacity): Promise<U
 
     let hourOcupacy = 0;
     reservations.map((item) => {
-      hourOcupacy += item.peopleQuantities;
+      if (item.active) {
+        hourOcupacy += item.peopleQuantities;
+      }
     });
 
-    if (hourOcupacy + data.bookSize <= rest.maxCapacity) {
+    if (hourOcupacy + rest.locationCapacity + data.bookSize <= rest.maxCapacity) {
       rest.capacity += data.bookSize;
     } else {
       throw new Error('Max capacity reached');
@@ -62,6 +64,8 @@ export const bookUpdate = async (data: IUpdateRestaurantUserCapacity): Promise<U
 
     await connection.createQueryBuilder().update(Restaurant).set(rest).where('id = :id', { id: rest.id }).execute();
 
+    reservation.restaurant.reservationCapacity += data.bookSize;
+    reservation.restaurant.capacity += data.bookSize
     return {
       error: false,
       data: reservation,

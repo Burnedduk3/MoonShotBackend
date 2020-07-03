@@ -1,6 +1,5 @@
-import { Restaurant } from '@entities/Restaurant.entity';
-import { isAuth } from '@middlewares/isAuth';
-import { isBusiness } from '@middlewares/isBusiness';
+// import { isAuth } from '@middlewares/isAuth';
+// import { isBusiness } from '@middlewares/isBusiness';
 import {
   ICreateRestaurant,
   IUpdateMenu,
@@ -27,13 +26,13 @@ import {
   Resolver,
   Root,
   Subscription,
-  UseMiddleware,
+  // UseMiddleware,
 } from 'type-graphql';
 
 @Resolver(() => BusinessTypes)
 export class BusinessResolver {
   @Mutation(() => BusinessTypes)
-  @UseMiddleware([isAuth, isBusiness])
+  // @UseMiddleware([isAuth, isBusiness])
   business(): BusinessTypes {
     return new BusinessTypes();
   }
@@ -54,12 +53,9 @@ export class BusinessResolver {
     try {
       if (notificationPayload.error) throw new Error('Restaurant Not Found');
 
-      const restaurant = await Restaurant.findOne(notificationPayload.data?.id);
-      if (!restaurant) throw new Error('No restaurant found');
-
       return {
         error: false,
-        data: restaurant,
+        data: notificationPayload.data,
       };
     } catch (e) {
       if (e instanceof Error) {
