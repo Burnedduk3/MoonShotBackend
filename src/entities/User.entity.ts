@@ -68,6 +68,7 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   confirmationCode: number;
 
+  @Field()
   @Column('bool', { default: false })
   confirmed: boolean;
 

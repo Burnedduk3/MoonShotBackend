@@ -2,14 +2,16 @@ import { Restaurant } from '@entities/Restaurant.entity';
 import { User } from '@entities/User.entity';
 import { Field, ID, ObjectType } from 'type-graphql';
 import {
-  BaseEntity, BeforeInsert,
+  BaseEntity,
+  BeforeInsert,
   Column,
   CreateDateColumn,
-  Entity, ManyToOne,
+  Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import * as uniqid from "uniqid";
+import * as uniqid from 'uniqid';
 
 @ObjectType()
 @Entity()
@@ -27,6 +29,10 @@ export class Reservation extends BaseEntity {
   @Field()
   @Column({ nullable: false })
   peopleQuantities: number;
+
+  @Field()
+  @Column({ nullable: false, default: true })
+  active: boolean;
 
   @Field()
   @Column({ nullable: false })
