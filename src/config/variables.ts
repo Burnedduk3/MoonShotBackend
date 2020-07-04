@@ -32,6 +32,6 @@ export const CONFIG_REDIS_PASSWORD = process.env.REDIS_PASSWORD || 'aWEkwtTXb3TN
 export const CONFIG_REDIS_PORT = (process.env.REDIS_PORT && parseInt(process.env.REDIS_PORT, 10)) || 13073;
 
 // Twilio
-export const CONFIG_TWILIO_ACCOUNT_SID = process.env.TWILIO_ACCOUNT_SID || 'ACb3604f6ce3351df78d623753ec8e765f';
-export const CONFIG_TWILIO_ACCOUNT_TOKEN = process.env.TWILIO_ACCOUNT_TOKEN || '9eadfc6cff3b678ca13faa4e3c76e898';
-export const TWILIO_SMS_CELLPHONE_NUMBER = process.env.TWILIO_SMS_CELLPHONE_NUMBER || '+15005550006';
+export const CONFIG_TWILIO_ACCOUNT_SID = process.env.TWILIO_ACCOUNT_SID || 'AC7b218b46000c5a3f092ab62abe598f7a';
+export const CONFIG_TWILIO_ACCOUNT_TOKEN = process.env.TWILIO_ACCOUNT_TOKEN || '65963e7203b05b64dcddbfd2a2f0b3c6';
+export const TWILIO_SMS_CELLPHONE_NUMBER = process.env.TWILIO_SMS_CELLPHONE_NUMBER || '+12058906313';
