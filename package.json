@@ -53,7 +53,7 @@
     "tedis": "^0.1.12",
     "ts-node": "^8.10.1",
     "tslint": "^6.1.2",
-    "twilio": "^3.45.0",
+    "twilio": "^3.47.0",
     "type-graphql": "^1.0.0-rc.1",
     "typeorm": "^0.2.24",
     "typescript": "^3.8.3",
