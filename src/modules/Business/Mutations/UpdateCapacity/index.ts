@@ -13,16 +13,16 @@ export const updateCapacity = async (
     if (!rest) throw new Error('Restaurant not Found');
 
     if (action === 'add') {
-      if ((rest.capacity + 1) <= rest.maxCapacity) {
-        rest.capacity += 1;
+      if (rest.capacity + 1 <= rest.maxCapacity) {
+        rest.locationCapacity += 1;
       } else {
         throw new Error('Max capacity reached');
       }
     }
 
     if (action === 'substraction') {
-      if ((rest.capacity - 1) >= 0) {
-        rest.capacity -= 1;
+      if (rest.locationCapacity - 1 >= 0) {
+        rest.locationCapacity -= 1;
       } else {
         throw new Error('Capacity can not be below 0');
       }

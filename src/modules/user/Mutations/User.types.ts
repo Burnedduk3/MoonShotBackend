@@ -1,5 +1,27 @@
+import { Reservation } from '@entities/Reservation.entity';
 import { Restaurant } from '@entities/Restaurant.entity';
+import { User } from '@entities/User.entity';
 import { Field, ObjectType } from 'type-graphql';
+
+@ObjectType({ description: 'update restaurant capacity response' })
+export class UserReservationResponse {
+  @Field()
+  error: boolean;
+  @Field({ nullable: true })
+  message?: string;
+  @Field(/* istanbul ignore next */ () => Reservation, { nullable: true })
+  data?: Reservation;
+}
+
+@ObjectType({ description: 'update user favorites' })
+export class UserUpdateFavoritesResponse {
+  @Field()
+  error: boolean;
+  @Field({ nullable: true })
+  message?: string;
+  @Field(/* istanbul ignore next */ () => User, { nullable: true })
+  data?: User;
+}
 
 @ObjectType({ description: 'update restaurant capacity response' })
 export class UpdateRestaurantUserResponse {
@@ -14,5 +36,11 @@ export class UpdateRestaurantUserResponse {
 @ObjectType({ description: 'Business Resolver' })
 export class UserMutationTypes {
   @Field({ nullable: true })
-  bookRestaurant: UpdateRestaurantUserResponse;
+  makeReservation: UserReservationResponse;
+
+  @Field({ nullable: true })
+  deleteReservation: UpdateRestaurantUserResponse;
+
+  // @Field({ nullable: true })
+  // updateFavorites: UserUpdateFavoritesResponse;
 }

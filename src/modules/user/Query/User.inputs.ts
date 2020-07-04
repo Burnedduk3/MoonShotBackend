@@ -11,3 +11,15 @@ export class IUpdateUserInputs {
   @Field({ nullable: true })
   secondLastname?: string;
 }
+
+@InputType()
+export class IGetReservationById {
+  @Field({ nullable: false })
+  reservationId: string;
+}
+
+@InputType()
+export class IGetRestaurantsInputs {
+  @Field({ nullable: false })
+  initialId: string;
+}

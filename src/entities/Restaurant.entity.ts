@@ -3,7 +3,7 @@ import { User } from '@entities/User.entity';
 import { Field, ID, ObjectType } from 'type-graphql';
 import {
   BaseEntity,
-  BeforeInsert,
+  BeforeInsert, BeforeUpdate,
   Column,
   CreateDateColumn,
   Entity,
@@ -42,7 +42,19 @@ export class Restaurant extends BaseEntity {
 
   @Field()
   @Column({ nullable: false, default: 0 })
+  reservationCapacity: number;
+
+  @Field()
+  @Column({ nullable: false, default: 0 })
+  locationCapacity: number;
+
+  @Field()
+  @Column({ nullable: false, default: 0 })
   capacity: number;
+
+  @Field()
+  @Column({ nullable: false, default: false })
+  warning: boolean;
 
   @Field()
   @Column({ nullable: false, default: 0 })
@@ -78,5 +90,15 @@ export class Restaurant extends BaseEntity {
   async assignId() {
     const randomNum = Math.floor(Math.random() * 1000);
     this.restaurantIdentifier = uniqid.process('rest', randomNum.toString());
+  }
+
+  @BeforeUpdate()
+  async calculateCapacity() {
+    this.capacity = this.locationCapacity + this.reservationCapacity;
+    if(this.capacity > this.maxCapacity){
+      this.warning = true;
+    }else{
+      this.warning = false;
+    }
   }
 }
