@@ -1,4 +1,3 @@
-import { Restaurant } from '@entities/Restaurant.entity';
 import { isAuth } from '@middlewares/isAuth';
 import { isBusiness } from '@middlewares/isBusiness';
 import {
@@ -54,12 +53,9 @@ export class BusinessResolver {
     try {
       if (notificationPayload.error) throw new Error('Restaurant Not Found');
 
-      const restaurant = await Restaurant.findOne(notificationPayload.data?.id);
-      if (!restaurant) throw new Error('No restaurant found');
-
       return {
         error: false,
-        data: restaurant,
+        data: notificationPayload.data,
       };
     } catch (e) {
       if (e instanceof Error) {
@@ -77,7 +73,6 @@ export class BusinessResolver {
   }
 
   @FieldResolver()
-  // @UseMiddleware(isAuth)
   async updateCapacity(
     @Arg('data') data: IUpdateRestaurantCapacity,
     @Arg('action') action: string,

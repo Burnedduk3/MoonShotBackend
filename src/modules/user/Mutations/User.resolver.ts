@@ -1,4 +1,3 @@
-import { Restaurant } from '@entities/Restaurant.entity';
 import { isAuth } from '@middlewares/isAuth';
 import { isUser } from '@middlewares/isUser';
 import { deleteReservation } from '@modules/user/Mutations/DeleteReservation';
@@ -26,9 +25,24 @@ export class UserResolver {
   ): Promise<UserReservationResponse> {
     try {
       const response = await bookUpdate(data);
-      const restaurant = await Restaurant.findOne({ where: { restaurantIdentifier: data.restauranId } });
-      if (!restaurant) throw new Error('No restaurant found');
-      await publish({ data: restaurant, error: response.error, message: response.message });
+
+      if (response.data) {
+        const minimumHour = new Date();
+        minimumHour.setHours(new Date().getHours());
+        minimumHour.setSeconds(0);
+        minimumHour.setMinutes(0);
+        minimumHour.setMilliseconds(0);
+
+        const maximumHour = new Date();
+        maximumHour.setHours(new Date().getHours() + 1);
+        maximumHour.setSeconds(0);
+        maximumHour.setMinutes(0);
+        maximumHour.setMilliseconds(0);
+
+        if (data.date.getTime() > minimumHour.getTime() && data.date.getTime() < maximumHour.getTime()) {
+          await publish({ data: response.data?.restaurant, error: response.error, message: response.message });
+        }
+      }
       return response;
     } catch (e) {
       if (e instanceof Error) {
@@ -68,4 +82,12 @@ export class UserResolver {
       }
     }
   }
+
+  // @FieldResolver()
+  // async updateFavorites(
+  //   @Arg('data') data: IUpdateUserFavorites,
+  //   @Arg('action') action: string,
+  // ): Promise<UserUpdateFavoritesResponse> {
+  //   return await updateFavorites(data, action);
+  // }
 }

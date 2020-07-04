@@ -16,6 +16,15 @@ export class IUpdateRestaurantUserCapacity {
 }
 
 @InputType()
+export class IUpdateUserFavorites {
+  @Field({ nullable: false })
+  restauranId: string;
+
+  @Field({ nullable: false })
+  username: string;
+}
+
+@InputType()
 export class IDeleteReservation {
   @Field({ nullable: false })
   username: string;
