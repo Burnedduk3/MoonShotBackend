@@ -36,11 +36,5 @@ export class UpdateRestaurantUserResponse {
 @ObjectType({ description: 'Business Resolver' })
 export class UserMutationTypes {
   @Field({ nullable: true })
-  makeReservation: UserReservationResponse;
-
-  @Field({ nullable: true })
-  deleteReservation: UpdateRestaurantUserResponse;
-
-  // @Field({ nullable: true })
-  // updateFavorites: UserUpdateFavoritesResponse;
+  twilio: UserReservationResponse;
 }
