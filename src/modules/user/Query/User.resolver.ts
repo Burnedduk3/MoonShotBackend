@@ -5,10 +5,17 @@ import { isUser } from '@middlewares/isUser';
 import { getAllRestaurants } from '@modules/user/Query/getAllReservations';
 import { getReservationById } from '@modules/user/Query/getReservationById';
 import { Arg, Ctx, FieldResolver, Query, Resolver, UseMiddleware } from 'type-graphql';
+import { getRestaurants } from './getRestaurants';
 import { meHandler } from './me';
 import { updateUserHandler } from './updateUser';
-import { IGetReservationById, IUpdateUserInputs } from './User.inputs';
-import { IUserReservationArrayResponse, IUserReservationResponse, UpdateUserResponse, UserTypes } from './User.types';
+import { IGetReservationById, IGetRestaurantsInputs, IUpdateUserInputs } from './User.inputs';
+import {
+  IUserGetRestaurants,
+  IUserReservationArrayResponse,
+  IUserReservationResponse,
+  UpdateUserResponse,
+  UserTypes,
+} from './User.types';
 
 @Resolver(() => UserTypes)
 export class UserResolver {
@@ -38,5 +45,11 @@ export class UserResolver {
   @UseMiddleware([isAuth, isUser])
   async getReservationById(@Arg('data') data: IGetReservationById): Promise<IUserReservationResponse> {
     return getReservationById(data);
+  }
+
+  @FieldResolver(() => IUserGetRestaurants)
+  @UseMiddleware([isAuth, isUser])
+  async getRestaurants(@Arg('data') data: IGetRestaurantsInputs): Promise<IUserGetRestaurants> {
+    return getRestaurants(data);
   }
 }
