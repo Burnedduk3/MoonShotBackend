@@ -18,7 +18,6 @@ export class UserResolver {
   }
 
   @FieldResolver()
-  @UseMiddleware(isAuth)
   async me(@Ctx() ctx: Context): Promise<User | null> {
     return meHandler(ctx);
   }

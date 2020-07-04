@@ -1,3 +1,5 @@
+import { isAuth } from '@middlewares/isAuth';
+import { isUser } from '@middlewares/isUser';
 import { deleteReservation } from '@modules/user/Mutations/DeleteReservation';
 import { bookUpdate } from '@modules/user/Mutations/MakeReservation';
 import { IDeleteReservation, IUpdateRestaurantUserCapacity } from '@modules/user/Mutations/User.inputs';
@@ -6,12 +8,12 @@ import {
   UserMutationTypes,
   UserReservationResponse,
 } from '@modules/user/Mutations/User.types';
-import { Arg, FieldResolver, Mutation, Publisher, PubSub, Resolver } from 'type-graphql';
+import { Arg, FieldResolver, Mutation, Publisher, PubSub, Resolver, UseMiddleware } from 'type-graphql';
 
 @Resolver(() => UserMutationTypes)
 export class UserResolver {
   @Mutation(() => UserMutationTypes)
-  // @UseMiddleware([isAuth, isUser])
+  @UseMiddleware([isAuth, isUser])
   user(): UserMutationTypes {
     return new UserMutationTypes();
   }

@@ -5,7 +5,7 @@ import { getConnection } from 'typeorm';
 
 export const updateActiveReserves = () => {
   try {
-    cron.schedule('* * 1 * * *', async () => {
+    cron.schedule('* * */1  * * *', async () => {
       const connection = getConnection();
       const maximum = new Date();
       maximum.setHours(new Date().getHours() - 6);
