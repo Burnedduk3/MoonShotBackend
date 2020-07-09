@@ -24,7 +24,7 @@ jobs:
         image: mysql:5.7
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_DATABASE: laravel_tags
+          MYSQL_DATABASE: test
         ports:
           - 3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
@@ -34,7 +34,7 @@ jobs:
       REDIS_HOST: redis-13073.c10.us-east-1-4.ec2.cloud.redislabs.com
       CONFIG_BCRYPT_SALT_ROUNDS: 20
       DATABASE_PROVIDER: mysql
-      TESTDATABASE_URL: mysql://root:root@127.0.0.1/test
+      TESTDATABASE_URL: mysql://root:@127.0.0.1:3306/test
       JWT_SECRET_ACCESS: asdasasdqwe13
       JWT_SECRET_REFRESH: refresh
       TWILIO_ACCOUNT_SID: AC7b218b46000c5a3f092ab62abe598f7a
@@ -44,20 +44,6 @@ jobs:
       REDIS_PORT: 13073
 
     steps:
-      - name: Shutdown Ubuntu MySQL (SUDO)
-        run: sudo service mysql stop # Shutdown the Default MySQL, "sudo" is necessary, please not remove it
-
-      - name: Set up MySQL
-        uses: mirromutth/mysql-action@v1.1
-        with:
-          host port: 3800 # Optional, default value is 3306. The port of host
-          container port: 3307 # Optional, default value is 3306. The port of container
-          character set server: utf8 # Optional, default value is 'utf8mb4'. The '--character-set-server' option for mysqld
-          collation server: utf8_general_ci # Optional, default value is 'utf8mb4_general_ci'. The '--collation-server' option for mysqld
-          mysql database: some_test # Optional, default value is "test". The specified database which will be create
-          mysql user: root # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
-          mysql password: root # Required if "mysql user" exists. The password for the "mysql user"
-      - run: mysql -h 127.0.0.1 --port 3800 -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS test;'
 
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
