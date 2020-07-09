@@ -1,37 +1,37 @@
-// import { createSchema } from '@utils/createSchema';
-// import { graphql, GraphQLSchema } from 'graphql';
-// import Maybe from 'graphql/tsutils/Maybe';
-//
-// interface Options {
-//   source: string;
-//   variableValues?: Maybe<{
-//     [key: string]: any;
-//   }>;
-//   userId?: number;
-//   type?: string;
-//   accessToken?: string;
-// }
-//
-// let schema: GraphQLSchema;
-//
-// export const gCall = async ({ source, variableValues, userId, type, accessToken }: Options) => {
-//   schema = await createSchema();
-//
-//   return graphql({
-//     schema,
-//     source,
-//     variableValues,
-//     contextValue: {
-//       req: {
-//         headers: { authorization: `Bearer ${accessToken}` },
-//       },
-//       payload: {
-//         userId,
-//         type,
-//       },
-//       res: {
-//         cookie: jest.fn(),
-//       },
-//     },
-//   });
-// };
+import { createSchema } from '@utils/createSchema';
+import { graphql, GraphQLSchema } from 'graphql';
+import { Maybe } from 'type-graphql';
+
+interface Options {
+  source: string;
+  variableValues?: Maybe<{
+    [key: string]: any;
+  }>;
+  userId?: number;
+  type?: string;
+  accessToken?: string;
+}
+
+let schema: GraphQLSchema;
+
+export const gCall = async ({ source, variableValues, userId, type, accessToken }: Options) => {
+  schema = await createSchema();
+
+  return graphql({
+    schema,
+    source,
+    variableValues,
+    contextValue: {
+      req: {
+        headers: { authorization: `Bearer ${accessToken}` },
+      },
+      payload: {
+        userId,
+        type,
+      },
+      res: {
+        cookie: jest.fn(),
+      },
+    },
+  });
+};

@@ -15,7 +15,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import {Reservation} from "@entities/Reservation.entity";
+import {Reservation} from "./Reservation.entity";
 
 @ObjectType()
 @Entity()

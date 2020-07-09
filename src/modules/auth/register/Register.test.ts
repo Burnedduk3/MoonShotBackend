@@ -2,21 +2,18 @@ import { User } from '@entities/User.entity';
 import { gCall } from '@test/gCall';
 import { testConn } from '@test/testCon';
 import faker from 'faker';
-import { Connection } from 'typeorm';
+import { Connection } from 'typeorm/connection/Connection';
 
 let conn: Connection;
-
 beforeAll(async () => {
   conn = await testConn();
   jest.mock('@services/Twilio', () => ({
     sendTwilioMessage: jest.fn(() => ({ error: false })),
   }));
 });
-
 afterAll(async () => {
-  await conn.close();
+  conn.close();
 });
-
 const fakeUser = {
   phone: faker.phone.phoneNumber('+57##########'),
   role: 'lawyer',
@@ -74,10 +71,10 @@ describe('Auth/RegisterResolver', () => {
       source: registerQuery,
       variableValues: {
         phone: fakeUser1.phone,
-        role: 'lawyer',
+        role: 'business',
       },
     });
     expect(response.data?.auth.register.registerWithPhone.error).toBe(true);
-    expect(response.data?.auth.register.registerWithPhone.message).toBe('BusinessTypes already exist');
+    expect(response.data?.auth.register.registerWithPhone.message).toBe('User already exist');
   });
 });

@@ -8,10 +8,14 @@ const config: ConnectionOptions = {
   ssl: CONFIG_ENVIROMENT !== 'development' && {
     rejectUnauthorized: false,
   },
-  database: CONFIG_ENVIROMENT !== 'development' ? '' : 'moon_shot',
-
   synchronize: true,
   // logging: CONFIG_ENVIROMENT === 'development' ? true : false || false,
-  entities: ['src/entities/*.*'],
+  entities: [
+    'src/entities/Recipes.entity.ts',
+    'src/entities/Reservation.entity.ts',
+    'src/entities/Restaurant.entity.ts',
+    'src/entities/User.entity.ts',
+    'src/entities/UserRole.entity.ts',
+  ],
 };
 export const getDBConfig = async () => await createConnection(config);
