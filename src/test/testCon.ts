@@ -12,7 +12,7 @@ export const testConn = async (drop: boolean = false): Promise<Connection> => {
       name: 'default',
       type: process.env.DATABASE_PROVIDER === 'postgres' ? 'postgres' : 'mysql',
       url: process.env.TESTDATABASE_URL,
-      ssl: true,
+      ssl: false,
       synchronize: drop,
       dropSchema: drop,
       entities: [
