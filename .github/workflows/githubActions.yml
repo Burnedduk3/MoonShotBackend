@@ -20,21 +20,22 @@ jobs:
         node-version: [12.16.3]
 
     services:
-      mysql:
-        image: mysql:5.7
+      postgres:
+        image: postgres:10.8
         env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_DATABASE: test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test
         ports:
-          - 3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     env:
       ENVIROMENT: test
       REDIS_HOST: redis-13073.c10.us-east-1-4.ec2.cloud.redislabs.com
       CONFIG_BCRYPT_SALT_ROUNDS: 20
-      DATABASE_PROVIDER: mysql
-      TESTDATABASE_URL: mysql://root:@127.0.0.1:3306/test
+      DATABASE_PROVIDER: postgres
+      TESTDATABASE_URL: postgres://postgres:postgres@127.0.0.1:5432/test
       JWT_SECRET_ACCESS: asdasasdqwe13
       JWT_SECRET_REFRESH: refresh
       TWILIO_ACCOUNT_SID: AC7b218b46000c5a3f092ab62abe598f7a
