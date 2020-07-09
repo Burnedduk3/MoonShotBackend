@@ -19,6 +19,20 @@ jobs:
       matrix:
         node-version: [12.16.3]
 
+    env:
+      ENVIROMENT: test
+      REDIS_HOST: redis-13073.c10.us-east-1-4.ec2.cloud.redislabs.com
+      CONFIG_BCRYPT_SALT_ROUNDS: 20
+      DATABASE_PROVIDER: postgres
+      TESTDATABASE_URL: postgres://yxcryihdzhqrqs:2136a0a6697c4d798a77ef9f6acd1a2633542fa2db19a5a232e3a837989ab09d@ec2-18-235-109-97.compute-1.amazonaws.com:5432/d22mun7naan7rq
+      JWT_SECRET_ACCESS: asdasasdqwe13
+      JWT_SECRET_REFRESH: refresh
+      TWILIO_ACCOUNT_SID: AC7b218b46000c5a3f092ab62abe598f7a
+      TWILIO_ACCOUNT_TOKEN: 65963e7203b05b64dcddbfd2a2f0b3c6
+      TWILIO_SMS_CELLPHONE_NUMBER: +12058906313
+      REDIS_PASSWORD: aWEkwtTXb3TNCfLsnqrvp49yw1n7iG78
+      REDIS_PORT: 13073
+
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}

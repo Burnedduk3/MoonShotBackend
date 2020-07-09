@@ -1,8 +1,8 @@
 import dotEnv from 'dotenv';
+import { Connection, createConnection } from 'typeorm';
 
 dotEnv.config();
 
-import { Connection, createConnection } from 'typeorm';
 
 let client: Connection | null;
 
@@ -12,6 +12,7 @@ export const testConn = async (drop: boolean = false): Promise<Connection> => {
       name: 'default',
       type: process.env.DATABASE_PROVIDER === 'postgres' ? 'postgres' : 'mysql',
       url: process.env.TESTDATABASE_URL,
+      ssl: true,
       synchronize: drop,
       dropSchema: drop,
       entities: [
