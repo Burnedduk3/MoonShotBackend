@@ -1,4 +1,7 @@
-import { CONFIG_DATABASE_PROVIDER, CONFIG_TEST_DATABASE_URL } from '@config/variables';
+import dotEnv from 'dotenv';
+
+dotEnv.config();
+
 import { Connection, createConnection } from 'typeorm';
 
 let client: Connection | null;
@@ -7,8 +10,8 @@ export const testConn = async (drop: boolean = false): Promise<Connection> => {
   if (!client) {
     client = await createConnection({
       name: 'default',
-      type: CONFIG_DATABASE_PROVIDER === 'postgres' ? 'postgres' : 'mysql',
-      url: CONFIG_TEST_DATABASE_URL,
+      type: process.env.DATABASE_PROVIDER === 'postgres' ? 'postgres' : 'mysql',
+      url: process.env.TESTDATABASE_URL,
       synchronize: drop,
       dropSchema: drop,
       entities: [
