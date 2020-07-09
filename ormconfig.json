@@ -1,12 +1,34 @@
-{
+[
+  {
   "name": "default",
   "type": "mysql",
-  "host": "186.155.211.216",
-  "port": 33,
-  "username": "micoleDevUser",
-  "password": "micoleDevPassword27893",
-  "database": "micoleDev",
+  "host": "localhost",
+  "port": 3306,
+  "username": "Admin",
+  "password": "Admin1234!",
+  "database": "moonshot_test",
   "synchronize": true,
   "logging": true,
-  "entities": ["src/entities/*.*"]
-}
+  "entities": [
+    "src/entities/Recipes.entity.ts",
+    "src/entities/Reservation.entity.ts",
+    "src/entities/Restaurant.entity.ts",
+    "src/entities/User.entity.ts",
+    "src/entities/UserRole.entity.ts"
+  ]
+  },
+  {
+    "name": "test",
+    "type": "mysql",
+    "url": "mysql://Admin:Admin1234!@127.0.0.1:3306:3306/moonshot_test",
+    "synchronize": true,
+    "dropSchema": true,
+    "entities": [
+      "src/entities/Recipes.entity.ts",
+      "src/entities/Reservation.entity.ts",
+      "src/entities/Restaurant.entity.ts",
+      "src/entities/User.entity.ts",
+      "src/entities/UserRole.entity.ts"
+    ]
+  }
+]

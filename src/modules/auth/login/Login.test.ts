@@ -5,10 +5,7 @@ import { testConn } from '@test/testCon';
 import faker from 'faker';
 import { Connection, getConnection } from 'typeorm';
 
-// import { gCall } from "@test/gCall";
-
 let conn: Connection;
-
 beforeAll(async () => {
   conn = await testConn();
   jest.mock('@services/Twilio', () => ({
@@ -21,11 +18,9 @@ beforeAll(async () => {
     redisSetRefreshTokenInDB: jest.fn().mockReturnValueOnce(true).mockReturnValueOnce(false),
   }));
 });
-
 afterAll(async () => {
-  await conn.close();
+  conn.close();
 });
-
 const loginMutation = `
 query LoginWithPhone($phone: String!) {
   auth {
@@ -62,7 +57,7 @@ const fakeUser = {
   firstLastname: faker.name.lastName(),
   secondLastname: faker.name.lastName(),
   confirmed: true,
-  confirmationCode: 123123,
+  confirmationCode: 123456,
 };
 
 describe('Auth/LoginResolver', () => {
@@ -129,7 +124,7 @@ describe('Auth/LoginResolver', () => {
       },
     });
     expect(response.data?.auth.login.loginWithPhone.error).toBe(true);
-    expect(response.data?.auth.login.loginWithPhone.message).toBe('BusinessTypes not exist');
+    expect(response.data?.auth.login.loginWithPhone.message).toBe('User not exist');
   });
 
   // Check code
@@ -172,7 +167,7 @@ describe('Auth/LoginResolver/checkCode', () => {
       },
     });
     expect(response.data?.auth.login.checkCode.error).toBe(true);
-    expect(response.data?.auth.login.checkCode.message).toBe('BusinessTypes not exist');
+    expect(response.data?.auth.login.checkCode.message).toBe('User not exist');
   });
   it('should not fail verification code', async () => {
     let adminRole = await UserRole.findOne({ name: 'lawyer' });

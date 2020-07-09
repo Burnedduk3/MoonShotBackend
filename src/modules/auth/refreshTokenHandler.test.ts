@@ -13,11 +13,9 @@ beforeAll(async () => {
     redisCheckIfTokenExist: jest.fn().mockReturnValueOnce(true).mockReturnValueOnce(false),
   }));
 });
-
 afterAll(async () => {
-  await conn.close();
+  conn.close();
 });
-
 const query = `
 query RefreshToken($token: String!) {
     refreshToken(data: { refreshToken: $token }) {
@@ -44,8 +42,8 @@ describe('Refresh token Handler', () => {
   it('should refresh token success', async () => {
     const refreshToken = await jwtSign({
       type: 'refresh',
-      phone: fakeUser.phone,
-      role: 'lawyer',
+      username: fakeUser.firstName,
+      role: 'business',
       version: 'asdasdasdasdasd',
     });
     const response = await gCall({
@@ -59,8 +57,8 @@ describe('Refresh token Handler', () => {
   it('should refresh token failed', async () => {
     const refreshToken = await jwtSign({
       type: 'refresh',
-      phone: fakeUser.phone,
-      role: 'lawyer',
+      username: "asdfasdfaaa",
+      role: 'user',
       version: 'asdasdasdasdasd',
     });
     const response = await gCall({
