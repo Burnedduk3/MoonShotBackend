@@ -19,12 +19,22 @@ jobs:
       matrix:
         node-version: [12.16.3]
 
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: laravel_tags
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
     env:
       ENVIROMENT: test
       REDIS_HOST: redis-13073.c10.us-east-1-4.ec2.cloud.redislabs.com
       CONFIG_BCRYPT_SALT_ROUNDS: 20
       DATABASE_PROVIDER: mysql
-      TESTDATABASE_URL: mysql://developer:testing@localhost:3800/some_test
+      TESTDATABASE_URL: mysql://root:root@127.0.0.1/test
       JWT_SECRET_ACCESS: asdasasdqwe13
       JWT_SECRET_REFRESH: refresh
       TWILIO_ACCOUNT_SID: AC7b218b46000c5a3f092ab62abe598f7a
@@ -45,8 +55,7 @@ jobs:
           character set server: utf8 # Optional, default value is 'utf8mb4'. The '--character-set-server' option for mysqld
           collation server: utf8_general_ci # Optional, default value is 'utf8mb4_general_ci'. The '--collation-server' option for mysqld
           mysql database: some_test # Optional, default value is "test". The specified database which will be create
-          mysql user: developer # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
-          mysql password: testing # Required if "mysql user" exists. The password for the "mysql user"
+      - run: mysql --port 3800 -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS test;'
 
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
