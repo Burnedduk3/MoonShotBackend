@@ -13,7 +13,7 @@ import {
   CrudReservationUpdateRelationsInputs,
 } from './CrudReservation.inputs';
 
-@Resolver(() => AdminReservationCrudTypes)
+@Resolver(/* istanbul ignore next */ () => AdminReservationCrudTypes)
 export class AdminReservationCrudResolver {
   @FieldResolver(/* istanbul ignore next */ () => AdminReservationCrudResponse) // without args
   async updateReservation(

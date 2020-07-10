@@ -1,4 +1,5 @@
 import { Recipes } from '@entities/Recipes.entity';
+import { Restaurant } from '@entities/Restaurant.entity';
 import { gCall } from '@test/gCall';
 import { testConn } from '@test/testCon';
 import { jwtSign } from '@utils/jwt';
@@ -25,6 +26,37 @@ query(
           error
           message
           data{
+            id
+            name
+            recipeIdentifier
+            price
+            description
+            recipeCategory
+          }
+        }
+      }
+    }
+  }
+}
+`;
+
+const updateRecipe: string = `
+query($id:Float!, $name: String!, $price: Float!, $desc:String!, $category:String!) {
+  admin {
+    Recipes {
+      crud {
+        updateRecipes(
+          id: $id
+          data: {
+            name: $name
+            price: $price
+            description: $desc
+            recipeCategory: $category
+          }
+        ) {
+          error
+          message
+          data {
             id
             name
             recipeIdentifier
@@ -79,6 +111,32 @@ query {
             price
             description
             recipeCategory
+          }
+        }
+      }
+    }
+  }
+}
+`;
+
+const updateRelations: string = `
+query($id:Float!, $restaurantId:Float!) {
+  admin {
+    Recipes {
+      crud {
+        updateRecipesRelations(data:{restaurantId:$restaurantId},id:$id) {
+          error
+          message
+          data {
+            id
+            name
+            recipeIdentifier
+            price
+            description
+            recipeCategory
+            restaurantMenu{
+              name
+            }
           }
         }
       }
@@ -307,5 +365,157 @@ describe('Admin recipes CRUD test', () => {
     });
     expect(response.data?.admin.Recipes.crud.getAllRecipes.error).toBeFalsy();
     expect(response.data?.admin.Recipes.crud.getAllRecipes.data).toBeDefined();
+  });
+
+  it('should update Recipe', async () => {
+    const accessToken = await jwtSign({
+      username: fakeUser.firstName,
+      type: 'test',
+      role: 'admin',
+    });
+    if (!accessToken) throw new Error('No access token');
+    const recipe = await Recipes.create({
+      name: 'deletabletest',
+      recipeCategory: 'lunch',
+      price: 12304002,
+      description: 'its a deletable test',
+    }).save();
+
+    if (!recipe) throw new Error('no recipe found');
+    const response = await gCall({
+      source: updateRecipe,
+      accessToken,
+      variableValues: {
+        id: recipe.id,
+        name: 'Lechona',
+        price: 9000,
+        desc: 'Es lechona',
+        category: 'Almuerzo',
+      },
+    });
+    const updatedRecipe = await Recipes.findOne({ id: recipe.id });
+    if (!updatedRecipe) throw new Error('no recipe found');
+    expect(response.data?.admin.Recipes.crud.updateRecipes.error).toBeFalsy();
+    expect(response.data?.admin.Recipes.crud.updateRecipes.data).toBeDefined();
+    expect(parseInt(response.data?.admin.Recipes.crud.updateRecipes.data.id)).toBe(updatedRecipe.id);
+    expect(response.data?.admin.Recipes.crud.updateRecipes.data.recipeIdentifier).toBe(updatedRecipe.recipeIdentifier);
+    expect(response.data?.admin.Recipes.crud.updateRecipes.data.name).toBe(updatedRecipe.name);
+    expect(response.data?.admin.Recipes.crud.updateRecipes.data.price).toBe(updatedRecipe.price);
+    expect(response.data?.admin.Recipes.crud.updateRecipes.data.description).toBe(updatedRecipe.description);
+    expect(response.data?.admin.Recipes.crud.updateRecipes.data.recipeCategory).toBe(updatedRecipe.recipeCategory);
+  });
+  it('should Not update Recipe', async () => {
+    const accessToken = await jwtSign({
+      username: fakeUser.firstName,
+      type: 'test',
+      role: 'admin',
+    });
+    if (!accessToken) throw new Error('No access token');
+
+    const response = await gCall({
+      source: updateRecipe,
+      accessToken,
+      variableValues: {
+        id: Math.floor(Math.random() * Math.floor(10000)) + 200,
+        name: 'Lechona',
+        price: 9000,
+        desc: 'Es lechona',
+        category: 'Almuerzo',
+      },
+    });
+
+    expect(response.data?.admin.Recipes.crud.updateRecipes.error).toBeTruthy();
+    expect(response.data?.admin.Recipes.crud.updateRecipes.data).toBeNull();
+    expect(response.data?.admin.Recipes.crud.updateRecipes.message).toBeDefined();
+  });
+
+  it('should update recipe relations', async () => {
+    const accessToken = await jwtSign({
+      username: fakeUser.firstName,
+      type: 'test',
+      role: 'admin',
+    });
+    if (!accessToken) throw new Error('No access token');
+    const recipe = await Recipes.create({
+      name: 'deletabletest',
+      recipeCategory: 'lunch',
+      price: 12304002,
+      description: 'its a deletable test',
+    }).save();
+    const restaurant = await Restaurant.create({
+      maxCapacity: 10,
+      phoneNumber: '978034590783',
+      name: 'restaurantTest',
+      address: 'cra5 jsdfjlksdf',
+    }).save();
+    if (!recipe || !restaurant) throw new Error('Error creating entities');
+
+    const response = await gCall({
+      source: updateRelations,
+      accessToken,
+      variableValues: {
+        id: recipe.id,
+        restaurantId: restaurant.id,
+      },
+    });
+    expect(response.data?.admin.Recipes.crud.updateRecipesRelations.error).toBeFalsy();
+    expect(response.data?.admin.Recipes.crud.updateRecipesRelations.data).toBeDefined();
+    expect(response.data?.admin.Recipes.crud.updateRecipesRelations.data.restaurantMenu.name).toBe(restaurant.name);
+  });
+
+  it('should Not update recipe relations wrong restaurant', async () => {
+    const accessToken = await jwtSign({
+      username: fakeUser.firstName,
+      type: 'test',
+      role: 'admin',
+    });
+    if (!accessToken) throw new Error('No access token');
+    const recipe = await Recipes.create({
+      name: 'deletabletest',
+      recipeCategory: 'lunch',
+      price: 12304002,
+      description: 'its a deletable test',
+    }).save();
+    if (!recipe) throw new Error('Error creating entities');
+
+    const response = await gCall({
+      source: updateRelations,
+      accessToken,
+      variableValues: {
+        id: recipe.id,
+        restaurantId: Math.floor(Math.random() * Math.floor(10000)) + 200,
+      },
+    });
+    expect(response.data?.admin.Recipes.crud.updateRecipesRelations.error).toBeTruthy();
+    expect(response.data?.admin.Recipes.crud.updateRecipesRelations.data).toBeNull();
+    expect(response.data?.admin.Recipes.crud.updateRecipesRelations.message).toBeDefined();
+  });
+
+  it('should Not update recipe relations wrong recipe id', async () => {
+    const accessToken = await jwtSign({
+      username: fakeUser.firstName,
+      type: 'test',
+      role: 'admin',
+    });
+    if (!accessToken) throw new Error('No access token');
+    const restaurant = await Restaurant.create({
+      maxCapacity: 10,
+      phoneNumber: '978034590783',
+      name: 'restaurantTest',
+      address: 'cra5 jsdfjlksdf',
+    }).save();
+    if (!restaurant) throw new Error('Error creating entities');
+
+    const response = await gCall({
+      source: updateRelations,
+      accessToken,
+      variableValues: {
+        id: Math.floor(Math.random() * Math.floor(10000)) + 200,
+        restaurantId: restaurant.id,
+      },
+    });
+    expect(response.data?.admin.Recipes.crud.updateRecipesRelations.error).toBeTruthy();
+    expect(response.data?.admin.Recipes.crud.updateRecipesRelations.data).toBeNull();
+    expect(response.data?.admin.Recipes.crud.updateRecipesRelations.message).toBeDefined();
   });
 });

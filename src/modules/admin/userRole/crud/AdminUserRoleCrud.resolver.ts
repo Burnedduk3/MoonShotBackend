@@ -124,6 +124,7 @@ export class AdminUserRoleCrudResolver {
         data: userRole,
       };
     } catch (e) {
+      /* istanbul ignore next */
       if (e instanceof Error) {
         return {
           error: true,

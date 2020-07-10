@@ -19,9 +19,6 @@ export class CrudRecipesUpdateInput {
 export class CrudRecipesUpdateRelationsInputs {
   @Field({ nullable: true })
   restaurantId?: number;
-
-  @Field({ nullable: true })
-  billId?: number;
 }
 
 @InputType()
