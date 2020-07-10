@@ -1,6 +1,6 @@
 import { createSchema } from '@utils/createSchema';
 import { graphql, GraphQLSchema } from 'graphql';
-import { Maybe } from 'type-graphql';
+import { Maybe } from 'graphql/jsutils/Maybe';
 
 interface Options {
   source: string;
@@ -35,3 +35,4 @@ export const gCall = async ({ source, variableValues, userId, type, accessToken 
     },
   });
 };
+

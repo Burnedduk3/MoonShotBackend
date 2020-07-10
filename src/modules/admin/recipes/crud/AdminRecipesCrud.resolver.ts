@@ -13,7 +13,7 @@ import {
   CrudRecipesUpdateRelationsInputs,
 } from './CrudRecipes.inputs';
 
-@Resolver(() => AdminRecipesCrudTypes)
+@Resolver(/* istanbul ignore next */() => AdminRecipesCrudTypes)
 export class AdminRecipesCrudResolver {
   @FieldResolver(/* istanbul ignore next */ () => AdminRecipesCrudTypes) // without args
   async updateRecipes(
@@ -64,8 +64,9 @@ export class AdminRecipesCrudResolver {
   @FieldResolver(/* istanbul ignore next */ () => AdminRecipesCrudTypes)
   async deleteRecipes(@Arg('id') id: number): Promise<AdminRecipesCrudResponse> {
     try {
+      const recipeToBeDeleted = await Recipes.findOne(id);
+      if (!recipeToBeDeleted) throw new Error('Recipe not found');
       await Recipes.delete(id);
-
       return {
         error: false,
       };

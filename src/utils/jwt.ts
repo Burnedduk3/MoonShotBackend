@@ -32,15 +32,15 @@ export class JwtTokens {
 
 export const jwtSign = async ({ username, type, version, role }: JwtTokenFunc): Promise<string | false> => {
   if (type === 'refresh')
-    return await jwt.sign({ username, version, role }, CONFIG_JWT_SECRET_REFRESH, {
+    return jwt.sign({ username, version, role }, CONFIG_JWT_SECRET_REFRESH, {
       expiresIn: '1y',
     });
   if (type === 'access')
-    return await jwt.sign({ username, role }, CONFIG_JWT_SECRET_ACCESS, {
+    return jwt.sign({ username, role }, CONFIG_JWT_SECRET_ACCESS, {
       expiresIn: '10m',
     });
   if (type === 'test') {
-    return await jwt.sign({ username, role }, CONFIG_JWT_SECRET_ACCESS, {
+    return jwt.sign({ username, role }, CONFIG_JWT_SECRET_ACCESS, {
       expiresIn: '1y',
     });
   } else return false;

@@ -8,17 +8,19 @@ export const CONFIG_ENVIROMENT = process.env.ENVIROMENT || 'development';
 // Server port
 export const CONFIG_SERVER_PORT = process.env.PORT || 3500;
 
-// DB conection
-export const CONFIG_DATABASE_PROVIDER = process.env.DATABASE_PROVIDER || 'mysql';
-export const CONFIG_DATABASE_URL = process.env.DATABASE_URL || 'mysql://Admin:Admin1234!@127.0.0.1:3306/moon_shot';
-export const CONFIG_TEST_DATABASE_URL = process.env.TESTDATABASE_URL || 'mysql://Admin:Admin1234!@127.0.0.1:3306/moonshot_test';
+// Database
+export const CONFIG_DATABASE_URL = process.env.DATABASE_URL || 'postgres://postgres:0cSaK7WUtesnT5nVg@localhost:5432/moonshot';
+export const CONFIG_TEST_DATABASE_URL =
+  process.env.TESTDATABASE_URL || 'postgres://postgres:0cSaK7WUtesnT5nVg@localhost:5432/moonshot-test';
 
 // JWT Tokens
 export const CONFIG_JWT_SECRET_ACCESS = process.env.JWT_SECRET_ACCESS || 'asdasasdqwe13';
 export const CONFIG_JWT_SECRET_REFRESH = process.env.CONFIG_JWT_SECRET_REFRESH || 'refresh';
 
 // encription secretWord
-export const CONFIG_BCRYPT_SALT_ROUNDS = process.env.CONFIG_BCRYPT_SALT_ROUNDS || 10;
+export const CONFIG_BCRYPT_SALT_ROUNDS: number = process.env.CONFIG_BCRYPT_SALT_ROUNDS
+  ? +process.env.CONFIG_BCRYPT_SALT_ROUNDS
+  : 10;
 
 // Redis
 export const CONFIG_REDIS_HOST = process.env.REDIS_HOST || 'redis-13073.c10.us-east-1-4.ec2.cloud.redislabs.com';
