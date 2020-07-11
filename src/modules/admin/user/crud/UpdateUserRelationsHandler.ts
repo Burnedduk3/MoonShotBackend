@@ -43,6 +43,7 @@ export const updateUserRelationsHandler = async (
           if (element.restaurantIdentifier === restaurant.restaurantIdentifier) {
             return true;
           }
+          /* istanbul ignore next */
           return false;
         });
         if (indexToDelete !== -1) {
@@ -58,6 +59,7 @@ export const updateUserRelationsHandler = async (
           if (element.reservationIdentifier === reservation.reservationIdentifier) {
             return true;
           }
+          /* istanbul ignore next */
           return false;
         });
         if (indexToDelete !== -1) {

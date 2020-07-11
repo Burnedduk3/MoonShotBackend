@@ -200,9 +200,9 @@ const fakeUser20 = {
   secondName: faker.name.firstName(),
   firstLastname: faker.name.lastName(),
   secondLastname: faker.name.lastName(),
-  username: faker.name.firstName(),
+  username: faker.name.jobTitle(),
   password: faker.name.firstName(),
-  email: faker.name.firstName(),
+  email: faker.name.jobTitle(),
 };
 
 const fakeUser10 = {
@@ -212,9 +212,9 @@ const fakeUser10 = {
   secondName: faker.name.firstName(),
   firstLastname: faker.name.lastName(),
   secondLastname: faker.name.lastName(),
-  username: faker.name.firstName(),
+  username: faker.name.jobType(),
   password: faker.name.firstName(),
-  email: faker.name.firstName(),
+  email: faker.name.title(),
 };
 
 const fakeUser11 = {
@@ -224,9 +224,9 @@ const fakeUser11 = {
   secondName: faker.name.firstName(),
   firstLastname: faker.name.lastName(),
   secondLastname: faker.name.lastName(),
-  username: faker.name.firstName(),
+  username: faker.name.suffix(),
   password: faker.name.firstName(),
-  email: faker.name.firstName(),
+  email: faker.name.jobDescriptor(),
 };
 
 const fakeUser40 = {
@@ -236,9 +236,9 @@ const fakeUser40 = {
   secondName: faker.name.firstName(),
   firstLastname: faker.name.lastName(),
   secondLastname: faker.name.lastName(),
-  username: faker.name.firstName(),
+  username: faker.name.lastName(),
   password: faker.name.firstName(),
-  email: faker.name.firstName(),
+  email: faker.name.jobArea(),
 };
 
 const fakeUser5 = {
@@ -248,9 +248,9 @@ const fakeUser5 = {
   secondName: faker.name.firstName(),
   firstLastname: faker.name.lastName(),
   secondLastname: faker.name.lastName(),
-  username: faker.name.firstName(),
+  username: faker.company.companySuffix(),
   password: faker.name.firstName(),
-  email: faker.name.firstName(),
+  email: faker.name.title(),
 };
 
 const fakeUser6 = {
@@ -260,33 +260,33 @@ const fakeUser6 = {
   secondName: faker.name.firstName(),
   firstLastname: faker.name.lastName(),
   secondLastname: faker.name.lastName(),
-  username: faker.name.firstName(),
+  username: faker.lorem.word(),
   password: faker.name.firstName(),
-  email: faker.name.firstName(),
+  email: faker.commerce.color(),
 };
 
 const fakeUser7 = {
   phone: faker.phone.phoneNumber(),
-  userID: faker.name.lastName(),
+  userID: faker.phone.phoneNumber(),
   firstName: faker.name.firstName(),
   secondName: faker.name.firstName(),
   firstLastname: faker.name.lastName(),
   secondLastname: faker.name.lastName(),
-  username: faker.name.firstName(),
+  username: faker.lorem.lines(),
   password: faker.name.firstName(),
-  email: faker.name.firstName(),
+  email: faker.lorem.lines(),
 };
 
 const fakeUser8 = {
   phone: faker.phone.phoneNumber(),
-  userID: faker.name.lastName(),
+  userID: faker.address.country(),
   firstName: faker.name.firstName(),
   secondName: faker.name.firstName(),
   firstLastname: faker.name.lastName(),
   secondLastname: faker.name.lastName(),
-  username: faker.name.firstName(),
+  username: faker.hacker.adjective(),
   password: faker.name.firstName(),
-  email: faker.name.firstName(),
+  email: faker.name.prefix(),
 };
 
 describe('Admin User CRUD test', () => {

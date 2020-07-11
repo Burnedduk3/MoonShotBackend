@@ -173,50 +173,50 @@ query(
 
 const fakeUser = {
   phone: faker.phone.phoneNumber(),
-  userID: faker.name.lastName(),
+  userID: faker.phone.phoneNumber(),
   firstName: faker.name.firstName(),
   secondName: faker.name.firstName(),
   firstLastname: faker.name.lastName(),
   secondLastname: faker.name.lastName(),
-  username: faker.name.firstName(),
+  username: faker.name.jobArea(),
   password: faker.name.firstName(),
-  email: faker.name.firstName(),
+  email: faker.company.catchPhrase(),
 };
 
 const fakeUser2 = {
   phone: faker.phone.phoneNumber(),
-  userID: faker.name.lastName(),
+  userID: faker.phone.phoneNumber(),
   firstName: faker.name.firstName(),
   secondName: faker.name.firstName(),
   firstLastname: faker.name.lastName(),
   secondLastname: faker.name.lastName(),
-  username: faker.name.firstName(),
+  username: faker.address.city(),
   password: faker.name.firstName(),
-  email: faker.name.firstName(),
+  email: faker.hacker.noun(),
 };
 
 const fakeUser3 = {
   phone: faker.phone.phoneNumber(),
-  userID: faker.name.lastName(),
+  userID: faker.phone.phoneNumber(),
   firstName: faker.name.firstName(),
   secondName: faker.name.firstName(),
   firstLastname: faker.name.lastName(),
   secondLastname: faker.name.lastName(),
-  username: faker.name.firstName(),
+  username: faker.hacker.noun(),
   password: faker.name.firstName(),
-  email: faker.name.firstName(),
+  email: faker.hacker.noun(),
 };
 
 const fakeUser4 = {
   phone: faker.phone.phoneNumber(),
-  userID: faker.name.lastName(),
+  userID: faker.lorem.word(),
   firstName: faker.name.firstName(),
   secondName: faker.name.firstName(),
   firstLastname: faker.name.lastName(),
   secondLastname: faker.name.lastName(),
-  username: faker.name.firstName(),
+  username: faker.hacker.verb(),
   password: faker.name.firstName(),
-  email: faker.name.firstName(),
+  email: faker.hacker.noun(),
 };
 
 describe('Admin Restaurant CRUD test', () => {

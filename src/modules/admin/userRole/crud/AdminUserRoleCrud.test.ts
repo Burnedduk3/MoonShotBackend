@@ -165,9 +165,9 @@ const fakeUser3 = {
   secondName: faker.name.firstName(),
   firstLastname: faker.name.lastName(),
   secondLastname: faker.name.lastName(),
-  username: faker.name.firstName(),
+  username: faker.hacker.verb(),
   password: faker.name.firstName(),
-  email: faker.name.firstName(),
+  email: faker.lorem.sentence(),
 };
 
 const fakeUser4 = {

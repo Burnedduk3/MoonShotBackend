@@ -174,9 +174,9 @@ const fakeUser2 = {
   secondName: faker.name.firstName(),
   firstLastname: faker.name.lastName(),
   secondLastname: faker.name.lastName(),
-  username: faker.name.firstName(),
+  username: faker.name.jobDescriptor(),
   password: faker.name.firstName(),
-  email: faker.name.firstName(),
+  email: faker.lorem.word(),
 };
 
 describe('Admin Reservation CRUD test', () => {
