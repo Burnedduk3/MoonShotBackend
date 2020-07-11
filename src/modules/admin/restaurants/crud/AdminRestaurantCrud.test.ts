@@ -185,14 +185,14 @@ const fakeUser = {
 
 const fakeUser2 = {
   phone: faker.phone.phoneNumber(),
-  userID: faker.phone.phoneNumber(),
+  userID: faker.internet.protocol(),
   firstName: faker.name.firstName(),
   secondName: faker.name.firstName(),
   firstLastname: faker.name.lastName(),
   secondLastname: faker.name.lastName(),
   username: faker.address.city(),
   password: faker.name.firstName(),
-  email: faker.hacker.noun(),
+  email: faker.hacker.adjective(),
 };
 
 const fakeUser3 = {
@@ -214,9 +214,9 @@ const fakeUser4 = {
   secondName: faker.name.firstName(),
   firstLastname: faker.name.lastName(),
   secondLastname: faker.name.lastName(),
-  username: faker.hacker.verb(),
+  username: faker.finance.accountName(),
   password: faker.name.firstName(),
-  email: faker.hacker.noun(),
+  email: faker.hacker.abbreviation(),
 };
 
 describe('Admin Restaurant CRUD test', () => {

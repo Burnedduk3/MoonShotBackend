@@ -24,14 +24,14 @@ export class BusinessResolver {
     return await getMyRestaurants(data);
   }
 
-  @FieldResolver(() => RestaurantRecipesArrayBusinessResponse)
+  @FieldResolver(/* istanbul ignore next */ () => RestaurantRecipesArrayBusinessResponse)
   async getRestaurantRecipes(
     @Arg('data') data: IGetRestaurantRecipesInput,
   ): Promise<RestaurantRecipesArrayBusinessResponse> {
     return await getRestaurantRecipes(data);
   }
 
-  @FieldResolver(() => ReservationsRestaurantBusinessResponse)
+  @FieldResolver(/* istanbul ignore next */ () => ReservationsRestaurantBusinessResponse)
   async getRestaurantReservations(
     @Arg('data') data: IGetRestaurantRecipesInput,
   ): Promise<ReservationsRestaurantBusinessResponse> {

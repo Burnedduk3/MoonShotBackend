@@ -9,7 +9,7 @@ import { Connection } from 'typeorm';
 let conn: Connection;
 
 beforeAll(async () => {
-  conn = await testConn(true);
+  conn = await testConn();
   jest.mock('@services/Redis', () => ({
     redisSetRefreshTokenInDB: jest.fn().mockReturnValueOnce(true).mockReturnValueOnce(false),
     redisCheckIfTokenExist: jest.fn().mockReturnValueOnce(true).mockReturnValueOnce(false),

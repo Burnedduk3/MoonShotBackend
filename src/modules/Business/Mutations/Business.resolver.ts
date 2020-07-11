@@ -37,12 +37,15 @@ export class BusinessResolver {
     return new BusinessTypes();
   }
 
+  // istanbul ignore next
   @Subscription(() => GeneralRestaurantBusinessResponse, {
     topics: 'BOOKINGUPDATE',
     filter: ({ payload, args }) => {
+      // istanbul ignore next
       if (payload.data && payload.data.restaurantIdentifier) {
         return payload.data.restaurantIdentifier === args.restaurantID;
       }
+      // istanbul ignore next
       return false;
     },
   })

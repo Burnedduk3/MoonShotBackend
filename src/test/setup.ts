@@ -1,4 +1,7 @@
 import 'module-alias/register';
-import { testConn } from './testCon';
+import { boilerPlate, testConn } from './testCon';
 
-testConn(true).then(() => process.exit());
+testConn(true).then(async () => {
+  await boilerPlate();
+  process.exit();
+});
