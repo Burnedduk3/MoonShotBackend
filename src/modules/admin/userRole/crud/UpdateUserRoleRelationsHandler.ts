@@ -34,6 +34,7 @@ export const updateUserRoleRelationsHandler = async (
           if (element.username === user.username) {
             return true;
           }
+          /* istanbul ignore next */
           return false;
         });
         if (indexToDelete !== -1) {

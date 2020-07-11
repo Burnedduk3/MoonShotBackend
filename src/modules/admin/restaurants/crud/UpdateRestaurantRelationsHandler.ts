@@ -28,7 +28,7 @@ export const updateRestaurantRelationsHandler = async (
 
       if (data.reservationId) {
         const reservation = await Reservation.findOne(data.reservationId);
-        if (!reservation) throw new Error('recipe not Found');
+        if (!reservation) throw new Error('reservation not Found');
         await getConnection().createQueryBuilder().relation(Restaurant, 'reservations').of(restaurant).add(reservation);
         restaurant.reservations.push(reservation);
       }
@@ -38,33 +38,35 @@ export const updateRestaurantRelationsHandler = async (
       if (data.recipeId) {
         const recipe = await Recipes.findOne(data.recipeId);
         if (!recipe) throw new Error('recipe not Found');
-        await getConnection().createQueryBuilder().relation(Restaurant, 'restaurants').of(restaurant).remove(recipe);
+        await getConnection().createQueryBuilder().relation(Restaurant, 'recipes').of(restaurant).remove(recipe);
         const indexToDelete = restaurant.recipes.findIndex((element: Recipes) => {
-          if (element.recipeIdentifier === recipe.recipeIdentifier){
+          if (element.recipeIdentifier === recipe.recipeIdentifier) {
             return true;
           }
+          /* istanbul ignore next */
           return false;
         });
-        if(indexToDelete !== -1){
+        if (indexToDelete !== -1) {
           restaurant.recipes.splice(indexToDelete, 1);
         }
       }
 
       if (data.reservationId) {
         const reservation = await Reservation.findOne(data.reservationId);
-        if (!reservation) throw new Error('recipe not Found');
+        if (!reservation) throw new Error('reservation not Found');
         await getConnection()
           .createQueryBuilder()
           .relation(Restaurant, 'reservations')
           .of(restaurant)
           .remove(reservation);
         const indexToDelete = restaurant.reservations.findIndex((element: Reservation) => {
-          if (element.reservationIdentifier === reservation.reservationIdentifier){
+          if (element.reservationIdentifier === reservation.reservationIdentifier) {
             return true;
           }
+          /* istanbul ignore next */
           return false;
         });
-        if(indexToDelete !== -1) {
+        if (indexToDelete !== -1) {
           restaurant.reservations.splice(indexToDelete, 1);
         }
       }
