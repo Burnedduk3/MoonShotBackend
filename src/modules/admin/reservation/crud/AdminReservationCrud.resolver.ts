@@ -34,12 +34,13 @@ export class AdminReservationCrudResolver {
   @FieldResolver(/* istanbul ignore next */ () => AdminReservationCrudResponse)
   async createReservation(@Arg('data') data: CrudCreateReservationInputs): Promise<AdminReservationCrudResponse> {
     try {
+      const date = data.date;
       const reservation = await Reservation.create({
-        ...data,
+        reservationTime: date,
+        peopleQuantities: data.peopleQuantities,
       }).save();
 
       if (!reservation) throw new Error('Could not create restaurant Role');
-
       return {
         error: false,
         data: reservation,
@@ -63,6 +64,9 @@ export class AdminReservationCrudResolver {
   @FieldResolver(/* istanbul ignore next */ () => AdminReservationCrudResponse)
   async deleteReservation(@Arg('id') id: number): Promise<AdminReservationCrudResponse> {
     try {
+      const reservation = await Reservation.findOne(id);
+      if (!reservation) throw new Error('Reservation does not exist');
+
       await Reservation.delete(id);
 
       return {
@@ -87,7 +91,7 @@ export class AdminReservationCrudResolver {
   @FieldResolver(/* istanbul ignore next */ () => AdminReservationArrayCrudResponse)
   async getAllReservation(): Promise<AdminReservationArrayCrudResponse> {
     try {
-      const reservation = await Reservation.find({ relations: ['owner', 'reservation'] });
+      const reservation = await Reservation.find({ relations: ['owner', 'restaurant'] });
 
       if (!reservation) throw new Error('No restaurant Role Found');
 
@@ -114,8 +118,7 @@ export class AdminReservationCrudResolver {
   @FieldResolver(/* istanbul ignore next */ () => AdminReservationCrudResponse)
   async findReservationById(@Arg('id') id: number): Promise<AdminReservationCrudResponse> {
     try {
-      const reservation = await Reservation.findOne(id, { relations: ['owner', 'reservation'] });
-
+      const reservation = await Reservation.findOne(id, { relations: ['owner', 'restaurant'] });
       if (!reservation) throw new Error('No restaurant Role Found');
 
       return {
@@ -132,7 +135,7 @@ export class AdminReservationCrudResolver {
       /* istanbul ignore next */
       return {
         error: true,
-        message: 'No restaurant Role Found',
+        message: 'No restaurant Found',
       };
     }
   }

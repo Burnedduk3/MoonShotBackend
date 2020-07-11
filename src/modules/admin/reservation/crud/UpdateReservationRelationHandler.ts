@@ -26,7 +26,7 @@ export const UpdateReservationRelationsHandler = async (
     if (data.restaurantId) {
       const restaurant = await Restaurant.findOne(data.restaurantId);
       if (!restaurant) throw new Error('No restaurant was found');
-      await getConnection().createQueryBuilder().relation(Reservation, 'reservation').of(reservation).set(restaurant);
+      await getConnection().createQueryBuilder().relation(Reservation, 'restaurant').of(reservation).set(restaurant);
       reservation.restaurant = restaurant;
     }
 

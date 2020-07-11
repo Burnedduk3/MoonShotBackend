@@ -2,8 +2,11 @@ import { Field, InputType } from 'type-graphql';
 
 @InputType()
 export class CrudReservationUpdateInput {
-  @Field({ nullable: false })
+  @Field({ nullable: true })
   peopleQuantities: number;
+
+  @Field({ nullable: true })
+  date: Date;
 }
 
 @InputType()
@@ -19,4 +22,7 @@ export class CrudReservationUpdateRelationsInputs {
 export class CrudCreateReservationInputs {
   @Field({ nullable: false })
   peopleQuantities: number;
+
+  @Field({ nullable: false })
+  date: Date;
 }

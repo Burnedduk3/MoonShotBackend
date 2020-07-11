@@ -7,18 +7,18 @@ import { Field, ObjectType } from 'type-graphql';
 
 @ObjectType({ description: 'admin Functions' })
 export class AdminTypes {
-  @Field()
+  @Field({ nullable: true })
   UserRole: AdminUserRoleTypes;
 
-  @Field()
+  @Field({ nullable: true })
   User: AdminUserTypes;
 
-  @Field()
+  @Field({ nullable: true })
   Restaurants: AdminRestaurantTypes;
 
-  @Field()
+  @Field({ nullable: true })
   Recipes: AdminRecipesTypes;
 
-  @Field()
-  Reservations: AdminReservationTypes;
+  @Field({ nullable: true })
+  Reservation: AdminReservationTypes;
 }
