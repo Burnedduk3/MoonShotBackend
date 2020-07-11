@@ -195,7 +195,7 @@ query($id: Float! $action:String! $roleId:Float! $restaurantId:Float!, $reservat
 
 const fakeUser20 = {
   phone: faker.phone.phoneNumber(),
-  userID: faker.name.lastName(),
+  userID: faker.address.secondaryAddress(),
   firstName: faker.name.firstName(),
   secondName: faker.name.firstName(),
   firstLastname: faker.name.lastName(),
@@ -207,7 +207,7 @@ const fakeUser20 = {
 
 const fakeUser10 = {
   phone: faker.phone.phoneNumber(),
-  userID: faker.name.lastName(),
+  userID: faker.commerce.department(),
   firstName: faker.name.firstName(),
   secondName: faker.name.firstName(),
   firstLastname: faker.name.lastName(),
@@ -219,7 +219,7 @@ const fakeUser10 = {
 
 const fakeUser11 = {
   phone: faker.phone.phoneNumber(),
-  userID: faker.name.lastName(),
+  userID: faker.hacker.verb(),
   firstName: faker.name.firstName(),
   secondName: faker.name.firstName(),
   firstLastname: faker.name.lastName(),
@@ -231,19 +231,19 @@ const fakeUser11 = {
 
 const fakeUser40 = {
   phone: faker.phone.phoneNumber(),
-  userID: faker.name.lastName(),
+  userID: faker.internet.email(),
   firstName: faker.name.firstName(),
   secondName: faker.name.firstName(),
   firstLastname: faker.name.lastName(),
   secondLastname: faker.name.lastName(),
-  username: faker.name.lastName(),
+  username: faker.hacker.adjective(),
   password: faker.name.firstName(),
   email: faker.name.jobArea(),
 };
 
 const fakeUser5 = {
   phone: faker.phone.phoneNumber(),
-  userID: faker.name.lastName(),
+  userID: faker.lorem.paragraph(),
   firstName: faker.name.firstName(),
   secondName: faker.name.firstName(),
   firstLastname: faker.name.lastName(),

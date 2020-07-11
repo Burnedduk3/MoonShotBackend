@@ -1,10 +1,10 @@
+import { User } from '@entities/User.entity';
 import { UserRole } from '@entities/UserRole.entity';
 import { gCall } from '@test/gCall';
 import { testConn } from '@test/testCon';
 import { jwtSign } from '@utils/jwt';
 import * as faker from 'faker';
 import { Connection } from 'typeorm';
-import { User } from '../../../../entities/User.entity';
 
 let conn: Connection;
 
