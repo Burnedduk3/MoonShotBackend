@@ -11,13 +11,13 @@ export class CrudUserUpdateInput {
   @Field({ nullable: false })
   firstName?: string;
 
-  @Field({ nullable: false })
+  @Field({ nullable: true })
   secondName?: string;
 
   @Field({ nullable: false })
   firstLastname?: string;
 
-  @Field({ nullable: false })
+  @Field({ nullable: true })
   secondLastname?: string;
 }
 

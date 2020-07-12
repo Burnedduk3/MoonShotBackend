@@ -6,7 +6,7 @@ export const meHandler = async (ctx: Context): Promise<User | null> => {
     if (!ctx.payload) throw new Error('No token provided');
     const username = ctx.payload.username;
     if (!username) throw new Error('No token provided');
-    const user = await User.findOne({ username }, { relations: ['role', 'categories'] });
+    const user = await User.findOne({ username }, { relations: ['role', 'restaurants', 'reservations'] });
     if (!user) throw new Error('No user');
     return user;
   } catch (error) {

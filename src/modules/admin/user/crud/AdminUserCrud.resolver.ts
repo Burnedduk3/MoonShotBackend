@@ -59,6 +59,9 @@ export class AdminUserCrudResolver {
   @FieldResolver(/* istanbul ignore next */ () => AdminUserCrudTypes)
   async deleteUser(@Arg('id') id: number): Promise<AdminUserCrudResponse> {
     try {
+      const user = await User.findOne(id);
+      if (!user) throw new Error('No User Found');
+
       await User.delete(id);
 
       return {

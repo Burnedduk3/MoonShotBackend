@@ -1,4 +1,4 @@
-import { User } from '@entities/User.entity';
+ import { User } from '@entities/User.entity';
 import { Context } from '@interfaces/Context.types';
 import { IUserReservationArrayResponse } from '../User.types';
 

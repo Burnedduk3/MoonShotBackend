@@ -7,7 +7,6 @@ import { getConnection } from 'typeorm';
 export const updateRecipesRelationsHandler = async (
   id: number,
   data: CrudRecipesUpdateRelationsInputs,
-  _action: string,
 ): Promise<AdminRecipesCrudResponse> => {
   try {
     const recipe = await Recipes.findOne(id, {
@@ -16,8 +15,9 @@ export const updateRecipesRelationsHandler = async (
 
     if (!recipe) throw new Error('Recipes not found');
 
+    /* istanbul ignore next */
     if (data.restaurantId) {
-      const restaurant = await Restaurant.findOne(data.restaurantId, { relations: ['billed', 'restaurantMenu'] });
+      const restaurant = await Restaurant.findOne(data.restaurantId, { relations: ['recipes'] });
       if (!restaurant) throw new Error('restaurant not Found');
       await getConnection().createQueryBuilder().relation(Recipes, 'restaurantMenu').of(recipe).set(restaurant);
       recipe.restaurantMenu = restaurant;
@@ -28,6 +28,7 @@ export const updateRecipesRelationsHandler = async (
       data: recipe,
     };
   } catch (e) {
+    /* istanbul ignore next */
     if (e instanceof Error) {
       return {
         error: true,

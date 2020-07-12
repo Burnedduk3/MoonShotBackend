@@ -16,12 +16,14 @@ export const getRestaurantReservations = async (
       data: restaurant.reservations,
     };
   } catch (error) {
+    // istanbul ignore next
     if (error instanceof Error) {
       return {
         error: true,
         message: error.message,
       };
     }
+    // istanbul ignore next
     return {
       error: true,
       message: 'Could not create Restaurant',

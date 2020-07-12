@@ -20,9 +20,10 @@ export const deleteReservation = async (data: IDeleteReservation): Promise<Updat
     if (!rest) throw new Error('Restaurant not Found');
     if (!user) throw new Error('User not Found');
 
-    if (rest.capacity - reservationToDelete.peopleQuantities >= 0) {
-      rest.capacity -= reservationToDelete.peopleQuantities;
+    if (rest.reservationCapacity - reservationToDelete.peopleQuantities >= 0) {
+      rest.reservationCapacity -= reservationToDelete.peopleQuantities;
     } else {
+      /* istanbul ignore next */
       throw new Error('Capacity can not be below 0');
     }
 
@@ -50,6 +51,7 @@ export const deleteReservation = async (data: IDeleteReservation): Promise<Updat
         message: error.message,
       };
     }
+    /* istanbul ignore next */
     return {
       error: true,
       message: 'Could not update Capacity',

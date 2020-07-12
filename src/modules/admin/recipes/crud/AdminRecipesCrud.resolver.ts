@@ -13,7 +13,7 @@ import {
   CrudRecipesUpdateRelationsInputs,
 } from './CrudRecipes.inputs';
 
-@Resolver(() => AdminRecipesCrudTypes)
+@Resolver(/* istanbul ignore next */() => AdminRecipesCrudTypes)
 export class AdminRecipesCrudResolver {
   @FieldResolver(/* istanbul ignore next */ () => AdminRecipesCrudTypes) // without args
   async updateRecipes(
@@ -27,9 +27,8 @@ export class AdminRecipesCrudResolver {
   async updateRecipesRelations(
     @Arg('id') id: number,
     @Arg('data') data: CrudRecipesUpdateRelationsInputs,
-    @Arg('action') action: string,
   ): Promise<AdminRecipesCrudResponse> {
-    return await updateRecipesRelationsHandler(id, data, action);
+    return await updateRecipesRelationsHandler(id, data);
   }
 
   @FieldResolver(/* istanbul ignore next */ () => AdminRecipesCrudTypes)
@@ -39,6 +38,7 @@ export class AdminRecipesCrudResolver {
         ...data,
       }).save();
 
+      /* istanbul ignore next */
       if (!recipe) throw new Error('Could not create recipe Role');
 
       return {
@@ -64,8 +64,9 @@ export class AdminRecipesCrudResolver {
   @FieldResolver(/* istanbul ignore next */ () => AdminRecipesCrudTypes)
   async deleteRecipes(@Arg('id') id: number): Promise<AdminRecipesCrudResponse> {
     try {
+      const recipeToBeDeleted = await Recipes.findOne(id);
+      if (!recipeToBeDeleted) throw new Error('Recipe not found');
       await Recipes.delete(id);
-
       return {
         error: false,
       };
@@ -90,6 +91,7 @@ export class AdminRecipesCrudResolver {
     try {
       const recipes = await Recipes.find({ relations: ['restaurantMenu'] });
 
+      /* istanbul ignore next */
       if (!recipes) throw new Error('No recipe Found');
 
       return {
@@ -117,13 +119,14 @@ export class AdminRecipesCrudResolver {
     try {
       const recipe = await Recipes.findOne(id, { relations: ['restaurantMenu'] });
 
-      if (!recipe) throw new Error('No recipe Role Found');
+      if (!recipe) throw new Error('No recipe Found');
 
       return {
         error: false,
         data: recipe,
       };
     } catch (e) {
+      /* istanbul ignore next */
       if (e instanceof Error) {
         return {
           error: true,

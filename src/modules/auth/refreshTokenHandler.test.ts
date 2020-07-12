@@ -13,9 +13,11 @@ beforeAll(async () => {
     redisCheckIfTokenExist: jest.fn().mockReturnValueOnce(true).mockReturnValueOnce(false),
   }));
 });
+
 afterAll(async () => {
   conn.close();
 });
+
 const query = `
 query RefreshToken($token: String!) {
     refreshToken(data: { refreshToken: $token }) {

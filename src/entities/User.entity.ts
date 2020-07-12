@@ -15,7 +15,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import {Reservation} from "./Reservation.entity";
+import { Reservation } from './Reservation.entity';
 
 @ObjectType()
 @Entity()
@@ -103,6 +103,6 @@ export class User extends BaseEntity {
   // Before insertion
   @BeforeInsert()
   async encryptPassword() {
-    this.password = await bcrypt.hash(this.password, CONFIG_BCRYPT_SALT_ROUNDS);
+    this.password = await bcrypt.hash(this.password, CONFIG_BCRYPT_SALT_ROUNDS ? CONFIG_BCRYPT_SALT_ROUNDS : 10);
   }
 }

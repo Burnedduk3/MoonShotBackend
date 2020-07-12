@@ -2,13 +2,24 @@ import { Restaurant } from '@entities/Restaurant.entity';
 import { updateRestaurantHandler } from '@modules/admin/restaurants/crud/UpdateRestaurantHandler';
 import { updateRestaurantRelationsHandler } from '@modules/admin/restaurants/crud/UpdateRestaurantRelationsHandler';
 import { Arg, FieldResolver, Resolver } from 'type-graphql';
-import { AdminRestaurantArrayCrudResponse, AdminRestaurantCrudResponse, AdminRestaurantCrudTypes } from './AdminRestaurantCrud.types';
-import { CrudCreateRestaurantInputs, CrudRestaurantUpdateInput, CrudRestaurantUpdateRelationsInputs } from './CrudRestaurant.inputs';
+import {
+  AdminRestaurantArrayCrudResponse,
+  AdminRestaurantCrudResponse,
+  AdminRestaurantCrudTypes,
+} from './AdminRestaurantCrud.types';
+import {
+  CrudCreateRestaurantInputs,
+  CrudRestaurantUpdateInput,
+  CrudRestaurantUpdateRelationsInputs,
+} from './CrudRestaurant.inputs';
 
 @Resolver(() => AdminRestaurantCrudTypes)
 export class AdminRestaurantCrudResolver {
   @FieldResolver(/* istanbul ignore next */ () => AdminRestaurantCrudTypes) // without args
-  async updateRestaurant(@Arg('id') id: number, @Arg('data') data: CrudRestaurantUpdateInput): Promise<AdminRestaurantCrudResponse> {
+  async updateRestaurant(
+    @Arg('id') id: number,
+    @Arg('data') data: CrudRestaurantUpdateInput,
+  ): Promise<AdminRestaurantCrudResponse> {
     return await updateRestaurantHandler(id, data);
   }
 
@@ -53,6 +64,9 @@ export class AdminRestaurantCrudResolver {
   @FieldResolver(/* istanbul ignore next */ () => AdminRestaurantCrudTypes)
   async deleteRestaurant(@Arg('id') id: number): Promise<AdminRestaurantCrudResponse> {
     try {
+      const restaurant = await Restaurant.findOne(id);
+
+      if (!restaurant) throw new Error('Restaurant not found');
       await Restaurant.delete(id);
 
       return {

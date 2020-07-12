@@ -21,5 +21,5 @@ export class IGetReservationById {
 @InputType()
 export class IGetRestaurantsInputs {
   @Field({ nullable: false })
-  initialId: string;
+  initialId: number;
 }

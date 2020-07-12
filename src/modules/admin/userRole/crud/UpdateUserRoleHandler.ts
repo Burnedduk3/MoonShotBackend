@@ -24,6 +24,7 @@ export const updateUserRoleHandler = async (
       data: userRole,
     };
   } catch (e) {
+    /* istanbul ignore next */
     if (e instanceof Error) {
       return {
         error: true,
