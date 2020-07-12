@@ -1,6 +1,6 @@
 {
   "name": "MoonShotBack",
-  "version": "0.5.",
+  "version": "0.5.0",
   "description": "Restaurant backend app to support web page and mobile app in react",
   "main": "index.js",
   "repository": "https://github.com/Burnedduk3/MoonShotBackend.git",
