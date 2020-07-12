@@ -67,7 +67,7 @@ export const bookUpdate = async (data: IUpdateRestaurantUserCapacity): Promise<U
     await connection.createQueryBuilder().update(Restaurant).set(rest).where('id = :id', { id: rest.id }).execute();
 
     reservation.restaurant.reservationCapacity += data.bookSize;
-    reservation.restaurant.capacity += data.bookSize
+    reservation.restaurant.capacity += data.bookSize;
     return {
       error: false,
       data: reservation,

@@ -141,9 +141,9 @@ const fakeUser = {
   secondName: faker.name.firstName(),
   firstLastname: faker.name.lastName(),
   secondLastname: faker.name.lastName(),
-  username: faker.name.firstName(),
+  username: faker.finance.bitcoinAddress(),
   password: faker.name.firstName(),
-  email: faker.name.firstName(),
+  email: faker.finance.bitcoinAddress(),
 };
 
 const fakeUser2 = {
@@ -153,9 +153,9 @@ const fakeUser2 = {
   secondName: faker.name.firstName(),
   firstLastname: faker.name.lastName(),
   secondLastname: faker.name.lastName(),
-  username: faker.name.firstName(),
+  username: faker.finance.bitcoinAddress(),
   password: faker.name.firstName(),
-  email: faker.name.firstName(),
+  email: faker.finance.bitcoinAddress(),
 };
 
 const fakeUser3 = {
@@ -166,7 +166,7 @@ const fakeUser3 = {
   firstLastname: faker.name.lastName(),
   secondLastname: faker.name.lastName(),
   username: faker.hacker.verb(),
-  password: faker.name.firstName(),
+  password: faker.hacker.ingverb(),
   email: faker.lorem.sentence(),
 };
 
@@ -177,9 +177,9 @@ const fakeUser4 = {
   secondName: faker.name.firstName(),
   firstLastname: faker.name.lastName(),
   secondLastname: faker.name.lastName(),
-  username: faker.name.firstName(),
+  username: faker.internet.mac(),
   password: faker.name.firstName(),
-  email: faker.name.firstName(),
+  email: faker.phone.phoneNumberFormat(),
 };
 
 describe('Test Admin User Role CRUD resolver', () => {

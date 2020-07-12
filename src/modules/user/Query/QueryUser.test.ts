@@ -77,6 +77,36 @@ query($reservationId: String!){
 }
 `;
 
+const updateUser = `
+query(
+        $firstName :String!
+        $secondName:String!
+        $firstLastname:String!
+        $secondLastname:String!
+) {
+  user {
+    updateUser(
+      data: {
+        firstName: $firstName
+        secondName: $secondName
+        firstLastname: $firstLastname
+        secondLastname: $secondLastname
+      }
+    ){
+      error
+      message
+      user{
+        id
+        firstName
+        secondName
+        firstLastname
+        secondLastname
+      }
+    }
+  }
+}
+`;
+
 const fakeUser = {
   phone: faker.phone.phoneNumber(),
   userID: faker.commerce.department(),
@@ -96,7 +126,7 @@ describe('User Query resolver', () => {
       user = await User.create({ ...fakeUser }).save();
     }
     const token = await jwtSign({
-      username: fakeUser.username,
+      username: user.username,
       type: 'test',
       role: 'business',
     });
@@ -215,5 +245,36 @@ describe('User Query resolver', () => {
     expect(response.data?.user.getReservationById.error).toBeTruthy();
     expect(response.data?.user.getReservationById.data).toBeNull();
     expect(response.data?.user.getReservationById.message).toBeDefined();
+  });
+
+  it('should update user info', async () => {
+    const user = await User.findOne({ username: 'SantiagoPetro' });
+    if (!user) throw new Error('No user');
+    const token = await jwtSign({
+      username: 'SantiagoPetro',
+      type: 'test',
+      role: 'business',
+    });
+
+    if (!token) throw new Error('error creating token');
+
+    const response = await gCall({
+      source: updateUser,
+      accessToken: token,
+      variableValues: {
+        firstName: 'asdasd',
+        secondName: 'asdasd',
+        firstLastname: 'asdkjlasdhbfd',
+        secondLastname: 'asdkjlhjadskjdfhn',
+      },
+    });
+
+    expect(response.data?.user.updateUser.user).toBeDefined();
+    expect(response.data?.user.updateUser.user.firstName).toBe('asdasd');
+    expect(response.data?.user.updateUser.user.secondName).toBe('asdasd');
+    expect(response.data?.user.updateUser.user.firstLastname).toBe('asdkjlasdhbfd');
+    expect(response.data?.user.updateUser.user.secondLastname).toBe('asdkjlhjadskjdfhn');
+    expect(response.data?.user.updateUser.error).toBeFalsy();
+    expect(response.data?.user.updateUser.message).toBeNull();
   });
 });

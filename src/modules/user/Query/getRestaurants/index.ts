@@ -16,6 +16,7 @@ export const getRestaurants = async (data: IGetRestaurantsInputs): Promise<IUser
       data: restaurants,
     };
   } catch (e) {
+    /* istanbul ignore next */
     return {
       error: true,
       message: (e as Error).message,

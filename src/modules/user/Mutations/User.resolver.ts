@@ -47,8 +47,8 @@ export class UserResolver {
       }
       return response;
     } catch (e) {
+      /* istanbul ignore next */
       if (e instanceof Error) {
-        /* istanbul ignore next */
         return {
           error: true,
           message: e.message,
