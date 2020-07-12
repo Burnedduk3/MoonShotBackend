@@ -48,15 +48,15 @@ query(
 `;
 
 const fakeUser = {
-  phone: faker.phone.phoneNumber(),
-  userID: faker.commerce.department(),
+  phone: faker.internet.ip(),
+  userID: faker.database.column(),
   firstName: faker.name.firstName(),
   secondName: faker.name.firstName(),
   firstLastname: faker.name.lastName(),
   secondLastname: faker.name.lastName(),
-  username: faker.hacker.ingverb(),
+  username: faker.internet.ipv6(),
   password: faker.name.firstName(),
-  email: faker.name.title(),
+  email: faker.hacker.noun(),
 };
 
 describe('Test Register Auth resolver', () => {

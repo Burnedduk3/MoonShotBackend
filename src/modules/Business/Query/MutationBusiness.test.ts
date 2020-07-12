@@ -13,21 +13,6 @@ afterAll(async () => {
   await conn.close();
 });
 
-const getRestaurants: string = `
-query($username:String!){
-  Business{
-    getMyRestaurants(data:{userOwner:$username}){
-      error
-      message
-      data{
-        id
-        restaurantIdentifier
-      }
-    }
-  }
-}
-`;
-
 const getMenu: string = `
 query($restaurantIdentifier: String!) {
   Business {
@@ -61,26 +46,6 @@ query($restaurantIdentifier: String!) {
 `;
 
 describe('Business Query tests', () => {
-  it('should get all user restaurants', async () => {
-    const accessToken = await jwtSign({
-      username: 'JuanPer',
-      type: 'test',
-      role: 'business',
-    });
-    if (!accessToken) throw new Error('No access token');
-
-    const response = await gCall({
-      source: getRestaurants,
-      accessToken,
-      variableValues: {
-        username: 'JuanPer',
-      },
-    });
-    expect(response.data?.Business.getMyRestaurants.error).toBe(false);
-    expect(response.data?.Business.getMyRestaurants.data).toBeDefined();
-    expect(response.data?.Business.getMyRestaurants.data.length).toBeGreaterThan(0);
-  });
-
   it('should bring menu from restaurant', async () => {
     const accessToken = await jwtSign({
       username: 'JuanPer',
