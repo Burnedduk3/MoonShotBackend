@@ -39,13 +39,15 @@ export const bookUpdate = async (data: IUpdateRestaurantUserCapacity): Promise<U
 
     let hourOcupacy = 0;
     reservations.map((item) => {
+      /* istanbul ignore next */
       if (item.active) {
+        /* istanbul ignore next */
         hourOcupacy += item.peopleQuantities;
       }
     });
-
+    /* istanbul ignore next */
     if (hourOcupacy + rest.locationCapacity + data.bookSize <= rest.maxCapacity) {
-      rest.capacity += data.bookSize;
+      rest.reservationCapacity += data.bookSize;
     } else {
       throw new Error('Max capacity reached');
     }
@@ -71,12 +73,14 @@ export const bookUpdate = async (data: IUpdateRestaurantUserCapacity): Promise<U
       data: reservation,
     };
   } catch (error) {
+    /* istanbul ignore next */
     if (error instanceof Error) {
       return {
         error: true,
         message: error.message,
       };
     }
+    /* istanbul ignore next */
     return {
       error: true,
       message: 'Could not update Capacity',

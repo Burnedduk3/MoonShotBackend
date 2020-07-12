@@ -36,19 +36,19 @@ export class UserResolver {
     return updateUserHandler(ctx, data);
   }
 
-  @FieldResolver(() => IUserReservationArrayResponse)
+  @FieldResolver(/* istanbul ignore next */() => IUserReservationArrayResponse)
   @UseMiddleware([isAuth, isUser])
   async getAllReservation(@Ctx() ctx: Context): Promise<IUserReservationArrayResponse> {
     return getAllRestaurants(ctx);
   }
 
-  @FieldResolver(() => IUserReservationResponse)
+  @FieldResolver(/* istanbul ignore next */() => IUserReservationResponse)
   @UseMiddleware([isAuth, isUser])
   async getReservationById(@Arg('data') data: IGetReservationById): Promise<IUserReservationResponse> {
     return getReservationById(data);
   }
 
-  @FieldResolver(() => IUserGetRestaurants)
+  @FieldResolver(/* istanbul ignore next */() => IUserGetRestaurants)
   @UseMiddleware([isAuth, isUser])
   async getRestaurants(@Arg('data') data: IGetRestaurantsInputs): Promise<IUserGetRestaurants> {
     return getRestaurants(data);

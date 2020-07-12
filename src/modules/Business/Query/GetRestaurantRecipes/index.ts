@@ -18,6 +18,7 @@ export const getRestaurantRecipes = async (
   } catch (error) {
     // istanbul ignore next
     if (error instanceof Error) {
+      /* istanbul ignore next */
       return {
         error: true,
         message: error.message,

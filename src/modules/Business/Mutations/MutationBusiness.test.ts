@@ -1,3 +1,4 @@
+import { Recipes } from '@entities/Recipes.entity';
 import { Restaurant } from '@entities/Restaurant.entity';
 import { User } from '@entities/User.entity';
 import { gCall } from '@test/gCall';
@@ -5,7 +6,6 @@ import { testConn } from '@test/testCon';
 import { jwtSign } from '@utils/jwt';
 import * as faker from 'faker';
 import { Connection } from 'typeorm';
-import {Recipes} from "@entities/Recipes.entity";
 
 let conn: Connection;
 beforeAll(async () => {
@@ -487,7 +487,7 @@ describe('Business Mutation tests', () => {
       source: updateRecipe,
       accessToken,
       variableValues: {
-        recipeId: "asdkjlhf",
+        recipeId: 'asdkjlhf',
         price: 2000,
         name: 'adsfasdf',
         description: 'asdfadf',

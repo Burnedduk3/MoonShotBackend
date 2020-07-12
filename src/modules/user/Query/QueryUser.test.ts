@@ -1,11 +1,18 @@
+import { Reservation } from '@entities/Reservation.entity';
 import { User } from '@entities/User.entity';
 import { gCall } from '@test/gCall';
 import { testConn } from '@test/testCon';
 import { jwtSign } from '@utils/jwt';
 import faker from 'faker';
+import { Connection } from 'typeorm';
 
+let conn: Connection;
 beforeAll(async () => {
-  await testConn();
+  conn = await testConn();
+});
+
+afterAll(async () => {
+  await conn.close();
 });
 
 const meQuery = `
@@ -53,7 +60,21 @@ query {
     }
   }
 }
+`;
 
+const getReservationById = `
+query($reservationId: String!){
+  user{
+    getReservationById(data:{reservationId:$reservationId}){
+      error
+      data{
+        reservationIdentifier
+        peopleQuantities
+      }
+      message
+    }
+  }
+}
 `;
 
 const fakeUser = {
@@ -152,5 +173,47 @@ describe('User Query resolver', () => {
     expect(response.data?.user.getAllReservation.error).toBeTruthy();
     expect(response.data?.user.getAllReservation.data).toBeNull;
     expect(response.data?.user.getAllReservation.message).toBeDefined();
+  });
+
+  it('should find reservations by id', async () => {
+    const token = await jwtSign({
+      username: 'SebastianRam',
+      type: 'test',
+      role: 'user',
+    });
+    const reservation = await Reservation.create({
+      peopleQuantities: 20,
+      reservationTime: new Date().toISOString().slice(0, 19).replace('T', ' '),
+    }).save();
+    if (token === false) throw new Error('error creating token');
+    const response = await gCall({
+      source: getReservationById,
+      accessToken: token,
+      variableValues: {
+        reservationId: reservation.reservationIdentifier,
+      },
+    });
+    expect(response.data?.user.getReservationById.error).toBeFalsy();
+    expect(response.data?.user.getReservationById.data).toBeDefined();
+    expect(response.data?.user.getReservationById.message).toBeNull();
+  });
+
+  it('should Not find reservations by id', async () => {
+    const token = await jwtSign({
+      username: 'SebastianRam',
+      type: 'test',
+      role: 'user',
+    });
+    if (token === false) throw new Error('error creating token');
+    const response = await gCall({
+      source: getReservationById,
+      accessToken: token,
+      variableValues: {
+        reservationId: 'sdjklfhkajsdhf',
+      },
+    });
+    expect(response.data?.user.getReservationById.error).toBeTruthy();
+    expect(response.data?.user.getReservationById.data).toBeNull();
+    expect(response.data?.user.getReservationById.message).toBeDefined();
   });
 });

@@ -10,7 +10,7 @@ import {
 } from '@modules/user/Mutations/User.types';
 import { Arg, FieldResolver, Mutation, Publisher, PubSub, Resolver, UseMiddleware } from 'type-graphql';
 
-@Resolver(() => UserMutationTypes)
+@Resolver(/* istanbul ignore next */() => UserMutationTypes)
 export class UserResolver {
   @Mutation(() => UserMutationTypes)
   @UseMiddleware([isAuth, isUser])
@@ -18,7 +18,7 @@ export class UserResolver {
     return new UserMutationTypes();
   }
 
-  @FieldResolver(() => UpdateRestaurantUserResponse)
+  @FieldResolver(/* istanbul ignore next */() => UpdateRestaurantUserResponse)
   async makeReservation(
     @Arg('data') data: IUpdateRestaurantUserCapacity,
     @PubSub('BOOKINGUPDATE') publish: Publisher<UpdateRestaurantUserResponse>,
@@ -39,18 +39,22 @@ export class UserResolver {
         maximumHour.setMinutes(0);
         maximumHour.setMilliseconds(0);
 
+        /* istanbul ignore next */
         if (data.date.getTime() > minimumHour.getTime() && data.date.getTime() < maximumHour.getTime()) {
+          /* istanbul ignore next */
           await publish({ data: response.data?.restaurant, error: response.error, message: response.message });
         }
       }
       return response;
     } catch (e) {
       if (e instanceof Error) {
+        /* istanbul ignore next */
         return {
           error: true,
           message: e.message,
         };
       } else {
+        /* istanbul ignore next */
         return {
           error: true,
           message: 'Restaurant not found',
@@ -59,22 +63,25 @@ export class UserResolver {
     }
   }
 
-  @FieldResolver(() => UpdateRestaurantUserResponse)
+  @FieldResolver(/* istanbul ignore next */() => UpdateRestaurantUserResponse)
   async deleteReservation(
     @Arg('data') data: IDeleteReservation,
     @PubSub('BOOKINGUPDATE') publish: Publisher<UpdateRestaurantUserResponse>,
   ): Promise<UpdateRestaurantUserResponse> {
     try {
       const response = await deleteReservation(data);
+      /* istanbul ignore next */
       await publish({ data: response.data, error: response.error, message: response.message });
       return response;
     } catch (e) {
+      /* istanbul ignore next */
       if (e instanceof Error) {
         return {
           error: true,
           message: e.message,
         };
       } else {
+        /* istanbul ignore next */
         return {
           error: true,
           message: 'Reservation not found',
@@ -82,12 +89,4 @@ export class UserResolver {
       }
     }
   }
-
-  // @FieldResolver()
-  // async updateFavorites(
-  //   @Arg('data') data: IUpdateUserFavorites,
-  //   @Arg('action') action: string,
-  // ): Promise<UserUpdateFavoritesResponse> {
-  //   return await updateFavorites(data, action);
-  // }
 }
