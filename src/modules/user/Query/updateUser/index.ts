@@ -6,11 +6,12 @@ import { UpdateUserResponse } from '../User.types';
 
 export const updateUserHandler = async (ctx: Context, data: IUpdateUserInputs): Promise<UpdateUserResponse> => {
   try {
-    const phone = ctx.payload?.username;
-    let user = await User.findOne({ phone });
+    const username = ctx.payload?.username;
+    let user = await User.findOne({ username });
     if (!user) throw new Error('no user');
 
     if (Object.keys(data).length === 0)
+      /* istanbul ignore next */
       return {
         error: false,
         user,
@@ -20,14 +21,15 @@ export const updateUserHandler = async (ctx: Context, data: IUpdateUserInputs): 
       .createQueryBuilder()
       .update(User)
       .set({ ...data })
-      .where('phone = :phone', { phone })
+      .where('username = :username', { username })
       .execute();
-    user = await User.findOne({ phone }, { relations: ['role'] });
+    user = await User.findOne({ username }, { relations: ['role'] });
     return {
       error: false,
       user,
     };
   } catch (e) {
+    /* istanbul ignore next */
     return {
       error: true,
       message: (e as Error).message,

@@ -14,9 +14,10 @@ export class LoginResolver {
   @FieldResolver(/* istanbul ignore next */ () => User)
   async loginWithUsernameAndPassword(@Arg('data') data: LoginResolverInputs): Promise<LoginResponse> {
     try {
-      const user = await User.findOne({ where: { username: data.username }, relations: ['role'] });
+      const user = await User.findOne({ username: data.username }, { relations: ['role'] });
+
       if (!user) {
-        throw new Error('BusinessTypes not exist');
+        throw new Error('User not exist');
       }
 
       const passwordCandidate = await bcyrpt.hash(data.password, CONFIG_BCRYPT_SALT_ROUNDS);
@@ -44,18 +45,14 @@ export class LoginResolver {
         { username: user.username, role: user.role.name as Role, version: tokenVersion },
         refreshToken as string,
       );
-      if (setTokenResponse === false) throw new Error('error Setting token');
+      if (!setTokenResponse) throw new Error('error Setting token');
       return {
         error: false,
         data: tokens as JwtTokens,
         user,
       };
-
-      return {
-        error: false,
-        message: 'message sent',
-      };
     } catch (e) {
+      /* istanbul ignore next */
       if (e instanceof Error) {
         return {
           error: true,
@@ -72,6 +69,7 @@ export class LoginResolver {
 
   @FieldResolver(/* istanbul ignore next */ () => User)
   async checkCode(@Arg('data') { phone, code }: CheckCodeResoleverInputs): Promise<NewTokensResponse> {
+    /* istanbul ignore next */
     try {
       const user = await User.findOne({ phone }, { relations: ['role'] });
       if (!user) throw new Error('BusinessTypes not exist');
@@ -99,7 +97,7 @@ export class LoginResolver {
         { username: user.username, role: user.role.name as Role, version: tokenVersion },
         refreshToken as string,
       );
-      if (setTokenResponse === false) throw new Error('error Setting token');
+      if (!setTokenResponse) throw new Error('error Setting token');
       return {
         error: false,
         data: tokens as JwtTokens,

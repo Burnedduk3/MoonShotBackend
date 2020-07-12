@@ -25,7 +25,7 @@ export class RegisterResolver {
         throw new Error('User ID already in use');
       }
 
-      findUser = await User.findOne({ where: { phone: data.email } });
+      findUser = await User.findOne({ where: { email: data.email } });
 
       if (findUser) {
         throw new Error('email already in user');

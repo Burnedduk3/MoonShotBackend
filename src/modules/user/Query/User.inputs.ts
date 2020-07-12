@@ -20,6 +20,12 @@ export class IGetReservationById {
 
 @InputType()
 export class IGetRestaurantsInputs {
-  @Field({ nullable: false })
-  initialId: string;
+  @Field({ defaultValue: 0 })
+  initialId: number;
+
+  @Field({ defaultValue: '' })
+  name: string;
+
+  @Field({ defaultValue: '' })
+  address: string;
 }

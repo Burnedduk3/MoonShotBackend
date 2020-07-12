@@ -24,6 +24,7 @@ export const updateRecipesHandler = async (
       data: restaurant,
     };
   } catch (e) {
+    /* istanbul ignore next */
     if (e instanceof Error) {
       return {
         error: true,
@@ -33,7 +34,7 @@ export const updateRecipesHandler = async (
     /* istanbul ignore next */
     return {
       error: true,
-      message: 'Error updateBillHandler',
+      message: 'Error updateRecipeHandler',
     };
   }
 };

@@ -1,11 +1,9 @@
 import { isAuth } from '@middlewares/isAuth';
 import { isBusiness } from '@middlewares/isBusiness';
 import {
-  GeneralRestaurantArrayBusinessResponse,
   RestaurantRecipesArrayBusinessResponse,
 } from '@modules/Business/Mutations/Business.types';
-import { IGetMyRestaurantInput, IGetRestaurantRecipesInput } from '@modules/Business/Query/Business.inputs';
-import { getMyRestaurants } from '@modules/Business/Query/GetMyRestaurants';
+import { IGetRestaurantRecipesInput } from '@modules/Business/Query/Business.inputs';
 import { Arg, FieldResolver, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { BusinessQueryTypes, ReservationsRestaurantBusinessResponse } from './Business.types';
 import { getRestaurantRecipes } from './GetRestaurantRecipes';
@@ -19,19 +17,14 @@ export class BusinessResolver {
     return new BusinessQueryTypes();
   }
 
-  @FieldResolver()
-  async getMyRestaurants(@Arg('data') data: IGetMyRestaurantInput): Promise<GeneralRestaurantArrayBusinessResponse> {
-    return await getMyRestaurants(data);
-  }
-
-  @FieldResolver(() => RestaurantRecipesArrayBusinessResponse)
+  @FieldResolver(/* istanbul ignore next */ () => RestaurantRecipesArrayBusinessResponse)
   async getRestaurantRecipes(
     @Arg('data') data: IGetRestaurantRecipesInput,
   ): Promise<RestaurantRecipesArrayBusinessResponse> {
     return await getRestaurantRecipes(data);
   }
 
-  @FieldResolver(() => ReservationsRestaurantBusinessResponse)
+  @FieldResolver(/* istanbul ignore next */ () => ReservationsRestaurantBusinessResponse)
   async getRestaurantReservations(
     @Arg('data') data: IGetRestaurantRecipesInput,
   ): Promise<ReservationsRestaurantBusinessResponse> {

@@ -22,6 +22,7 @@ export const sendTwilioMessage = async (user: User): Promise<ITwilioSMSResponseS
 
     return {
       error: false,
+      message: 'message Sent',
     };
   } catch (e) {
     if (e instanceof Error) {

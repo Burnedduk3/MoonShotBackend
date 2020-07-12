@@ -72,7 +72,7 @@ export class Restaurant extends BaseEntity {
 
   // ManyToOne
   @Field(() => User, { nullable: false })
-  @ManyToOne(() => User, (user) => user.restaurants)
+  @ManyToOne(() => User, (user) => user.restaurant)
   owner: User;
 
   // OneToMany

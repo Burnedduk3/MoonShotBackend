@@ -59,6 +59,9 @@ export class AdminUserCrudResolver {
   @FieldResolver(/* istanbul ignore next */ () => AdminUserCrudTypes)
   async deleteUser(@Arg('id') id: number): Promise<AdminUserCrudResponse> {
     try {
+      const user = await User.findOne(id);
+      if (!user) throw new Error('No User Found');
+
       await User.delete(id);
 
       return {
@@ -83,7 +86,7 @@ export class AdminUserCrudResolver {
   @FieldResolver(/* istanbul ignore next */ () => AdminUserCrudTypes)
   async getAllUser(): Promise<AdminUserArrayCrudResponse> {
     try {
-      const users = await User.find({ relations: ['role', 'restaurants'] });
+      const users = await User.find({ relations: ['role', 'restaurant'] });
 
       if (!users) throw new Error('No user Role Found');
 
@@ -110,7 +113,7 @@ export class AdminUserCrudResolver {
   @FieldResolver(/* istanbul ignore next */ () => AdminUserCrudTypes)
   async findUserById(@Arg('id') id: number): Promise<AdminUserCrudResponse> {
     try {
-      const user = await User.findOne(id, { relations: ['role', 'restaurants'] });
+      const user = await User.findOne(id, { relations: ['role', 'restaurant'] });
 
       if (!user) throw new Error('No user Role Found');
 

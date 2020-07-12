@@ -3,7 +3,7 @@ import { Field, ObjectType } from 'type-graphql';
 
 @ObjectType({ description: 'Admin Reservation CRUD types response' })
 export class AdminReservationCrudResponse {
-  @Field()
+  @Field({ nullable: true })
   error: boolean;
   @Field({ nullable: true })
   message?: string;

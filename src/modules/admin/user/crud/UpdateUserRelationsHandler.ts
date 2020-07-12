@@ -13,19 +13,19 @@ export const updateUserRelationsHandler = async (
 ): Promise<AdminUserCrudResponse> => {
   try {
     const user = await User.findOne(id, {
-      relations: ['role', 'restaurants', 'reservations'],
+      relations: ['role', 'restaurant', 'reservations'],
     });
 
     if (!user) throw new Error('Restaurant not found');
 
-    if (action === 'add') {
-      if (data.restaurantId) {
-        const restaurant = await Restaurant.findOne(data.restaurantId);
-        if (!restaurant) throw new Error('recipe not Found');
-        await getConnection().createQueryBuilder().relation(User, 'restaurants').of(user).add(restaurant);
-        user.restaurants.push(restaurant);
-      }
+    if (data.restaurantId) {
+      const restaurant = await Restaurant.findOne(data.restaurantId);
+      if (!restaurant) throw new Error('recipe not Found');
+      await getConnection().createQueryBuilder().relation(User, 'restaurant').of(user).set(restaurant);
+      user.restaurant = restaurant;
+    }
 
+    if (action === 'add') {
       if (data.reservationId) {
         const reservation = await Reservation.findOne(data.reservationId);
         if (!reservation) throw new Error('recipe not Found');
@@ -35,21 +35,6 @@ export const updateUserRelationsHandler = async (
     }
 
     if (action === 'delete') {
-      if (data.restaurantId) {
-        const restaurant = await Restaurant.findOne(data.restaurantId);
-        if (!restaurant) throw new Error('recipe not Found');
-        await getConnection().createQueryBuilder().relation(User, 'restaurants').of(user).remove(restaurant);
-        const indexToDelete = user.restaurants.findIndex((element: Restaurant) => {
-          if (element.restaurantIdentifier === restaurant.restaurantIdentifier) {
-            return true;
-          }
-          return false;
-        });
-        if (indexToDelete !== -1) {
-          user.restaurants.splice(indexToDelete, 1);
-        }
-      }
-
       if (data.reservationId) {
         const reservation = await Reservation.findOne(data.reservationId);
         if (!reservation) throw new Error('recipe not Found');
@@ -58,6 +43,7 @@ export const updateUserRelationsHandler = async (
           if (element.reservationIdentifier === reservation.reservationIdentifier) {
             return true;
           }
+          /* istanbul ignore next */
           return false;
         });
         if (indexToDelete !== -1) {

@@ -7,7 +7,7 @@ import { getConnection } from 'typeorm';
 export const CreateRestaurant = async (data: ICreateRestaurant): Promise<GeneralRestaurantBusinessResponse> => {
   try {
     const username = data.userOwner;
-    const user = await User.findOne({ username }, { relations: ['role', 'restaurants'] });
+    const user = await User.findOne({ username }, { relations: ['role', 'restaurant'] });
 
     if (!user) throw new Error('No user was found to create Restaurant');
 
@@ -28,12 +28,14 @@ export const CreateRestaurant = async (data: ICreateRestaurant): Promise<General
       data: newRestaurant,
     };
   } catch (error) {
+    // istanbul ignore next
     if (error instanceof Error) {
       return {
         error: true,
         message: error.message,
       };
     }
+    /* istanbul ignore next */
     return {
       error: true,
       message: 'Could not create Restaurant',

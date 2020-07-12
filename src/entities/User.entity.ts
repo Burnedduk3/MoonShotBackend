@@ -11,11 +11,11 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
-  OneToMany,
+  OneToMany, OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import {Reservation} from "@entities/Reservation.entity";
+import { Reservation } from './Reservation.entity';
 
 @ObjectType()
 @Entity()
@@ -91,9 +91,9 @@ export class User extends BaseEntity {
   role: UserRole;
 
   // OneToMany
-  @Field(() => [Restaurant], { nullable: true })
-  @OneToMany(() => Restaurant, (restaurant) => restaurant.owner)
-  restaurants: Restaurant[];
+  @Field(() => Restaurant, { nullable: true })
+  @OneToOne(() => Restaurant, (restaurant) => restaurant.owner)
+  restaurant: Restaurant;
 
   // OneToMany
   @Field(() => [Reservation], { nullable: true })
@@ -103,6 +103,6 @@ export class User extends BaseEntity {
   // Before insertion
   @BeforeInsert()
   async encryptPassword() {
-    this.password = await bcrypt.hash(this.password, CONFIG_BCRYPT_SALT_ROUNDS);
+    this.password = await bcrypt.hash(this.password, CONFIG_BCRYPT_SALT_ROUNDS ? CONFIG_BCRYPT_SALT_ROUNDS : 10);
   }
 }

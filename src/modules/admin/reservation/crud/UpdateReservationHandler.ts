@@ -8,19 +8,26 @@ export const updateReservationHandler = async (
   data: CrudReservationUpdateInput,
 ): Promise<AdminReservationCrudResponse> => {
   try {
+    const reservation = await Reservation.findOne(id);
+
+    if (!reservation) throw new Error('reservation not found');
+
     await getConnection()
       .createQueryBuilder()
       .update(Reservation)
-      .set({ ...data })
+      .set({
+        reservationTime: data.date ? data.date : reservation.reservationTime,
+        peopleQuantities: data.peopleQuantities ? data.peopleQuantities : reservation.peopleQuantities,
+      })
       .where('id = :id', { id })
       .execute();
 
-    const reservation = await Reservation.findOne(id);
-
-    if (!reservation) throw new Error('Restaurant not found');
+    reservation.peopleQuantities = data.peopleQuantities ? data.peopleQuantities : reservation.peopleQuantities;
+    reservation.reservationTime = data.date ? data.date : reservation.reservationTime;
 
     return {
       error: false,
+      data: reservation,
     };
   } catch (e) {
     if (e instanceof Error) {

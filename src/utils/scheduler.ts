@@ -23,7 +23,7 @@ export const updateActiveReserves = () => {
           maximum: maximum.toISOString().slice(0, 19).replace('T', ' '),
           minimum: minimum.toISOString().slice(0, 19).replace('T', ' '),
         })
-        .andWhere('reservations.active = 1')
+        .andWhere('reservations.active = true')
         .getMany();
 
       reservations.map(async (reservation) => {

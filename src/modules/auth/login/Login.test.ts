@@ -1,205 +1,74 @@
 import { User } from '@entities/User.entity';
-import { UserRole } from '@entities/UserRole.entity';
 import { gCall } from '@test/gCall';
 import { testConn } from '@test/testCon';
-import faker from 'faker';
-import { Connection, getConnection } from 'typeorm';
-
-// import { gCall } from "@test/gCall";
+import { Connection } from 'typeorm';
 
 let conn: Connection;
 
 beforeAll(async () => {
   conn = await testConn();
-  jest.mock('@services/Twilio', () => ({
-    sendTwilioMessage: jest
-      .fn()
-      .mockReturnValueOnce({ error: false, message: 'asdasasd' })
-      .mockReturnValueOnce({ error: true, message: 'mockedMessage' }),
-  }));
-  jest.mock('@services/Redis', () => ({
-    redisSetRefreshTokenInDB: jest.fn().mockReturnValueOnce(true).mockReturnValueOnce(false),
-  }));
 });
 
 afterAll(async () => {
   await conn.close();
 });
 
-const loginMutation = `
-query LoginWithPhone($phone: String!) {
-  auth {
-    login {
-      loginWithPhone(data: { phone: $phone }) {
+const loginUserPassword = `
+query(
+  $username: String!
+  $password: String!
+) {
+  auth{
+    login{
+      loginWithUsernameAndPassword(data:{username:$username,password:$password}){
         error
-        message
-      }
-    }
-  }
-}
-`;
-const checkCodeQuery = `
-query CheckCode($phone: String!, $code: Float!) {
-  auth {
-    login {
-      checkCode(data: { phone: $phone, code: $code }) {
-        error
-        data {
+        data{
           accessToken
           refreshToken
         }
         message
+        user{
+          id
+          username
+          password
+          phone
+        }
       }
     }
   }
 }
 `;
 
-const fakeUser = {
-  phone: faker.phone.phoneNumber(),
-  firstName: faker.name.firstName(),
-  secondName: faker.name.firstName(),
-  firstLastname: faker.name.lastName(),
-  secondLastname: faker.name.lastName(),
-  confirmed: true,
-  confirmationCode: 123123,
-};
-
-describe('Auth/LoginResolver', () => {
-  it('LoginUser with phone success', async () => {
-    let adminRole = await UserRole.findOne({ name: 'lawyer' });
-
-    if (!adminRole) {
-      adminRole = await UserRole.create({ name: 'lawyer' }).save();
-    }
-    let user = await User.findOne(
-      {
-        phone: fakeUser.phone,
-      },
-      { relations: ['role'] },
-    );
-    if (!user) {
-      user = await User.create({
-        ...fakeUser,
-      }).save();
-      await getConnection().createQueryBuilder().relation(User, 'role').of(user).set(adminRole);
-    }
+describe('Test Login Auth resolver', () => {
+  it('should Login user', async () => {
+    const user = await User.findOne({ phone: '+573167404216' });
+    if (!user) throw new Error('Could not create user');
     const response = await gCall({
-      source: loginMutation,
+      source: loginUserPassword,
       variableValues: {
-        phone: fakeUser.phone,
+        username: user.username,
+        password: user.password,
       },
     });
-    expect(response.data?.auth.login.loginWithPhone.error).toBe(false);
+    expect(response.data?.auth.login.loginWithUsernameAndPassword.error).toBeFalsy();
+    expect(response.data?.auth.login.loginWithUsernameAndPassword.data.accessToken).toBeDefined();
+    expect(response.data?.auth.login.loginWithUsernameAndPassword.data.refreshToken).toBeDefined();
+    expect(response.data?.auth.login.loginWithUsernameAndPassword.message).toBeNull();
+    expect(response.data?.auth.login.loginWithUsernameAndPassword.user).toBeDefined();
+    expect(response.data?.auth.login.loginWithUsernameAndPassword.user.username).toBe(user.username);
+    expect(response.data?.auth.login.loginWithUsernameAndPassword.user.phone).toBe(user.phone);
   });
 
-  it('should fail sending message', async () => {
-    let adminRole = await UserRole.findOne({ name: 'lawyer' });
-
-    if (!adminRole) {
-      adminRole = await UserRole.create({ name: 'lawyer' }).save();
-    }
-    let user = await User.findOne(
-      {
-        phone: fakeUser.phone,
-      },
-      { relations: ['role'] },
-    );
-    if (!user) {
-      user = await User.create({
-        ...fakeUser,
-      }).save();
-      await getConnection().createQueryBuilder().relation(User, 'role').of(user).set(adminRole);
-    }
+  it('should Not Login user', async () => {
     const response = await gCall({
-      source: loginMutation,
+      source: loginUserPassword,
       variableValues: {
-        phone: fakeUser.phone,
+        username: 'jklhbdfgsjkdfhsbgdsfgkjh',
+        password: 'klj;hjglkjshfgjksdfg',
       },
     });
-    expect(response.data?.auth.login.loginWithPhone.error).toBe(true);
-  });
-
-  it('should not find user', async () => {
-    const wrongPhone = 'wrongPhone';
-    const response = await gCall({
-      source: loginMutation,
-      variableValues: {
-        phone: wrongPhone,
-      },
-    });
-    expect(response.data?.auth.login.loginWithPhone.error).toBe(true);
-    expect(response.data?.auth.login.loginWithPhone.message).toBe('BusinessTypes not exist');
-  });
-
-  // Check code
-});
-
-describe('Auth/LoginResolver/checkCode', () => {
-  it('should check code success', async () => {
-    let adminRole = await UserRole.findOne({ name: 'lawyer' });
-
-    if (!adminRole) {
-      adminRole = await UserRole.create({ name: 'lawyer' }).save();
-    }
-    let user = await User.findOne(
-      {
-        phone: fakeUser.phone,
-      },
-      { relations: ['role'] },
-    );
-    if (!user) {
-      user = await User.create({
-        ...fakeUser,
-      }).save();
-      await getConnection().createQueryBuilder().relation(User, 'role').of(user).set(adminRole);
-    }
-    const response = await gCall({
-      source: checkCodeQuery,
-      variableValues: {
-        phone: fakeUser.phone,
-        code: fakeUser.confirmationCode,
-      },
-    });
-    expect(response.data?.auth.login.checkCode.error).toBe(false);
-  });
-  it('should not find the user', async () => {
-    const response = await gCall({
-      source: checkCodeQuery,
-      variableValues: {
-        phone: 'wrongPhone',
-        code: fakeUser.confirmationCode,
-      },
-    });
-    expect(response.data?.auth.login.checkCode.error).toBe(true);
-    expect(response.data?.auth.login.checkCode.message).toBe('BusinessTypes not exist');
-  });
-  it('should not fail verification code', async () => {
-    let adminRole = await UserRole.findOne({ name: 'lawyer' });
-
-    if (!adminRole) {
-      adminRole = await UserRole.create({ name: 'lawyer' }).save();
-    }
-    let user = await User.findOne(
-      {
-        phone: fakeUser.phone,
-      },
-      { relations: ['role'] },
-    );
-    if (!user) {
-      user = await User.create({
-        ...fakeUser,
-      }).save();
-      await getConnection().createQueryBuilder().relation(User, 'role').of(user).set(adminRole);
-    }
-    const response = await gCall({
-      source: checkCodeQuery,
-      variableValues: {
-        phone: fakeUser.phone,
-        code: 44122,
-      },
-    });
-    expect(response.data?.auth.login.checkCode.error).toBe(true);
-    expect(response.data?.auth.login.checkCode.message).toBe('Wrong verification code');
+    expect(response.data?.auth.login.loginWithUsernameAndPassword.error).toBeTruthy();
+    expect(response.data?.auth.login.loginWithUsernameAndPassword.data).toBeNull;
+    expect(response.data?.auth.login.loginWithUsernameAndPassword.message).toBeDefined();
   });
 });

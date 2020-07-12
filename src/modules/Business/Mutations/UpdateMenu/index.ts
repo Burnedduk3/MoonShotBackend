@@ -36,12 +36,13 @@ export const UpdateMenu = async (
       await getConnection().createQueryBuilder().relation(Restaurant, 'recipes').of(rest).remove(deleteRecipe);
       await Recipes.remove(deleteRecipe);
       const indexToDelete = rest.recipes.findIndex((element: Recipes) => {
-        if (element.recipeIdentifier === deleteRecipe.recipeIdentifier){
+        if (element.recipeIdentifier === deleteRecipe.recipeIdentifier) {
           return true;
         }
+        // istanbul ignore next
         return false;
       });
-      if(indexToDelete !== -1){
+      if (indexToDelete !== -1) {
         rest.recipes.splice(indexToDelete, 1);
       }
     }
@@ -50,12 +51,14 @@ export const UpdateMenu = async (
       data: rest,
     };
   } catch (error) {
+    // istanbul ignore next
     if (error instanceof Error) {
       return {
         error: true,
         message: error.message,
       };
     }
+    // istanbul ignore next
     return {
       error: true,
       message: 'Could not update Menu',
