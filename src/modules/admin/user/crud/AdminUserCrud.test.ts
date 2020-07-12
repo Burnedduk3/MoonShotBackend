@@ -176,7 +176,7 @@ query($id: Float! $action:String! $roleId:Float! $restaurantId:Float!, $reservat
           message
           data {
             username
-            restaurants{
+            restaurant{
               name
             }
             reservations{
@@ -482,7 +482,7 @@ describe('Admin User CRUD test', () => {
     }).save();
     const user = await User.create({ ...fakeUser6 }).save();
     const role = await UserRole.create({
-      name: 'sdzfasdsdfsdffasdggsdfgsdf',
+      name: 'sdzgasdggsdfgsdf',
     }).save();
     const reservation = await Reservation.create({
       peopleQuantities: 10,
@@ -505,7 +505,7 @@ describe('Admin User CRUD test', () => {
     expect(response.data?.admin.User.crud.updateUserRelations.data).toBeDefined();
     expect(response.data?.admin.User.crud.updateUserRelations.data.username).toBe(user.username);
     expect(response.data?.admin.User.crud.updateUserRelations.data.role.name).toBe(role.name);
-    expect(response.data?.admin.User.crud.updateUserRelations.data.restaurants).toBeDefined();
+    expect(response.data?.admin.User.crud.updateUserRelations.data.restaurant).toBeDefined();
     expect(response.data?.admin.User.crud.updateUserRelations.data.reservations).toBeDefined();
   });
 
@@ -516,26 +516,19 @@ describe('Admin User CRUD test', () => {
       role: 'admin',
     });
     const user = await User.create({ ...fakeUser7 }).save();
-    const restaurant = await Restaurant.create({
-      name: 'test',
-      address: 'asdasd',
-      phoneNumber: '12312332',
-      maxCapacity: 200,
-    }).save();
     const reservation = await Reservation.create({
       peopleQuantities: 10,
       reservationTime: '2020-07-30 14:38:54.85',
     }).save();
     await conn.createQueryBuilder().relation(User, 'reservations').of(user).add(reservation);
-    await conn.createQueryBuilder().relation(User, 'restaurants').of(user).add(restaurant);
-    if (!accessToken || !restaurant || !user || !reservation) throw new Error('No access token');
+    if (!accessToken || !user || !reservation) throw new Error('No access token');
     const response = await gCall({
       source: updateUserRelations,
       accessToken,
       variableValues: {
         id: user.id,
         action: 'delete',
-        restaurantId: restaurant.id,
+        restaurantId: 1,
         reservationId: reservation.id,
         roleId: 1,
       },
@@ -543,7 +536,7 @@ describe('Admin User CRUD test', () => {
     expect(response.data?.admin.User.crud.updateUserRelations.error).toBe(false);
     expect(response.data?.admin.User.crud.updateUserRelations.message).toBeNull();
     expect(response.data?.admin.User.crud.updateUserRelations.data).toBeDefined();
-    expect(response.data?.admin.User.crud.updateUserRelations.data.restaurants).toBeDefined();
+    expect(response.data?.admin.User.crud.updateUserRelations.data.restaurant).toBeDefined();
     expect(response.data?.admin.User.crud.updateUserRelations.data.reservations).toBeDefined();
   });
 

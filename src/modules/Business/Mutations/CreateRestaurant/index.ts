@@ -7,7 +7,7 @@ import { getConnection } from 'typeorm';
 export const CreateRestaurant = async (data: ICreateRestaurant): Promise<GeneralRestaurantBusinessResponse> => {
   try {
     const username = data.userOwner;
-    const user = await User.findOne({ username }, { relations: ['role', 'restaurants'] });
+    const user = await User.findOne({ username }, { relations: ['role', 'restaurant'] });
 
     if (!user) throw new Error('No user was found to create Restaurant');
 

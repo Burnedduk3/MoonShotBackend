@@ -103,7 +103,7 @@ export const boilerplateData = async () => {
     }).save();
   }
 
-  // restaurants
+  // restaurant
 
   let restaurantOne = await Restaurant.findOne({ name: 'Andres' });
   if (!restaurantOne) {
@@ -154,8 +154,7 @@ export const boilerplateData = async () => {
       email: 'juanPerreira@guerrilamail.com',
     }).save();
     await getConnection().createQueryBuilder().relation(User, 'role').of(userOne).set(restaurantOwnerRole);
-    await getConnection().createQueryBuilder().relation(User, 'restaurants').of(userOne).add(restaurantOne);
-    await getConnection().createQueryBuilder().relation(User, 'restaurants').of(userOne).add(restaurantThree);
+    await getConnection().createQueryBuilder().relation(User, 'restaurant').of(userOne).set(restaurantOne);
   }
 
   let userTwo = await User.findOne({ phone: '+573152993743' });
@@ -184,7 +183,22 @@ export const boilerplateData = async () => {
       email: 'SantiagoPetro@guerrilamail.com',
     }).save();
     await getConnection().createQueryBuilder().relation(User, 'role').of(userThree).set(restaurantOwnerRole);
-    await getConnection().createQueryBuilder().relation(User, 'restaurants').of(userThree).add(restaurantTwo);
+    await getConnection().createQueryBuilder().relation(User, 'restaurant').of(userThree).set(restaurantTwo);
+  }
+
+  let userFive = await User.findOne({ phone: '+57317404216' });
+  if (!userThree) {
+    userThree = await User.create({
+      phone: '+57317204216',
+      firstLastname: 'Santiago',
+      userID: '523445',
+      firstName: 'Petrovich',
+      username: 'User',
+      password: 'User',
+      email: 'User@guerrilamail.com',
+    }).save();
+    await getConnection().createQueryBuilder().relation(User, 'role').of(userFive).set(restaurantOwnerRole);
+    await getConnection().createQueryBuilder().relation(User, 'restaurant').of(userFive).set(restaurantThree);
   }
 
   let userFour = await User.findOne({ phone: '+573167404216' });
@@ -202,39 +216,4 @@ export const boilerplateData = async () => {
     }).save();
     await getConnection().createQueryBuilder().relation(User, 'role').of(userFour).set(adminRole);
   }
-
-  //   // Reservations
-  //
-  //   const reservations = await Reservation.find();
-  //   if (reservations !== []) {
-  //     let date = new Date();
-  //     let reservation1 = await Reservation.create({
-  //       peopleQuantities: 2,
-  //       reservationTime: date.toISOString().slice(0, 19).replace('T', ' '),
-  //     }).save();
-  //     await getConnection().createQueryBuilder().relation(User, 'reservations').of(userTwo).add(reservation1);
-  //     await getConnection().createQueryBuilder().relation(Restaurant, 'reservations').of(restaurantOne).add(reservation1);
-  //     await sleep(500);
-  //     date = new Date();
-  //     let reservation2 = await Reservation.create({
-  //       peopleQuantities: 12,
-  //       reservationTime:  date.toISOString().slice(0, 19).replace('T', ' '),
-  //     }).save();
-  //     await getConnection().createQueryBuilder().relation(User, 'reservations').of(userTwo).add(reservation2);
-  //     await getConnection().createQueryBuilder().relation(Restaurant, 'reservations').of(restaurantThree).add(reservation2);
-  //     await sleep(500);
-  //     date = new Date();
-  //     let reservation3 = await Reservation.create({
-  //       peopleQuantities: 23,
-  //       reservationTime: date.toISOString().slice(0, 19).replace('T', ' '),
-  //     }).save();
-  //     await getConnection().createQueryBuilder().relation(User, 'reservations').of(userTwo).add(reservation3);
-  //     await getConnection().createQueryBuilder().relation(Restaurant, 'reservations').of(restaurantTwo).add(reservation3);
-  //   }
-  // };
-  //
-  // function sleep(ms:number) {
-  //   return new Promise((resolve) => {
-  //     setTimeout(resolve, ms);
-  //   });
 };

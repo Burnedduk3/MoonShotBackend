@@ -13,16 +13,6 @@ export class GeneralRestaurantBusinessResponse {
 }
 
 @ObjectType({ description: 'update restaurant capacity response' })
-export class GeneralRestaurantArrayBusinessResponse {
-  @Field()
-  error: boolean;
-  @Field({ nullable: true })
-  message?: string;
-  @Field(/* istanbul ignore next */ () => [Restaurant], { nullable: true })
-  data?: Restaurant[];
-}
-
-@ObjectType({ description: 'update restaurant capacity response' })
 export class RestaurantRecipesArrayBusinessResponse {
   @Field()
   error: boolean;

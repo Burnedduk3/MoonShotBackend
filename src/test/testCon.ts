@@ -32,6 +32,7 @@ export const testConn = async (drop: boolean = false): Promise<Connection> => {
 };
 
 export const boilerPlate = async () => {
+  // UserRoles
   let restaurantOwnerRole = await UserRole.findOne({ name: 'business' });
   if (!restaurantOwnerRole) {
     restaurantOwnerRole = await UserRole.create({ name: 'business' }).save();
@@ -126,7 +127,7 @@ export const boilerPlate = async () => {
     }).save();
   }
 
-  // restaurants
+  // restaurant
 
   let restaurantOne = await Restaurant.findOne({ name: 'Andres' });
   if (!restaurantOne) {
@@ -177,8 +178,7 @@ export const boilerPlate = async () => {
       email: 'juanPerreira@guerrilamail.com',
     }).save();
     await getConnection().createQueryBuilder().relation(User, 'role').of(userOne).set(restaurantOwnerRole);
-    await getConnection().createQueryBuilder().relation(User, 'restaurants').of(userOne).add(restaurantOne);
-    await getConnection().createQueryBuilder().relation(User, 'restaurants').of(userOne).add(restaurantThree);
+    await getConnection().createQueryBuilder().relation(User, 'restaurant').of(userOne).set(restaurantOne);
   }
 
   let userTwo = await User.findOne({ phone: '+573152993743' });
@@ -207,7 +207,22 @@ export const boilerPlate = async () => {
       email: 'SantiagoPetro@guerrilamail.com',
     }).save();
     await getConnection().createQueryBuilder().relation(User, 'role').of(userThree).set(restaurantOwnerRole);
-    await getConnection().createQueryBuilder().relation(User, 'restaurants').of(userThree).add(restaurantTwo);
+    await getConnection().createQueryBuilder().relation(User, 'restaurant').of(userThree).set(restaurantTwo);
+  }
+
+  let userFive = await User.findOne({ phone: '+57317404216' });
+  if (!userThree) {
+    userThree = await User.create({
+      phone: '+57317204216',
+      firstLastname: 'Santiago',
+      userID: '523445',
+      firstName: 'Petrovich',
+      username: 'User',
+      password: 'User',
+      email: 'User@guerrilamail.com',
+    }).save();
+    await getConnection().createQueryBuilder().relation(User, 'role').of(userFive).set(restaurantOwnerRole);
+    await getConnection().createQueryBuilder().relation(User, 'restaurant').of(userFive).set(restaurantThree);
   }
 
   let userFour = await User.findOne({ phone: '+573167404216' });
