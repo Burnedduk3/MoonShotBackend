@@ -1,4 +1,3 @@
-import { CONFIG_BCRYPT_SALT_ROUNDS } from '@config/variables';
 import { User } from '@entities/User.entity';
 import { Role } from '@interfaces/User.types';
 import { redisSetRefreshTokenInDB } from '@services/Redis';
@@ -20,9 +19,7 @@ export class LoginResolver {
         throw new Error('User not exist');
       }
 
-      const passwordCandidate = await bcyrpt.hash(data.password, CONFIG_BCRYPT_SALT_ROUNDS);
-
-      if (!bcyrpt.compare(passwordCandidate, user.password)) throw new Error('Password not match');
+      if (!(await bcyrpt.compare(data.password, user.password))) throw new Error('Password not match');
 
       const tokenVersion = makeRandomString();
       const refreshToken = await jwtSign({
