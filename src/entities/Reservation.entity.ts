@@ -62,7 +62,7 @@ export class Reservation extends BaseEntity {
   // Before insertion
   @BeforeInsert()
   async assignId() {
-    const randomNum = Math.floor(Math.random() * 10000);
-    this.reservationIdentifier = uniqid.process('re', randomNum.toString());
+    const randomNum = Math.floor(Math.random() * 1000);
+    this.reservationIdentifier = uniqid.time('', randomNum.toString());
   }
 }

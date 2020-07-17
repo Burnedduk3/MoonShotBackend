@@ -41,7 +41,7 @@ export const updateActiveReserves = () => {
 
 export const scheduledDataBaseUpdate = () => {
   try {
-    cron.schedule('*/1 * * * * *', async () => {
+    cron.schedule('*/10 * * * * *', async () => {
       const connection = getConnection();
       const minimumHour = new Date();
       minimumHour.setHours(new Date().getHours() - 5);

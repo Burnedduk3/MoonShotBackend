@@ -1,4 +1,3 @@
-import { User } from '@entities/User.entity';
 import { gCall } from '@test/gCall';
 import { testConn } from '@test/testCon';
 import { Connection } from 'typeorm';
@@ -41,13 +40,11 @@ query(
 
 describe('Test Login Auth resolver', () => {
   it('should Login user', async () => {
-    const user = await User.findOne({ phone: '+573167404216' });
-    if (!user) throw new Error('Could not create user');
     const response = await gCall({
       source: loginUserPassword,
       variableValues: {
-        username: user.username,
-        password: user.password,
+        username: 'JuanCabDu',
+        password: 'AdminPassword',
       },
     });
     expect(response.data?.auth.login.loginWithUsernameAndPassword.error).toBeFalsy();
@@ -55,8 +52,8 @@ describe('Test Login Auth resolver', () => {
     expect(response.data?.auth.login.loginWithUsernameAndPassword.data.refreshToken).toBeDefined();
     expect(response.data?.auth.login.loginWithUsernameAndPassword.message).toBeNull();
     expect(response.data?.auth.login.loginWithUsernameAndPassword.user).toBeDefined();
-    expect(response.data?.auth.login.loginWithUsernameAndPassword.user.username).toBe(user.username);
-    expect(response.data?.auth.login.loginWithUsernameAndPassword.user.phone).toBe(user.phone);
+    expect(response.data?.auth.login.loginWithUsernameAndPassword.user.username).toBe('JuanCabDu');
+    expect(response.data?.auth.login.loginWithUsernameAndPassword.user.phone).toBe('+573167404216');
   });
 
   it('should Not Login user', async () => {
