@@ -54,6 +54,20 @@ export class IUpdateRecipe {
   recipeCategory?: string;
 }
 
+@InputType()
+export class IAddCompanion {
+  @Field({ nullable: false })
+  userID: string;
+
+  @Field({ nullable: false })
+  phone: string;
+
+  @Field({ nullable: false })
+  completeName: string;
+
+  @Field({ nullable: false })
+  address: string;
+}
 
 @InputType()
 export class IUpdateMenu {

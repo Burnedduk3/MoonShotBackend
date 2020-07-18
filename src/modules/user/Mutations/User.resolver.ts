@@ -10,7 +10,7 @@ import {
 } from '@modules/user/Mutations/User.types';
 import { Arg, FieldResolver, Mutation, Publisher, PubSub, Resolver, UseMiddleware } from 'type-graphql';
 
-@Resolver(/* istanbul ignore next */() => UserMutationTypes)
+@Resolver(/* istanbul ignore next */ () => UserMutationTypes)
 export class UserResolver {
   @Mutation(() => UserMutationTypes)
   @UseMiddleware([isAuth, isUser])
@@ -18,7 +18,7 @@ export class UserResolver {
     return new UserMutationTypes();
   }
 
-  @FieldResolver(/* istanbul ignore next */() => UpdateRestaurantUserResponse)
+  @FieldResolver(/* istanbul ignore next */ () => UpdateRestaurantUserResponse)
   async makeReservation(
     @Arg('data') data: IUpdateRestaurantUserCapacity,
     @PubSub('BOOKINGUPDATE') publish: Publisher<UpdateRestaurantUserResponse>,
@@ -42,7 +42,7 @@ export class UserResolver {
         /* istanbul ignore next */
         if (data.date.getTime() > minimumHour.getTime() && data.date.getTime() < maximumHour.getTime()) {
           /* istanbul ignore next */
-          await publish({ data: response.data?.restaurant, error: response.error, message: response.message });
+          await publish({ data: response.data?.restaurant, error: response.error });
         }
       }
       return response;
@@ -63,7 +63,7 @@ export class UserResolver {
     }
   }
 
-  @FieldResolver(/* istanbul ignore next */() => UpdateRestaurantUserResponse)
+  @FieldResolver(/* istanbul ignore next */ () => UpdateRestaurantUserResponse)
   async deleteReservation(
     @Arg('data') data: IDeleteReservation,
     @PubSub('BOOKINGUPDATE') publish: Publisher<UpdateRestaurantUserResponse>,

@@ -162,14 +162,14 @@ const fakeUser = {
   secondName: faker.name.firstName(),
   firstLastname: faker.name.lastName(),
   secondLastname: faker.name.lastName(),
-  username: faker.name.firstName(),
+  username: faker.internet.ipv6(),
   password: faker.name.firstName(),
   email: faker.name.firstName(),
 };
 
 const fakeUser2 = {
   phone: faker.phone.phoneNumber(),
-  userID: faker.name.lastName(),
+  userID: faker.name.prefix(),
   firstName: faker.name.firstName(),
   secondName: faker.name.firstName(),
   firstLastname: faker.name.lastName(),

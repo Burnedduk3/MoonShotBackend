@@ -7,6 +7,7 @@ export const redisCheckIfTokenExist = async (token: JwtToken): Promise<boolean> 
     const isToken = await Redis().get(`${CONFIG_REDIS_REFRESH_TOKEN_PREFIX}|${token.username}|${token.version}`);
     if (!isToken) throw new Error('no token in Redis');
     await Redis().del(`${CONFIG_REDIS_REFRESH_TOKEN_PREFIX}|${token.username}|${token.version}`);
+    Redis().close();
     return true;
   } catch (_e) {
     return false;
@@ -16,6 +17,7 @@ export const redisCheckIfTokenExist = async (token: JwtToken): Promise<boolean> 
 export const redisSetRefreshTokenInDB = async (token: JwtToken, tokenInString: string): Promise<boolean> => {
   try {
     await Redis().set(`${CONFIG_REDIS_REFRESH_TOKEN_PREFIX}|${token.username}|${token.version}`, tokenInString);
+    Redis().close();
     return true;
   } catch (e) {
     return false;
