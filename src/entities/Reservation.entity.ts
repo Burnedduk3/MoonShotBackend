@@ -7,11 +7,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToOne,
+  ManyToOne, OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import * as uniqid from 'uniqid';
+import {Companion} from "@entities/Companion.entity";
 
 @ObjectType()
 @Entity()
@@ -58,11 +59,16 @@ export class Reservation extends BaseEntity {
   @ManyToOne(() => User, (user) => user.reservations)
   owner: User;
 
+  // OneToMany
+  @Field(() => [Companion], { nullable: true })
+  @OneToMany(() => Companion, (companion) => companion.reservation)
+  companions: Companion[];
+
   // Before Insert
   // Before insertion
   @BeforeInsert()
   async assignId() {
-    const randomNum = Math.floor(Math.random() * 1000);
+    const randomNum = Math.floor(Math.random() * 9);
     this.reservationIdentifier = uniqid.time('', randomNum.toString());
   }
 }

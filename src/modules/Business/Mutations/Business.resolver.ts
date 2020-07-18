@@ -1,6 +1,7 @@
 import { isAuth } from '@middlewares/isAuth';
 import { isBusiness } from '@middlewares/isBusiness';
 import {
+  IAddCompanion,
   ICreateRestaurant,
   IUpdateMenu,
   IUpdateRecipe,
@@ -8,6 +9,7 @@ import {
   IUpdateRestaurantCapacity,
 } from '@modules/Business/Mutations/Business.inputs';
 import {
+  AddCompanionResponse,
   BusinessTypes,
   GeneralRestaurantBusinessResponse,
   RestaurantRecipesBusinessResponse,
@@ -28,6 +30,7 @@ import {
   Subscription,
   UseMiddleware,
 } from 'type-graphql';
+import { addCompanion } from './AddCompanion';
 
 @Resolver(() => BusinessTypes)
 export class BusinessResolver {
@@ -114,5 +117,13 @@ export class BusinessResolver {
     @Arg('data') data: IUpdateRecipe,
   ): Promise<RestaurantRecipesBusinessResponse> {
     return await UpdateRecipe(data, recipeId);
+  }
+
+  @FieldResolver()
+  async addCompanion(
+    @Arg('reservationId') reservationId: string,
+    @Arg('data') data: IAddCompanion,
+  ): Promise<AddCompanionResponse> {
+    return await addCompanion(data, reservationId);
   }
 }

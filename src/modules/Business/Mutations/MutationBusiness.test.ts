@@ -1,11 +1,12 @@
 import { Recipes } from '@entities/Recipes.entity';
+import { Reservation } from '@entities/Reservation.entity';
 import { Restaurant } from '@entities/Restaurant.entity';
 import { User } from '@entities/User.entity';
 import { gCall } from '@test/gCall';
 import { testConn } from '@test/testCon';
 import { jwtSign } from '@utils/jwt';
 import * as faker from 'faker';
-import { Connection } from 'typeorm';
+import { Connection, getConnection } from 'typeorm';
 
 let conn: Connection;
 beforeAll(async () => {
@@ -42,6 +43,40 @@ mutation(
         restaurantIdentifier
         name
         maxCapacity
+      }
+    }
+  }
+}
+`;
+
+const addCompanion: string = `
+# Write your query or mutation here
+mutation(
+  $userID: String!
+  $phone: String!
+  $completeName: String!
+  $address: String!
+  $reservationId:String!
+) {
+  business {
+    addCompanion(
+      data: {
+        userID: $userID
+        phone: $phone
+        completeName: $completeName
+        address: $address
+      }
+      reservationId: $reservationId
+    ) {
+      error
+      message
+      reservation {
+        reservationIdentifier
+        peopleQuantities
+        companions {
+          id
+          completeName
+        }
       }
     }
   }
@@ -497,5 +532,71 @@ describe('Business Mutation tests', () => {
     expect(response.data?.business.updateRecipe.error).toBe(true);
     expect(response.data?.business.updateRecipe.data).toBeNull();
     expect(response.data?.business.updateRecipe.message).toBeDefined();
+  });
+
+  it('should add Companion', async () => {
+    const accessToken = await jwtSign({
+      username: 'JuanPer',
+      type: 'test',
+      role: 'business',
+    });
+    const user = await User.findOne();
+    const reservation = await Reservation.create({
+      reservationTime: new Date().toISOString().slice(0, 19).replace('T', ' '),
+      peopleQuantities: 10,
+    }).save();
+    if (!accessToken || !user) throw new Error('No access token');
+    await getConnection().createQueryBuilder().relation(Reservation, 'owner').of(reservation).set(user);
+    reservation.owner = user;
+
+    const response = await gCall({
+      source: addCompanion,
+      accessToken,
+      variableValues: {
+        userID: '7123123',
+        phone: '90283409384',
+        completeName: 'Test Name',
+        address: 'creasdasdfeg',
+        reservationId: reservation.reservationIdentifier,
+      },
+    });
+    expect(response.data?.business.addCompanion.error).toBeFalsy();
+    expect(response.data?.business.addCompanion.reservation.reservationIdentifier).toBe(
+      reservation.reservationIdentifier,
+    );
+    expect(response.data?.business.addCompanion.reservation.companions[0].completeName).toBe('Test Name');
+    expect(response.data?.business.addCompanion.message).toBeNull();
+  });
+
+  it('should Not add Companion', async () => {
+    const accessToken = await jwtSign({
+      username: 'JuanPer',
+      type: 'test',
+      role: 'business',
+    });
+    const user = await User.findOne();
+    const reservation = await Reservation.create({
+      reservationTime: new Date().toISOString().slice(0, 19).replace('T', ' '),
+      peopleQuantities: 10,
+    }).save();
+    if (!accessToken || !user) throw new Error('No access token');
+    await getConnection().createQueryBuilder().relation(Reservation, 'owner').of(reservation).set(user);
+    reservation.owner = user;
+
+    const response = await gCall({
+      source: addCompanion,
+      accessToken,
+      variableValues: {
+        userID: '7123123',
+        phone: '90283409384',
+        completeName: '',
+        address: 'creasdasdfeg',
+        reservationId: reservation.reservationIdentifier,
+      },
+    });
+    expect(response.data?.business.addCompanion.error).toBeTruthy();
+    expect(response.data?.business.addCompanion.reservation).toBeNull();
+    expect(response.data?.business.addCompanion.message).toBeDefined();
+    expect(response.data?.business.addCompanion.message).toBe('Not Complete data');
   });
 });
