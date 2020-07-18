@@ -35,7 +35,7 @@ import { addCompanion } from './AddCompanion';
 @Resolver(() => BusinessTypes)
 export class BusinessResolver {
   @Mutation(() => BusinessTypes)
-  @UseMiddleware([isAuth, isBusiness])
+  @UseMiddleware([isAuth])
   business(): BusinessTypes {
     return new BusinessTypes();
   }
@@ -79,6 +79,7 @@ export class BusinessResolver {
   }
 
   @FieldResolver()
+  @UseMiddleware([isBusiness])
   async updateCapacity(
     @Arg('data') data: IUpdateRestaurantCapacity,
     @Arg('action') action: string,
@@ -90,11 +91,13 @@ export class BusinessResolver {
   }
 
   @FieldResolver()
+  @UseMiddleware([isBusiness])
   async createRestaurant(@Arg('data') data: ICreateRestaurant): Promise<GeneralRestaurantBusinessResponse> {
     return await CreateRestaurant(data);
   }
 
   @FieldResolver()
+  @UseMiddleware([isBusiness])
   async updateRestaurantInfo(
     @Arg('data') data: IUpdateRestaurant,
     @Arg('restaurantId') restauranId: string,
@@ -103,6 +106,7 @@ export class BusinessResolver {
   }
 
   @FieldResolver()
+  @UseMiddleware([isBusiness])
   async updateMenu(
     @Arg('restaurantId') restauranId: string,
     @Arg('data') data: IUpdateMenu,
@@ -112,6 +116,7 @@ export class BusinessResolver {
   }
 
   @FieldResolver()
+  @UseMiddleware([isBusiness])
   async updateRecipe(
     @Arg('recipeId') recipeId: string,
     @Arg('data') data: IUpdateRecipe,
