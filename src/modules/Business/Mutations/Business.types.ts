@@ -1,6 +1,7 @@
+import { Recipes } from '@entities/Recipes.entity';
+import { Reservation } from '@entities/Reservation.entity';
 import { Restaurant } from '@entities/Restaurant.entity';
 import { Field, ObjectType } from 'type-graphql';
-import {Recipes} from "@entities/Recipes.entity";
 
 @ObjectType({ description: 'update restaurant capacity response' })
 export class GeneralRestaurantBusinessResponse {
@@ -32,6 +33,17 @@ export class RestaurantRecipesBusinessResponse {
   data?: Recipes;
 }
 
+@ObjectType({ description: 'Add Companion Response' })
+export class AddCompanionResponse {
+  @Field()
+  error: boolean;
+
+  @Field({ nullable: true })
+  reservation?: Reservation;
+
+  @Field({ nullable: true })
+  message?: string;
+}
 
 @ObjectType({ description: 'Business Resolver' })
 export class BusinessTypes {
@@ -49,4 +61,7 @@ export class BusinessTypes {
 
   @Field()
   updateRecipe: RestaurantRecipesBusinessResponse;
+
+  @Field()
+  addCompanion: AddCompanionResponse;
 }

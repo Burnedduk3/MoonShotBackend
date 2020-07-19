@@ -16,6 +16,7 @@ const config: ConnectionOptions = {
     'src/entities/Restaurant.entity.ts',
     'src/entities/User.entity.ts',
     'src/entities/UserRole.entity.ts',
+    'src/entities/Companion.entity.ts',
   ],
 };
 export const getDBConfig = async () => await createConnection(config);

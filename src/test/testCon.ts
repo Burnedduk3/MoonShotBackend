@@ -25,6 +25,7 @@ export const testConn = async (drop: boolean = false): Promise<Connection> => {
         __dirname + '/../entities/Restaurant.entity.ts',
         __dirname + '/../entities/User.entity.ts',
         __dirname + '/../entities/UserRole.entity.ts',
+        __dirname + '/../entities/Companion.entity.ts',
       ],
     });
   }

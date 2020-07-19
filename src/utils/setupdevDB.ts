@@ -186,7 +186,7 @@ export const boilerplateData = async () => {
     await getConnection().createQueryBuilder().relation(User, 'restaurant').of(userThree).set(restaurantTwo);
   }
 
-  let userFive = await User.findOne({ phone: '+57317404216' });
+  const userFive = await User.findOne({ phone: '+57317404216' });
   if (!userThree) {
     userThree = await User.create({
       phone: '+57317204216',
