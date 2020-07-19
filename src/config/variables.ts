@@ -29,6 +29,7 @@ export const CONFIG_REDIS_REFRESH_TOKEN_PREFIX =
 export const CONFIG_REDIS_PASSWORD = process.env.REDIS_PASSWORD || 'aWEkwtTXb3TNCfLsnqrvp49yw1n7iG78';
 export const CONFIG_REDIS_PORT = (process.env.REDIS_PORT && parseInt(process.env.REDIS_PORT, 10)) || 13073;
 
+
 // Twilio
 export const CONFIG_TWILIO_ACCOUNT_SID = process.env.TWILIO_ACCOUNT_SID || 'AC7b218b46000c5a3f092ab62abe598f7a';
 export const CONFIG_TWILIO_ACCOUNT_TOKEN = process.env.TWILIO_ACCOUNT_TOKEN || '65963e7203b05b64dcddbfd2a2f0b3c6';
