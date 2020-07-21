@@ -1,11 +1,10 @@
 import { isAuth } from '@middlewares/isAuth';
 import { isBusiness } from '@middlewares/isBusiness';
-import {
-  RestaurantRecipesArrayBusinessResponse,
-} from '@modules/Business/Mutations/Business.types';
-import { IGetRestaurantRecipesInput } from '@modules/Business/Query/Business.inputs';
+import { RestaurantRecipesArrayBusinessResponse } from '@modules/Business/Mutations/Business.types';
+import {IGetRestaurant, IGetRestaurantRecipesInput} from '@modules/Business/Query/Business.inputs';
 import { Arg, FieldResolver, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { BusinessQueryTypes, ReservationsRestaurantBusinessResponse } from './Business.types';
+import {BusinessQueryTypes, ReservationsRestaurantBusinessResponse, RestaurantBusinessResponse} from './Business.types';
+import { getRestaurant } from './GetMyRestaurant';
 import { getRestaurantRecipes } from './GetRestaurantRecipes';
 import { getRestaurantReservations } from './GetRestaurantReservations/index';
 
@@ -29,5 +28,10 @@ export class BusinessResolver {
     @Arg('data') data: IGetRestaurantRecipesInput,
   ): Promise<ReservationsRestaurantBusinessResponse> {
     return await getRestaurantReservations(data);
+  }
+
+  @FieldResolver(/* istanbul ignore next */ () => RestaurantBusinessResponse)
+  async getMyRestaurant(@Arg('data') data: IGetRestaurant): Promise<RestaurantBusinessResponse> {
+    return await getRestaurant(data);
   }
 }
