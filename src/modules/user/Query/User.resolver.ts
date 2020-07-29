@@ -43,7 +43,7 @@ export class UserResolver {
   }
 
   @FieldResolver(/* istanbul ignore next */ () => IUserReservationResponse)
-  @UseMiddleware([isAuth, isUser])
+  @UseMiddleware([isAuth])
   async getReservationById(@Arg('data') data: IGetReservationById): Promise<IUserReservationResponse> {
     return getReservationById(data);
   }
